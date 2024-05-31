@@ -1,9 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Snap : MonoBehaviour
 {
 
+    // Events for a gate being added or removed
+    public UnityEvent GateChanged;
     private bool occupied=false;
     private bool correctGate=false;
     private GameObject gameObj;
@@ -22,6 +25,7 @@ public class Snap : MonoBehaviour
                 other.transform.position = transform.position;
                 gameObj = other.gameObject;
                 occupied = true;
+                GateChanged.Invoke();
                 if (gameObj.tag == correctObj.tag)
                 {
                     print("Correct gate has been placed");
@@ -31,24 +35,15 @@ public class Snap : MonoBehaviour
         }
     }
 
-    // Function to return the gate on the snap point (game object tag)
-    public string GetGate()
-    {
-        if (gameObj != null)
-        {
-            return gameObj.tag;
-        }
-        return "";
-    }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if(gameObj==collision.gameObject) 
         {
-           
             occupied = false;
             gameObj = null;
             correctGate = false;
+            GateChanged.Invoke();
         }
         
     }
@@ -64,5 +59,10 @@ public class Snap : MonoBehaviour
     {
         return correctGate;
 
+    }
+
+    public GameObject GetGateObject()
+    {
+        return gameObj;
     }
 }
