@@ -21,4 +21,18 @@ public class InputTile : MonoBehaviour
         string sign = PositiveState ? "": "-";
         text.text = $"|{sign}{state}>";
     }
+
+    // Function to return the state and its sign
+    public (int, bool) GetState()
+    {
+        return (state, PositiveState);
+    }
+
+    // Function to set the state and its sign
+    public void SetState((int, bool) newState)
+    {
+        state = newState.Item1;
+        PositiveState = newState.Item2;
+        UpdateText();
+    }
 }
