@@ -38,10 +38,10 @@ public class GamePuzzleController : MonoBehaviour
         }
 
         // The output tile will match the last snap point's state
-        OutputTile outputTile = GameObject.Find("OutputTile").GetComponent<OutputTile>();
+        InputTile outputTile = GameObject.Find("OutputTile").GetComponent<InputTile>();
 
-        // Set the output tile's state (implement later)
-        // outputTile.SetState(snapPointStates[snapPointStates.Count - 1]);
+        // Set the output tile's state
+        outputTile.SetState(snapPointStates[snapPointStates.Count - 1]);
 
     }
 
