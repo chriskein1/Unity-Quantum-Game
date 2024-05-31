@@ -31,6 +31,16 @@ public class Snap : MonoBehaviour
         }
     }
 
+    // Function to return the gate on the snap point (game object tag)
+    public string GetGate()
+    {
+        if (gameObj != null)
+        {
+            return gameObj.tag;
+        }
+        return "";
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if(gameObj==collision.gameObject) 
