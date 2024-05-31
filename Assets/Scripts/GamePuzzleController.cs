@@ -9,10 +9,19 @@ public class GamePuzzleController : MonoBehaviour
     // qbits are represented as either 0 or 1, and their sign is true for positive and false for negative
     private List<(int, bool)> snapPointStates = new List<(int, bool)>();
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        SetSnapPoints();
+    }
+
     // Function to initialize the snapPointStates list
     // For now they all match the input tile's state
-    private void SetSnapPointStates()
+    public void SetSnapPoints()
     {
+        // Clear list
+        snapPointStates.Clear();
+
         // Get input tile component's state
         InputTile inputTile = GameObject.Find("InputTile").GetComponent<InputTile>();
         
@@ -24,24 +33,73 @@ public class GamePuzzleController : MonoBehaviour
         {
             Snap snapComp = p.GetComponent<Snap>();
 
-            // Get the gate object on the snap point (implement later)
-            // GameObject gateObject = snapComp.GetGateObject();
+            // Get the gate object on the snap point
+            GameObject gateObject = snapComp.GetGateObject();
             
             // Get the state of kast snap point
             (int, bool) state = snapPointStates[snapPointStates.Count - 1]; // First state is the input tile's state
             
-            // Do a gate operation on the current state (implement later)
-            // state.GateOperation(gateObject);
+            // Do a gate operation on the current state
+            GateOperation(gateObject, ref state);
 
             // Add the new state to the list
             snapPointStates.Add(state);
         }
+
+        // Additional item for the output tile
+        snapPointStates.Add(snapPointStates[snapPointStates.Count - 1]);
 
         // The output tile will match the last snap point's state
         InputTile outputTile = GameObject.Find("OutputTile").GetComponent<InputTile>();
 
         // Set the output tile's state
         outputTile.SetState(snapPointStates[snapPointStates.Count - 1]);
+
+        // Display the snap point states
+        DisplaySnapPointStates();
+
+    }
+
+    // Function to display the snap point states
+    public void DisplaySnapPointStates()
+    {
+        foreach((int, bool) state in snapPointStates)
+        {
+            if (state.Item2)
+            {
+                Debug.Log($"|{state.Item1}>");
+            }
+            else
+            {
+                Debug.Log($"-|{state.Item1}>");
+            }
+        }
+    }
+
+    // Gate operation function
+    private void GateOperation (GameObject gateObject, ref (int, bool) state)
+    {
+        // Return if there is no gate on the snap point
+        if (gateObject == null)
+        {
+            Debug.Log("No gate on this snap point");
+            return;
+        }
+
+        // Gate operations based on the gate object's tag
+        switch (gateObject.tag)
+        {
+            case "XGate":
+                // X gate operation
+                Debug.Log("X gate operation");
+                state.Item1 = (state.Item1 + 1) % 2;
+                break;
+            // Implement Y gate and Z gate later
+            // Figure out H gate later
+            case "HGate":
+                Debug.Log("H gate operation");
+                break;
+        }
 
     }
 
