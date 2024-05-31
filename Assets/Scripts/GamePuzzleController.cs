@@ -27,19 +27,18 @@ public class GamePuzzleController : MonoBehaviour
             // Get the gate object on the snap point (implement later)
             // GameObject gateObject = snapComp.GetGateObject();
             
-            // Get the state of the current snap point and previous snap point
-            (int, bool) prevState = snapPointStates[snapPointStates.Count - 1]; // First state is the input tile's state
-            (int, bool) currState = snapComp.GetState();
-
+            // Get the state of kast snap point
+            (int, bool) state = snapPointStates[snapPointStates.Count - 1]; // First state is the input tile's state
+            
             // Do a gate operation on the current state (implement later)
-            // currState.GateOperation(gateObject);
+            // state.GateOperation(gateObject);
 
             // Add the new state to the list
-            snapPointStates.Add(currState);
+            snapPointStates.Add(state);
         }
 
         // The output tile will match the last snap point's state
-        outputTile = GameObject.Find("OutputTile").GetComponent<OutputTile>();
+        OutputTile outputTile = GameObject.Find("OutputTile").GetComponent<OutputTile>();
 
         // Set the output tile's state (implement later)
         // outputTile.SetState(snapPointStates[snapPointStates.Count - 1]);
