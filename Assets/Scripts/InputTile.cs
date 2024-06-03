@@ -15,7 +15,7 @@ public class InputTile : MonoBehaviour
         text = GetComponentInChildren<TextMeshPro>();
         UpdateText();
     }
-
+    // updates sprites text 
     void UpdateText()
     {
         string sign = PositiveState ? "": "-";

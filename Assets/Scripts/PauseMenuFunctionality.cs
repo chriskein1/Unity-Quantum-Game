@@ -4,29 +4,35 @@ using System.Net.Mail;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// This class handles the functionality of the pause menu in the game.
+/// </summary>
 public class PauseMenuFunctionality : MonoBehaviour
 {
-    [SerializeField] private GameObject PauseMenu;
-    [SerializeField] private GameObject OptionsMenu;
-    private bool isMenuOpen = false;
+    [SerializeField] private GameObject PauseMenu; //holds reference to pause menu
+    [SerializeField] private GameObject OptionsMenu; //holds reference to optionsMenu
+    private bool isTransitioning = true;    //checks if we are in transition animation
 
     void Start()
     {
-        PauseMenu.SetActive(false);
+        PauseMenu.SetActive(false); 
         OptionsMenu.SetActive(false);
+        StartCoroutine(WaitForTransition()); //waits for transition to be over
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (isTransitioning) return;
+        
+        if (Input.GetKeyDown(KeyCode.Escape)) //if we press escape
         {
-            if (PauseMenu.activeSelf || OptionsMenu.activeSelf)
+            if (PauseMenu.activeSelf || OptionsMenu.activeSelf) //if a menu is open. close all menus
             {
                 CloseAllMenus();
             }
             else
             {
-                TogglePauseMenu();
+                TogglePauseMenu();  //open pause menu
             }
         }
     }
@@ -36,13 +42,13 @@ public class PauseMenuFunctionality : MonoBehaviour
         PauseMenu.SetActive(!PauseMenu.activeSelf);
 
         
-        if (PauseMenu.activeSelf)
+        if (PauseMenu.activeSelf) //if pause menu is active 
         {
-            Time.timeScale = 0;  
+            Time.timeScale = 0;   //freezes time 
         }
         else
         {
-            Time.timeScale = 1;  
+            Time.timeScale = 1;  //unfreezes time
         }
     }
 
@@ -57,6 +63,16 @@ public class PauseMenuFunctionality : MonoBehaviour
     {
         PauseMenu.SetActive(false);
         OptionsMenu.SetActive(true);
+    }
+
+    /// <summary>
+    /// Waits for the transition to complete before allowing the pause menu to be opened.
+    /// </summary>
+    IEnumerator WaitForTransition()
+    {
+        MenuButtonFunctionality menuScript= GetComponent<MenuButtonFunctionality>();
+        yield return new WaitForSeconds(menuScript.transitionTime);
+        isTransitioning = false;
     }
 }
     

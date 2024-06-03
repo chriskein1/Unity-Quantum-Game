@@ -1,7 +1,9 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-
+/// <summary>
+/// This class handles snapping objects to a specified location
+/// </summary>
 public class Snap : MonoBehaviour
 {
 
@@ -10,8 +12,10 @@ public class Snap : MonoBehaviour
     private bool occupied=false;
     private bool correctGate=false;
     private GameObject gameObj;
-    [Header("Correct Gate Object")]
-    [SerializeField] private GameObject correctObj;
+    
+    
+
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(occupied==false)
@@ -26,11 +30,7 @@ public class Snap : MonoBehaviour
                 gameObj = other.gameObject;
                 occupied = true;
                 GateChanged.Invoke();
-                if (gameObj.tag == correctObj.tag)
-                {
-                    print("Correct gate has been placed");
-                    correctGate= true;
-                }
+                
             }
         }
     }
@@ -47,14 +47,7 @@ public class Snap : MonoBehaviour
         }
         
     }
-    //public void SnapToCenter(Transform objectTransform)
-    //{
-    //    if (!occupied){
-    //        print("This is inside of the snaptocenter");
-    //        objectTransform.position = transform.position;
-    //        occupied=true;
-    //    }
-    //}
+  
     public bool GetGateStatus()
     {
         return correctGate;

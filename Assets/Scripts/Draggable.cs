@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/// <summary>
+/// This class allows objects to be dragged within the screen boundaries.
+/// </summary>
 public class Drag : MonoBehaviour {
 
   private bool dragging = false;
@@ -33,7 +35,7 @@ public class Drag : MonoBehaviour {
   }
 
   private void OnMouseDown() {
-        // Record the difference between the objects centre, and the clicked point on the camera plane.
+        // Record the difference between the objects center and the clicked point on the camera plane.
         if (Time.deltaTime > 0)
         {
             offset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
