@@ -46,6 +46,13 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
+        // Load and apply volume settings from PlayerPrefs
+        float savedMusicVolume = PlayerPrefs.GetFloat("musicVolume", 1f);
+        musicMixerGroup.audioMixer.SetFloat("musicVolume", Mathf.Log10(savedMusicVolume) * 20);
+
+        float savedSFXVolume = PlayerPrefs.GetFloat("sfxVolume", 1f);
+        SFXMixerGroup.audioMixer.SetFloat("sfxVolume", Mathf.Log10(savedSFXVolume) * 20);
+
         // Play the background music when the game starts
         Play("GameMusic");
     }
