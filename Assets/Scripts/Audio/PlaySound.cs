@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlaySound : MonoBehaviour
 {
-    // Example method to play a sound on some event, e.g., button click
+    //plays button pressed sound 
     public void PlayButtonSound()
     {
         if (AudioManager.instance != null)
