@@ -3,15 +3,22 @@ using UnityEngine;
 /// This class allows objects to be dragged within the screen boundaries.
 /// </summary>
 public class Drag : MonoBehaviour {
-
+  private bool hasRigidbody;
   private bool dragging = false;
   private Vector3 offset;
   private Vector3 extents;
-
-  private void Start() {
+  private Quaternion originalRotation;
+  private bool snapped = false;
+  private Rigidbody2D rb;
+    private void Start() {
     //Record the size of the sprite so we can limit it to the screen if necessary.
     extents = GetComponent<SpriteRenderer>().sprite.bounds.extents;
-  }
+        //Store the original rotation of the object.
+        originalRotation = transform.rotation;
+        rb = GetComponent<Rigidbody2D>();
+        //Check if the object has a Rigidbody2D component
+        hasRigidbody = rb != null;
+    }
 
   // Update is called once per frame
   void Update() {
@@ -34,16 +41,44 @@ public class Drag : MonoBehaviour {
     }
   }
 
-  private void OnMouseDown() {
-        // Record the difference between the objects center and the clicked point on the camera plane.
+    private void OnMouseDown()
+    {
+        // Record the difference between the object's center and the clicked point on the camera plane.
         if (Time.deltaTime > 0)
         {
+            if(snapped==true)
+                if (hasRigidbody)
+                    rb.bodyType = RigidbodyType2D.Dynamic;
+                
+
+            snapped = false;
+            // Reset the object's rotation to the original rotation.
+            transform.rotation = originalRotation;
+            // Calculate the offset based on the current position.
             offset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
             dragging = true;
         }
-  }
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        // Check if the collided object is being pushed off screen and correct its position.
+        CorrectPosition(collision.collider);
+    }
+    private void CorrectPosition(Collider2D collider)
+    {
+        Vector3 pos = collider.transform.position;
+        Vector3 topRight = Camera.main.ViewportToWorldPoint(Vector3.one);
+        Vector3 bottomLeft = Camera.main.ViewportToWorldPoint(Vector3.zero);
+        Vector3 colExtents = collider.bounds.extents;
 
-  private void OnMouseUp() {
+        // Limit to the screen
+        pos.x = Mathf.Clamp(pos.x, bottomLeft.x + colExtents.x, topRight.x - colExtents.x);
+        pos.y = Mathf.Clamp(pos.y, bottomLeft.y + colExtents.y, topRight.y - colExtents.y);
+
+        // Set the object's position.
+        collider.transform.position = pos;
+    }
+    private void OnMouseUp() {
     // Stop dragging.
     dragging = false;
   }
@@ -51,5 +86,14 @@ public class Drag : MonoBehaviour {
   public void StopDragging()
     {
         dragging = false;
+    }
+  public void Snapping()
+    {
+        snapped= true;
+        if(hasRigidbody)
+        rb.bodyType = RigidbodyType2D.Static;
+        dragging = false;
+        // Reset the object's rotation to the original rotation.
+        transform.rotation = originalRotation;
     }
 }

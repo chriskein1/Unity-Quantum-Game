@@ -11,21 +11,27 @@ public class OptionsMenuFunctionality : MonoBehaviour
     // UI Sliders for music and SFX volume
     public Slider musicSlider;
     public Slider sfxSlider;
-
+    public bool setToMax=false;
+    public float volume;
+    private bool beenChanged=false;
     private void Start()
     {
-        // Set the slider values to the current volumes
-        float currentMusicVolume;
-        if (audioMixer.GetFloat("musicVolume", out currentMusicVolume))
-        {
-            musicSlider.value = Mathf.Pow(10, currentMusicVolume / 20); //changing value to base10
-        }
+        
+       
+            // Set the slider values to the current volumes
+            float currentMusicVolume;
+            if (audioMixer.GetFloat("musicVolume", out currentMusicVolume))
+            {
+                musicSlider.value = Mathf.Pow(10, currentMusicVolume / 20); //changing value to base10
+            }
 
-        float currentSFXVolume;
+            float currentSFXVolume;
         if (audioMixer.GetFloat("sfxVolume", out currentSFXVolume))
         {
             sfxSlider.value = Mathf.Pow(10, currentSFXVolume / 20); //changing value to base10
         }
+      
+       
     }
         /// <summary>
         /// sets music volume to slider value

@@ -24,7 +24,7 @@ public class Snap : MonoBehaviour
             Drag dragComponent = other.GetComponent<Drag>();
             if (dragComponent != null)
             {
-                dragComponent.StopDragging();
+                dragComponent.Snapping();
                 //Snap the object to the center of the trigger plus any adjustment
                 other.transform.position = transform.position;
                 gameObj = other.gameObject;
