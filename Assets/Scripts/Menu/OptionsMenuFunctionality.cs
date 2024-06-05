@@ -81,4 +81,18 @@ public class OptionsMenuFunctionality : MonoBehaviour
         PlayerPrefs.SetInt("qualitySetting", quality);
         
     }
+
+    public void PlayButtonSound()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("ButtonClick");
+        }
+        else
+        {
+            Debug.LogError("AudioManager instance not found!");
+        }
+    }
+
+
 }
