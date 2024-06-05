@@ -7,7 +7,7 @@ public class GamePuzzleController : MonoBehaviour
     [SerializeField] private List<GameObject> SnapPoints = new List<GameObject>();
     
     // qbits are represented as either 0 or 1, and their sign is true for positive and false for negative
-    private List<(int, bool)> snapPointStates = new List<(int, bool)>();
+    private List<(int, bool, bool)> snapPointStates = new List<(int, bool, bool)>();
 
     // Start is called before the first frame update
     void Start()
@@ -36,8 +36,8 @@ public class GamePuzzleController : MonoBehaviour
             // Get the gate object on the snap point
             GameObject gateObject = snapComp.GetGateObject();
             
-            // Get the state of kast snap point
-            (int, bool) state = snapPointStates[snapPointStates.Count - 1]; // First state is the input tile's state
+            // Get the state of last snap point
+            (int, bool, bool) state = snapPointStates[snapPointStates.Count - 1]; // First state is the input tile's state
             
             // Do a gate operation on the current state
             GateOperation(gateObject, ref state);
@@ -63,7 +63,7 @@ public class GamePuzzleController : MonoBehaviour
     // Function to display the snap point states
     public void DisplaySnapPointStates()
     {
-        foreach((int, bool) state in snapPointStates)
+        foreach((int, bool, bool) state in snapPointStates)
         {
             if (state.Item2)
             {
@@ -77,7 +77,7 @@ public class GamePuzzleController : MonoBehaviour
     }
 
     // Gate operation function
-    private void GateOperation (GameObject gateObject, ref (int, bool) state)
+    private void GateOperation (GameObject gateObject, ref (int, bool, bool) state)
     {
         // Return if there is no gate on the snap point
         if (gateObject == null)
@@ -94,10 +94,26 @@ public class GamePuzzleController : MonoBehaviour
                 Debug.Log("X gate operation");
                 state.Item1 = (state.Item1 + 1) % 2;
                 break;
-            // Implement Y gate and Z gate later
-            // Figure out H gate later
+            
+            case "YGate":
+                // Y gate operation
+                Debug.Log("Y gate operation");
+                state.Item2 = !state.Item2;
+                break;
+            
+            case "ZGate":
+                // Z gate operation
+                Debug.Log("Z gate operation");
+                if (state.Item1 == 1)
+                {
+                    state.Item2 = !state.Item2;
+                }
+                break;
+
             case "HGate":
                 Debug.Log("H gate operation");
+                // Superposition
+                state.Item3 = !state.Item3;
                 break;
         }
 
