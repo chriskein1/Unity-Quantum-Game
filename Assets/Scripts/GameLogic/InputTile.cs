@@ -9,6 +9,7 @@ public class InputTile : MonoBehaviour
     [SerializeField] private int state;
     [SerializeField] private bool PositiveState;
     [SerializeField] private bool SuperPosition;
+    [SerializeField] private ChangeState blochSphere;
     private TextMeshPro text;
 
     void Start()
@@ -20,7 +21,7 @@ public class InputTile : MonoBehaviour
     void UpdateText()
     {
         string sign = PositiveState ? "": "-";
-        text.text = $"|{sign}{state}>";
+        text.text = $"{sign}|{state}>";
     }
 
     // Function to return the state and its sign
@@ -35,5 +36,43 @@ public class InputTile : MonoBehaviour
         state = newState.Item1;
         PositiveState = newState.Item2;
         UpdateText();
+        UpdateBlochSphere();
+    }
+
+    public void UpdateBlochSphere()
+    {
+        if (blochSphere == null)
+        {
+            Debug.LogWarning("BlochSphere reference is not set.");
+            return;
+        }
+
+        if (state == 0)
+        {
+            if (PositiveState)
+            {
+                blochSphere.SetZeroState();
+                print("Zero State");
+            }
+            else
+            {
+                blochSphere.SetNegativeState();
+                print("Negative Zero State");
+            }
+        }
+        else if (state == 1)
+        {
+            if (PositiveState)
+            {
+                blochSphere.SetOneState();
+                print("One State");
+            }
+            else
+            {
+                blochSphere.SetPositiveState();
+                print("Negative One State");
+            }
+
+        }
     }
 }
