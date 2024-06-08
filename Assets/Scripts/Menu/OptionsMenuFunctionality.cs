@@ -94,5 +94,9 @@ public class OptionsMenuFunctionality : MonoBehaviour
         }
     }
 
-
+    public void FullScreen()
+    {
+        Screen.fullScreen = !Screen.fullScreen;
+       
+    }
 }
