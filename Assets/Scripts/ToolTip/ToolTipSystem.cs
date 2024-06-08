@@ -14,9 +14,9 @@ public class ToolTipSystem : MonoBehaviour
         current.tooltip.gameObject.SetActive(false);
     }
 
-    public static void Show(string content, string header = "")
+    public static void Show(string content, string header, Color headerColor, Color contentColor)
     {
-        current.tooltip.SetText(content, header);
+        current.tooltip.SetText(content, header, headerColor, contentColor);
         current.tooltip.gameObject.SetActive(true);
     }
     public static void Hide()

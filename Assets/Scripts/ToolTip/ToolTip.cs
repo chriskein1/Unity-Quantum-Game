@@ -12,16 +12,19 @@ using UnityEngine.UI;
 public class ToolTip : MonoBehaviour
 {
     // Fields for displaying header and content text
+    [Header("Text:")]
     public TextMeshProUGUI headerField;
+    
     public TextMeshProUGUI contentField;
-
-    // Layout element to control the wrapping of text
-    public LayoutElement layoutElement;
 
     // Character wrap limit for enabling/disabling the layout element
     public int characterWrapLimit;
 
+
+    [Header("Layout Element and RectTransform:")]
     // RectTransform of the tooltip
+    public LayoutElement layoutElement;
+    // Layout element to control the wrapping of text
     public RectTransform rectTransform;
 
     /// <summary>
@@ -35,7 +38,7 @@ public class ToolTip : MonoBehaviour
     /// <summary>
     /// Sets the text content of the tooltip.
     /// </summary>
-    public void SetText(string content, string header = "")
+    public void SetText(string content, string header, Color headerColor, Color contentColor)
     {
         // Toggle the header field's visibility based on whether a header is provided
         if (string.IsNullOrEmpty(header))
@@ -45,10 +48,12 @@ public class ToolTip : MonoBehaviour
         else
         {
             headerField.gameObject.SetActive(true);
+            headerField.color= headerColor;
             headerField.text = header;
         }
 
         // Set the content text
+        contentField.color = contentColor;
         contentField.text = content;
 
         // Calculate lengths and enable the layout element if text exceeds wrap limit
@@ -57,6 +62,7 @@ public class ToolTip : MonoBehaviour
 
         layoutElement.enabled = (headerLength > characterWrapLimit || contentLength > characterWrapLimit);
     }
+
 
     /// <summary>
     /// Updates the tooltip's position and layout in the editor and during runtime.
@@ -79,13 +85,10 @@ public class ToolTip : MonoBehaviour
 
         // Determine pivot based on mouse position relative to screen edges
         if (x <= y && x <= 1 - y) // left
-            rectTransform.pivot = new Vector2(-0.15f, y);
-        else if (x >= y && x <= 1 - y) // bottom
-            rectTransform.pivot = new Vector2(x, -0.1f);
+            rectTransform.pivot = new Vector2(-0.15f, .5f);
+      
         else if (x >= y && x >= 1 - y) // right
-            rectTransform.pivot = new Vector2(1.1f, y);
-        else if (x <= y && x >= 1 - y) // top
-            rectTransform.pivot = new Vector2(x, 1.3f);
+            rectTransform.pivot = new Vector2(1.1f, .5f);
 
         // Set tooltip position to mouse position
         transform.position = position;

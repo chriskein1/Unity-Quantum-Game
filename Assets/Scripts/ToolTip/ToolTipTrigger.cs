@@ -8,9 +8,14 @@ using UnityEngine;
 /// </summary>
 public class ToolTipTrigger : MonoBehaviour
 {
-    public string content;
+    [Header("Text:")]
     [Multiline()]
     public string header;
+    public string content;
+    [Header("Color")]
+    public Color headerColor;
+    public Color contentColor;
+
     private bool isHovering = false; // Track if the mouse is still hovering over the object
     private bool isMouseDown = false; // Track if the mouse button is held down
 
@@ -31,7 +36,7 @@ public class ToolTipTrigger : MonoBehaviour
     {
         if (isHovering && !isMouseDown) // Only show tooltip if the mouse is still hovering and not held down
         {
-            ToolTipSystem.Show(content, header);
+            ToolTipSystem.Show(content, header,headerColor,contentColor);
         }
     }
 
