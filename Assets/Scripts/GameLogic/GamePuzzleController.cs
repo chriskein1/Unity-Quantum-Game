@@ -7,7 +7,7 @@ public class GamePuzzleController : MonoBehaviour
     [SerializeField] private List<GameObject> SnapPoints = new List<GameObject>();
     
     // qbits are represented as either 0 or 1, and their sign is true for positive and false for negative
-    private List<(int, bool, bool)> snapPointStates = new List<(int, bool, bool)>();
+    private List<(int, bool, bool, bool)> snapPointStates = new List<(int, bool, bool, bool)>();
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +37,7 @@ public class GamePuzzleController : MonoBehaviour
             GameObject gateObject = snapComp.GetGateObject();
             
             // Get the state of last snap point
-            (int, bool, bool) state = snapPointStates[snapPointStates.Count - 1]; // First state is the input tile's state
+            (int, bool, bool, bool) state = snapPointStates[snapPointStates.Count - 1]; // First state is the input tile's state
             
             // Do a gate operation on the current state
             GateOperation(gateObject, ref state);
@@ -63,7 +63,7 @@ public class GamePuzzleController : MonoBehaviour
     // Function to display the snap point states
     public void DisplaySnapPointStates()
     {
-        foreach((int, bool, bool) state in snapPointStates)
+        foreach((int, bool, bool, bool) state in snapPointStates)
         {
             if (state.Item2)
             {
@@ -77,7 +77,7 @@ public class GamePuzzleController : MonoBehaviour
     }
 
     // Gate operation function
-    private void GateOperation (GameObject gateObject, ref (int, bool, bool) state)
+    private void GateOperation (GameObject gateObject, ref (int, bool, bool, bool) state)
     {
         // Return if there is no gate on the snap point
         if (gateObject == null)
@@ -98,7 +98,16 @@ public class GamePuzzleController : MonoBehaviour
             case "YGate":
                 // Y gate operation
                 Debug.Log("Y gate operation");
-                state.Item2 = !state.Item2;
+
+                // Bit & phase flip
+
+                if (state.Item1 == 1)
+                {
+                    state.Item2 = !state.Item2;
+                }
+                state.Item1 = (state.Item1 + 1) % 2;
+                state.Item3 = !state.Item3;
+
                 break;
             
             case "ZGate":
@@ -112,8 +121,8 @@ public class GamePuzzleController : MonoBehaviour
 
             case "HGate":
                 Debug.Log("H gate operation");
-                // Superposition
-                state.Item3 = !state.Item3;
+                // H applied flag flipped
+                state.Item4 = !state.Item4;
                 break;
         }
 
