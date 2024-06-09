@@ -38,7 +38,7 @@ public class OptionsMenuFunctionality : MonoBehaviour
 
         // Load the volume settings from PlayerPrefs
         float savedMusicVolume = PlayerPrefs.GetFloat("musicVolume", 1f);
-        print($"Saved music volume{savedMusicVolume}");
+        
         audioMixer.SetFloat("musicVolume", Mathf.Log10(savedMusicVolume) * 20);
         if (musicSlider != null)
         {
@@ -46,7 +46,7 @@ public class OptionsMenuFunctionality : MonoBehaviour
         }
 
         float savedSFXVolume = PlayerPrefs.GetFloat("sfxVolume", 1f);
-        print($"Saved sfx volume{savedSFXVolume}");
+      
         audioMixer.SetFloat("sfxVolume", Mathf.Log10(savedSFXVolume) * 20);
         if (sfxSlider != null)
         {
