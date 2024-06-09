@@ -9,6 +9,7 @@ public class InputTile : MonoBehaviour
     [SerializeField] private int state;
     [SerializeField] private bool PositiveState;
     [SerializeField] private bool SuperPosition;
+    [SerializeField] private bool HApplied;
     [SerializeField] private ChangeState blochSphere;
     private TextMeshPro text;
 
@@ -21,20 +22,45 @@ public class InputTile : MonoBehaviour
     void UpdateText()
     {
         string sign = PositiveState ? "": "-";
-        text.text = $"{sign}|{state}>";
+        string qubitStr = "";
+        
+        if (HApplied)
+        {
+            if (PositiveState)
+            {
+                qubitStr = SuperPosition ? "i/√2(|0> + |1>)" : "1/√2(|0> + |1>)";
+            }
+            else
+            {
+                qubitStr = SuperPosition ? "i/√2(|0> - |1>)" : "1/√2(|0> - |1>)";
+            }
+        }
+        else if (SuperPosition)
+        {
+            qubitStr = $"{sign}i|{state}>";
+        }
+        else
+        {
+            qubitStr = $"{sign}|{state}>";
+        }
+
+        text.text = qubitStr;
     }
 
+
     // Function to return the state and its sign
-    public (int, bool, bool) GetState()
+    public (int, bool, bool, bool) GetState()
     {
-        return (state, PositiveState, SuperPosition);
+        return (state, PositiveState, SuperPosition, HApplied);
     }
 
     // Function to set the state and its sign
-    public void SetState((int, bool, bool) newState)
+    public void SetState((int, bool, bool, bool) newState)
     {
         state = newState.Item1;
         PositiveState = newState.Item2;
+        SuperPosition = newState.Item3;
+        HApplied = newState.Item4;
         UpdateText();
         UpdateBlochSphere();
     }
