@@ -1,58 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class ResetGatePositions : MonoBehaviour
+// Reset all gate positions
+
+public class Reset : MonoBehaviour
 {
-    [System.Serializable]
-    public class Gate
-    {
-        public GameObject gateObject;
-        [HideInInspector]
-        public Vector3 initialPosition;
-        [HideInInspector]
-        public Quaternion initialRotation;
-    }
+    // Lists of positions and rotations
+    private List<Vector3> gatePositions = new List<Vector3>();
+    private List<Quaternion> gateRotations = new List<Quaternion>();
 
-    public List<Gate> gates;
+    // Gate parent object
+    private GameObject gates;
 
+    // Get gate parent object
     void Start()
     {
-        if (gates == null || gates.Count == 0)
-        {
-            return;
-        }
+        gates = GameObject.Find("Gates");
+        initializeGatePos();
+    }
 
-        foreach (Gate gate in gates)
+    private void initializeGatePos()
+    {
+        // Get all actual gate objects
+        if (gates != null)
         {
-            if (gate.gateObject != null)
+            Transform[] allChildren = gates.GetComponentsInChildren<Transform>();
+
+            foreach (Transform childGate in allChildren)
             {
-                gate.initialPosition = gate.gateObject.transform.position;
-                gate.initialRotation = gate.gateObject.transform.rotation;
-                
-            }
-            else
-            {
-                
+                // Skip parent object
+                if (childGate == gates.transform)
+                {
+                    continue;
+                }
+                // Push to list
+                gatePositions.Add(childGate.position);
+                gateRotations.Add(childGate.rotation);
             }
         }
     }
 
     public void ResetGates()
     {
-        
-        foreach (Gate gate in gates)
+        int i = 0;
+        // Get all actual gate objects
+        if (gates != null)
         {
-            if (gate.gateObject != null)
+            Transform[] allChildren = gates.GetComponentsInChildren<Transform>();
+
+            foreach (Transform childGate in allChildren)
             {
-                gate.gateObject.transform.position = gate.initialPosition;
-                gate.gateObject.transform.rotation = gate.initialRotation;
-                
+                // Skip parent object
+                if (childGate == gates.transform)
+                {
+                    continue;
+                }
+                // Reset position and rotation
+                childGate.position = gatePositions[i];
+                childGate.rotation = gateRotations[i];
+                i++;
             }
-            else
-            {
-                Debug.LogError("Gate object is null");
-            }
-        }
+        }    
     }
 }
