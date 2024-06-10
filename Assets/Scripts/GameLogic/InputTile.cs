@@ -9,8 +9,8 @@ public class InputTile : MonoBehaviour
     [SerializeField] private int state;
     [SerializeField] private bool PositiveState;
     [SerializeField] private bool SuperPosition;
-    [SerializeField] private bool HApplied;
     [SerializeField] private ChangeState blochSphere;
+    private bool HApplied;
     private TextMeshPro text;
 
     void Start()
@@ -78,12 +78,12 @@ public class InputTile : MonoBehaviour
             if (PositiveState)
             {
                 blochSphere.SetZeroState();
-                print("Zero State");
+                
             }
             else
             {
                 blochSphere.SetNegativeState();
-                print("Negative Zero State");
+                
             }
         }
         else if (state == 1)
@@ -91,12 +91,12 @@ public class InputTile : MonoBehaviour
             if (PositiveState)
             {
                 blochSphere.SetOneState();
-                print("One State");
+               
             }
             else
             {
                 blochSphere.SetPositiveState();
-                print("Negative One State");
+               
             }
 
         }

@@ -33,6 +33,7 @@ public class PauseMenuFunctionality : MonoBehaviour
             }
             else
             {
+                ClickSound();
                 TogglePauseMenu();  //open pause menu
             }
         }
@@ -75,6 +76,18 @@ public class PauseMenuFunctionality : MonoBehaviour
         MenuButtonFunctionality menuScript= GetComponent<MenuButtonFunctionality>();
         yield return new WaitForSeconds(menuScript.transitionTime);
         isTransitioning = false;
+    }
+
+    public void ClickSound()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("ButtonClick");
+        }
+        else
+        {
+            Debug.LogError("AudioManager instance not found!");
+        }
     }
 }
     

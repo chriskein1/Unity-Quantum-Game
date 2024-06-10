@@ -17,7 +17,7 @@ public class MenuButtonFunctionality : MonoBehaviour
     /// </summary>
     public void PlayLevel(int levelIndex)
     {
-       
+        ClickSound();  
         StartCoroutine(LoadLevel(levelIndex)); //this calls the loadLevel method 
         
     }
@@ -33,6 +33,7 @@ public class MenuButtonFunctionality : MonoBehaviour
     /// </summary>
     IEnumerator LoadLevel(int levelIndex)
     {
+        ClickSound();
         transition.SetTrigger("Start"); //calls trigger for the animation
         yield return new WaitForSeconds(transitionTime);  //this waits transitionTime amount of seconds 
         SceneManager.LoadScene(levelIndex); //loads selected scene 
@@ -44,7 +45,9 @@ public class MenuButtonFunctionality : MonoBehaviour
     public void Quit()
     {
         {
+            ClickSound();
             Application.Quit();
+
         }
     }
     /// <summary>
@@ -55,6 +58,18 @@ public class MenuButtonFunctionality : MonoBehaviour
         if (Time.deltaTime == 0)
             Time.timeScale = 1;
         StartCoroutine(LoadLevel(0));
+    }
+
+    public void ClickSound()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("ButtonClick");
+        }
+        else
+        {
+            Debug.LogError("AudioManager instance not found!");
+        }
     }
 }
 

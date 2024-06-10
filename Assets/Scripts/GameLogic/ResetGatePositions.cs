@@ -44,6 +44,7 @@ public class Reset : MonoBehaviour
 
     public void ResetGates()
     {
+        ClickSound();
         int i = 0;
         // Get all actual gate objects
         if (gates != null)
@@ -63,5 +64,17 @@ public class Reset : MonoBehaviour
                 i++;
             }
         }    
+    }
+
+    public void ClickSound()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("ButtonClick");
+        }
+        else
+        {
+            Debug.LogError("AudioManager instance not found!");
+        }
     }
 }
