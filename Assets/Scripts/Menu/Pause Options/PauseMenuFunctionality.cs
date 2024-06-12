@@ -33,7 +33,7 @@ public class PauseMenuFunctionality : MonoBehaviour
             }
             else
             {
-                ClickSound();
+               
                 TogglePauseMenu();  //open pause menu
             }
         }
@@ -42,7 +42,7 @@ public class PauseMenuFunctionality : MonoBehaviour
     private void TogglePauseMenu()
     {
         PauseMenu.SetActive(!PauseMenu.activeSelf);
-        ResetButton.SetActive(!ResetButton.activeSelf);
+        //ResetButton.SetActive(!ResetButton.activeSelf);
         
         if (PauseMenu.activeSelf) //if pause menu is active 
         {
@@ -58,7 +58,7 @@ public class PauseMenuFunctionality : MonoBehaviour
     {
         PauseMenu.SetActive(false);
         OptionsMenu.SetActive(false);
-        ResetButton.SetActive(true);
+        //ResetButton.SetActive(true);
         Time.timeScale = 1;  
     }
 
