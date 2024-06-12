@@ -6,6 +6,8 @@ using QubitType;
 public class GamePuzzleController : MonoBehaviour
 {
     [SerializeField] private List<GameObject> SnapPoints = new List<GameObject>();
+
+    [SerializeField] private Qubit WinState;
     
     // qbits are represented as either 0 or 1, and their sign is true for positive and false for negative
     private List<Qubit> snapPointStates = new List<Qubit>();
@@ -45,19 +47,32 @@ public class GamePuzzleController : MonoBehaviour
 
             // Add the new state to the list
             snapPointStates.Add(state);
+
+            // Update snap point state
+            snapComp.SetState(state);
         }
 
+        int i = snapPointStates.Count - 1;
+
         // Additional item for the output tile
-        snapPointStates.Add(snapPointStates[snapPointStates.Count - 1]);
+        snapPointStates.Add(snapPointStates[i]);
 
         // The output tile will match the last snap point's state
         InputTile outputTile = GameObject.Find("OutputTile").GetComponent<InputTile>();
 
         // Set the output tile's state
-        outputTile.SetState(snapPointStates[snapPointStates.Count - 1]);
+        outputTile.SetState(snapPointStates[i]);
+        
+        if (snapPointStates[i].state == WinState.state && snapPointStates[i].PositiveState == WinState.PositiveState 
+            && snapPointStates[i].SuperPosition == WinState.SuperPosition && snapPointStates[i].HApplied == WinState.HApplied)
+        {
+            Debug.Log("You Win!!!");
+            // Set time to 0
+            // Time.timeScale = 0;
+        }
 
         // Display the snap point states
-        DisplaySnapPointStates();
+        // DisplaySnapPointStates();
 
     }
 
