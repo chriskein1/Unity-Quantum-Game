@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using QubitType;
 public class GamePuzzleController : MonoBehaviour
 {
     [SerializeField] private List<GameObject> SnapPoints = new List<GameObject>();
+
+    [SerializeField] private Qubit WinState;
     
     // qbits are represented as either 0 or 1, and their sign is true for positive and false for negative
-    private List<(int, bool, bool, bool)> snapPointStates = new List<(int, bool, bool, bool)>();
+    private List<Qubit> snapPointStates = new List<Qubit>();
 
     // Start is called before the first frame update
     void Start()
@@ -37,47 +40,60 @@ public class GamePuzzleController : MonoBehaviour
             GameObject gateObject = snapComp.GetGateObject();
             
             // Get the state of last snap point
-            (int, bool, bool, bool) state = snapPointStates[snapPointStates.Count - 1]; // First state is the input tile's state
+            Qubit state = snapPointStates[snapPointStates.Count - 1]; // First state is the input tile's state
             
             // Do a gate operation on the current state
             GateOperation(gateObject, ref state);
 
             // Add the new state to the list
             snapPointStates.Add(state);
+
+            // Update snap point state
+            snapComp.SetState(state);
         }
 
+        int i = snapPointStates.Count - 1;
+
         // Additional item for the output tile
-        snapPointStates.Add(snapPointStates[snapPointStates.Count - 1]);
+        snapPointStates.Add(snapPointStates[i]);
 
         // The output tile will match the last snap point's state
         InputTile outputTile = GameObject.Find("OutputTile").GetComponent<InputTile>();
 
         // Set the output tile's state
-        outputTile.SetState(snapPointStates[snapPointStates.Count - 1]);
+        outputTile.SetState(snapPointStates[i]);
+        
+        if (snapPointStates[i].state == WinState.state && snapPointStates[i].PositiveState == WinState.PositiveState 
+            && snapPointStates[i].SuperPosition == WinState.SuperPosition && snapPointStates[i].HApplied == WinState.HApplied)
+        {
+            Debug.Log("You Win!!!");
+            // Set time to 0
+            // Time.timeScale = 0;
+        }
 
         // Display the snap point states
-        DisplaySnapPointStates();
+        // DisplaySnapPointStates();
 
     }
 
     // Function to display the snap point states
     public void DisplaySnapPointStates()
     {
-        foreach((int, bool, bool, bool) state in snapPointStates)
+        foreach(Qubit state in snapPointStates)
         {
-            if (state.Item2)
+            if (state.PositiveState)
             {
-                Debug.Log($"|{state.Item1}>");
+                Debug.Log($"|{state.state}>");
             }
             else
             {
-                Debug.Log($"-|{state.Item1}>");
+                Debug.Log($"-|{state.state}>");
             }
         }
     }
 
     // Gate operation function
-    private void GateOperation (GameObject gateObject, ref (int, bool, bool, bool) state)
+    private void GateOperation (GameObject gateObject, ref Qubit state)
     {
         // Return if there is no gate on the snap point
         if (gateObject == null)
@@ -92,7 +108,7 @@ public class GamePuzzleController : MonoBehaviour
             case "XGate":
                 // X gate operation
                 Debug.Log("X gate operation");
-                state.Item1 = (state.Item1 + 1) % 2;
+                state.state = (state.state + 1) % 2;
                 break;
             
             case "YGate":
@@ -101,28 +117,28 @@ public class GamePuzzleController : MonoBehaviour
 
                 // Bit & phase flip
 
-                if (state.Item1 == 1)
+                if (state.state == 1)
                 {
-                    state.Item2 = !state.Item2;
+                    state.PositiveState = !state.PositiveState;
                 }
-                state.Item1 = (state.Item1 + 1) % 2;
-                state.Item3 = !state.Item3;
+                state.state = (state.state + 1) % 2;
+                state.SuperPosition = !state.SuperPosition;
 
                 break;
             
             case "ZGate":
                 // Z gate operation
                 Debug.Log("Z gate operation");
-                if (state.Item1 == 1)
+                if (state.state == 1)
                 {
-                    state.Item2 = !state.Item2;
+                    state.PositiveState = !state.PositiveState;
                 }
                 break;
 
             case "HGate":
                 Debug.Log("H gate operation");
                 // H applied flag flipped
-                state.Item4 = !state.Item4;
+                state.HApplied = !state.HApplied;
                 break;
         }
 
