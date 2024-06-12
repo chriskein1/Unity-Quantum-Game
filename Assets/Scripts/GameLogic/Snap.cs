@@ -4,6 +4,8 @@ using UnityEngine.Events;
 /// <summary>
 /// This class handles snapping objects to a specified location
 /// </summary>
+
+using QubitType;
 public class Snap : MonoBehaviour
 {
 
@@ -12,6 +14,8 @@ public class Snap : MonoBehaviour
     private bool occupied=false;
     private bool correctGate=false;
     private GameObject gameObj;
+
+    private Qubit qubit;
     
     
 
@@ -57,5 +61,15 @@ public class Snap : MonoBehaviour
     public GameObject GetGateObject()
     {
         return gameObj;
+    }
+
+    public void SetState(Qubit qubit)
+    {
+        this.qubit = qubit;
+    }
+
+    public Qubit GetState()
+    {
+        return qubit;
     }
 }
