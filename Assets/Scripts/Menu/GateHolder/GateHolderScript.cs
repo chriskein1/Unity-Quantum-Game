@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,7 +5,6 @@ using UnityEngine;
 public class GateHolderScript : MonoBehaviour
 {
     [SerializeField] private List<GameObject> Gates = new List<GameObject>();
-    [SerializeField] private RectTransform spawnLocation; // Assuming this is a UI element
     [SerializeField] private Camera mainCamera; // Reference to the main camera
     [SerializeField] private int amountOfXGates;
     [SerializeField] private int amountOfYGates;
@@ -14,6 +12,7 @@ public class GateHolderScript : MonoBehaviour
     [SerializeField] private int amountOfHGates;
 
     private Dictionary<string, int> gateCounts = new Dictionary<string, int>();
+    private GameObject currentDraggedGate;
 
     private void Awake()
     {
@@ -24,44 +23,30 @@ public class GateHolderScript : MonoBehaviour
         UpdateGateCountTexts();
     }
 
-    public void SpawnXGate()
-    {
-        SpawnGate("XGate");
-    }
-
-    public void SpawnYGate()
-    {
-        SpawnGate("YGate");
-    }
-
-    public void SpawnZGate()
-    {
-        SpawnGate("ZGate");
-    }
-
-    public void SpawnHGate()
-    {
-        SpawnGate("HGate");
-    }
-
-    private void SpawnGate(string gateTag)
+    public void SpawnAndDragGate(string gateTag)
     {
         if (gateCounts[gateTag] > 0)
         {
             GameObject gatePrefab = Gates.Find(gate => gate.CompareTag(gateTag));
 
-            if (gatePrefab != null && spawnLocation != null)
+            if (gatePrefab != null)
             {
-                // Convert the RectTransform position to screen space
-                Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(null, spawnLocation.position);
+                // Get the mouse position in world space
+                Vector3 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+                mousePos.z = 0;
 
-                // Convert the screen space position to world space
-                Vector3 worldPos = mainCamera.ScreenToWorldPoint(screenPos);
+                currentDraggedGate = Instantiate(gatePrefab, mousePos, Quaternion.identity);
+                Drag dragComponent = currentDraggedGate.GetComponentInChildren<Drag>();
 
-                // Adjust the z-coordinate to the appropriate depth in the game world
-                worldPos.z = 0;
+                if (dragComponent != null)
+                {
+                    dragComponent.StartDraggingFromSpawn(mousePos);
+                }
+                else
+                {
+                    Debug.LogError("Drag component not found on the gate or its children.");
+                }
 
-                Instantiate(gatePrefab, worldPos, spawnLocation.rotation);
                 gateCounts[gateTag]--;
                 Debug.Log($"{gateTag} spawned. New count: {gateCounts[gateTag]}");
                 UpdateGateCountTexts();
@@ -78,6 +63,7 @@ public class GateHolderScript : MonoBehaviour
             UpdateGateCountTexts();
         }
     }
+
     private void UpdateGateCountTexts()
     {
         UpdateText("XGateText", gateCounts["XGate"]);
@@ -94,7 +80,7 @@ public class GateHolderScript : MonoBehaviour
             TMP_Text tmpText = textObject.GetComponent<TMP_Text>();
             if (tmpText != null)
             {
-                tmpText.text =$"{count}";
+                tmpText.text = $"{count}";
             }
         }
     }
