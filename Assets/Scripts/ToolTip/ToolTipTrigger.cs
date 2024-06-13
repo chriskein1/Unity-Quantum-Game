@@ -34,7 +34,7 @@ public class ToolTipTrigger : MonoBehaviour
 
     private void ShowToolTip()
     {
-        if (isHovering && !isMouseDown) // Only show tooltip if the mouse is still hovering and not held down
+        if (isHovering && !isMouseDown && !Input.GetMouseButton(0)) // Only show tooltip if the mouse is still hovering and not held down
         {
             ToolTipSystem.Show(content, header,headerColor,contentColor);
         }
