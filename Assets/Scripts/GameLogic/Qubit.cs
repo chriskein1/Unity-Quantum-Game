@@ -8,7 +8,7 @@ namespace QubitType
     {
         public int state;
         public bool PositiveState;
-        public bool SuperPosition;
+        public bool ImaginaryState;
         public bool HApplied;
     }
 }

@@ -64,7 +64,7 @@ public class GamePuzzleController : MonoBehaviour
         outputTile.SetState(snapPointStates[i]);
         
         if (snapPointStates[i].state == WinState.state && snapPointStates[i].PositiveState == WinState.PositiveState 
-            && snapPointStates[i].SuperPosition == WinState.SuperPosition && snapPointStates[i].HApplied == WinState.HApplied)
+            && snapPointStates[i].ImaginaryState == WinState.ImaginaryState && snapPointStates[i].HApplied == WinState.HApplied)
         {
             Debug.Log("You Win!!!");
             // Set time to 0
@@ -122,7 +122,7 @@ public class GamePuzzleController : MonoBehaviour
                     state.PositiveState = !state.PositiveState;
                 }
                 state.state = (state.state + 1) % 2;
-                state.SuperPosition = !state.SuperPosition;
+                state.ImaginaryState = !state.ImaginaryState;
 
                 break;
             

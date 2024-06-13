@@ -27,14 +27,14 @@ public class InputTile : MonoBehaviour
         {
             if (qubit.PositiveState)
             {
-                qubitStr = qubit.SuperPosition ? "i/√2(|0> + |1>)" : "1/√2(|0> + |1>)";
+                qubitStr = qubit.ImaginaryState ? "i/√2(|0> + |1>)" : "1/√2(|0> + |1>)";
             }
             else
             {
-                qubitStr = qubit.SuperPosition ? "i/√2(|0> - |1>)" : "1/√2(|0> - |1>)";
+                qubitStr = qubit.ImaginaryState ? "i/√2(|0> - |1>)" : "1/√2(|0> - |1>)";
             }
         }
-        else if (qubit.SuperPosition)
+        else if (qubit.ImaginaryState)
         {
             qubitStr = $"{sign}i|{qubit.state}>";
         }
@@ -58,7 +58,7 @@ public class InputTile : MonoBehaviour
     {
         qubit.state = newState.state;
         qubit.PositiveState = newState.PositiveState;
-        qubit.SuperPosition = newState.SuperPosition;
+        qubit.ImaginaryState = newState.ImaginaryState;
         qubit.HApplied = newState.HApplied;
         UpdateText();
         UpdateBlochSphere();

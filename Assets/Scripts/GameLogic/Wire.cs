@@ -54,7 +54,7 @@ public class DrawWire : MonoBehaviour
             line.startColor = Color.green;
             line.endColor = Color.green;
         }
-        else if (qubit.SuperPosition)
+        else if (qubit.ImaginaryState)
         {
             line.startColor = Color.yellow;
             line.endColor = Color.yellow;
