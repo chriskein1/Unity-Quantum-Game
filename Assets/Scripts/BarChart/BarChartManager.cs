@@ -50,7 +50,7 @@ public class BarChartManager : MonoBehaviour
         }
 
     }
-    private void ResetAllBars()
+    public void ResetAllBars()
     {
         foreach (Animator animator in barAnimators)
         {

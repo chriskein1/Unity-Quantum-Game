@@ -76,10 +76,12 @@ public class GamePuzzleController : MonoBehaviour
         Qubit finalState = snapPointStates[i];
         if (finalState.state == 1)
         {
+            barChartManager.ResetAllBars();
             barChartManager.PlayAnimation(1, BarChartManager.BarAnimationState.MoveTo100Percent);
         }
         else
         {
+            barChartManager.ResetAllBars();
             barChartManager.PlayAnimation(0, BarChartManager.BarAnimationState.MoveTo100Percent);
         }
 
