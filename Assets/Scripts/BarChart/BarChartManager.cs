@@ -12,8 +12,11 @@ public class BarChartManager : MonoBehaviour
         MoveTo25Percent,
         MoveTo50Percent,
         MoveTo75Percent,
-        MoveTo100Percent
+        MoveTo100Percent,
+        MoveTo0
     }
+
+    // Method to reset all bars to the "MoveTo0" stat
 
     // Method to play the specified animation on a specific bar
     public void PlayAnimation(int barIndex, BarAnimationState state)
@@ -23,7 +26,7 @@ public class BarChartManager : MonoBehaviour
             Debug.LogError("Invalid bar index");
             return;
         }
-
+        // Play the specified animation on the targeted bar
         switch (state)
         {
             case BarAnimationState.MoveTo25Percent:
@@ -38,9 +41,23 @@ public class BarChartManager : MonoBehaviour
             case BarAnimationState.MoveTo100Percent:
                 barAnimators[barIndex].Play("MoveTo100Percent");
                 break;
+            case BarAnimationState.MoveTo0:
+                barAnimators[barIndex].Play("MoveTo0");
+                break;
             default:
                 Debug.LogError("Unknown animation state");
                 break;
+        }
+
+    }
+    private void ResetAllBars()
+    {
+        foreach (Animator animator in barAnimators)
+        {
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("MoveTo0"))
+            {
+                animator.Play("MoveTo0");
+            }
         }
     }
 }
