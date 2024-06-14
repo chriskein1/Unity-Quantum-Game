@@ -12,7 +12,7 @@ public class GamePuzzleController : MonoBehaviour
     [SerializeField] private InputTile outputTile;
     [SerializeField] private GameObject WinScreen;
 
-    [SerializeField] public BarChartManager barChartManager;
+    [SerializeField] private BarChartManager barChartManager;
     
     // qbits are represented as either 0 or 1, and their sign is true for positive and false for negative
     private List<Qubit> snapPointStates = new List<Qubit>();
@@ -74,15 +74,14 @@ public class GamePuzzleController : MonoBehaviour
 
         // Display animation
         Qubit finalState = snapPointStates[i];
+        barChartManager.ResetBars();   //resets all bars positions
         if (finalState.state == 1)
         {
-            barChartManager.ResetAllBars();
-            barChartManager.PlayAnimation(1, BarChartManager.BarAnimationState.MoveTo100Percent);
+            barChartManager.SetSliderValue(1, 1f); //Slider 1 is being set to 100% or 1f
         }
         else
         {
-            barChartManager.ResetAllBars();
-            barChartManager.PlayAnimation(0, BarChartManager.BarAnimationState.MoveTo100Percent);
+            barChartManager.SetSliderValue(0, 1f); //Slider 0 is being set to 100% or 1f
         }
 
         // Display the snap point states

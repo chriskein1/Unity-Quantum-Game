@@ -55,6 +55,15 @@ MonoBehaviour:
   - {fileID: 4129318962551488995}
   - {fileID: 2020111494848036475}
   - {fileID: 1964539764732101979}
+  WinState:
+    state: 0
+    PositiveState: 0
+    ImaginaryState: 0
+    HApplied: 0
+  inputTile: {fileID: 0}
+  outputTile: {fileID: 0}
+  WinScreen: {fileID: 0}
+  barChartManager: {fileID: 0}
 --- !u!1 &1593549960959617819
 GameObject:
   m_ObjectHideFlags: 0
@@ -99,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e40ce25438298d40b91cd6221fba65d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineRenderer: {fileID: 7542535574033784339}
+  lineRendererPrefab: {fileID: 0}
   inputTile: {fileID: 5281680056964526532}
   outputTile: {fileID: 1929339279233054123}
   snapLocation: {fileID: 1468809081949436511}
@@ -116,7 +125,7 @@ GameObject:
   - component: {fileID: 1979535211635957742}
   - component: {fileID: 2788112387899524758}
   - component: {fileID: 359817366110368674}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SnapPoint5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,7 +301,7 @@ GameObject:
   - component: {fileID: 5652471154458473352}
   - component: {fileID: 2799078116503293845}
   - component: {fileID: 4785107623779945009}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SnapPoint4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -468,7 +477,7 @@ GameObject:
   - component: {fileID: 1197333093790374507}
   - component: {fileID: 2062298279791352080}
   - component: {fileID: 2125418004257076015}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SnapPoint3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -815,7 +824,7 @@ GameObject:
   - component: {fileID: 6575702697646954406}
   - component: {fileID: 4527134762370717859}
   - component: {fileID: 8560698320113820315}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SnapPoint1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -991,7 +1000,7 @@ GameObject:
   - component: {fileID: 4527556393532782900}
   - component: {fileID: 2706780337925666056}
   - component: {fileID: 6464205963202913096}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SnapPoint2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1424,7 +1433,7 @@ MonoBehaviour:
   qubit:
     state: 0
     PositiveState: 0
-    SuperPosition: 0
+    ImaginaryState: 0
     HApplied: 0
   blochSphere: {fileID: 0}
 --- !u!4 &3135349526121992717 stripped

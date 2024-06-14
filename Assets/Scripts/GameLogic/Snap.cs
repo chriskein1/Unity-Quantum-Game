@@ -72,4 +72,9 @@ public class Snap : MonoBehaviour
     {
         return qubit;
     }
+
+    private void OnMouseDown()
+    {
+        print("Clicked snappoint");
+    }
 }

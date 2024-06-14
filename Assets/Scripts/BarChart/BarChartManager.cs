@@ -1,63 +1,46 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BarChartManager : MonoBehaviour
 {
-    public Animator[] barAnimators; // Array to hold references to the Animator components of the bars
+    public Slider[] BarSliders; // Array to hold references to the Slider components of the bars
 
-    // Enum to define the different animation states
-    public enum BarAnimationState
+    [SerializeField] private float animationDuration=1;
+    // Method to set the target value for a specific slider
+    /// <summary>
+    /// Sets the target value for a specific slider and smoothly transitions to it over the given duration.
+    /// </summary>
+    /// <param name="sliderIndex">The index of the slider in the BarSliders array to update.</param>
+    /// <param name="targetValue">The value to which the slider should smoothly transition.</param>
+    public void SetSliderValue(int sliderIndex, float targetValue)
     {
-        MoveTo25Percent,
-        MoveTo50Percent,
-        MoveTo75Percent,
-        MoveTo100Percent,
-        MoveTo0
+        if (sliderIndex >= 0 && sliderIndex < BarSliders.Length)
+        {
+            StartCoroutine(SmoothSliderValue(BarSliders[sliderIndex], targetValue, animationDuration));
+        }
     }
 
-    // Method to reset all bars to the "MoveTo0" stat
-
-    // Method to play the specified animation on a specific bar
-    public void PlayAnimation(int barIndex, BarAnimationState state)
+    // Coroutine to smoothly transition the slider value
+    private IEnumerator SmoothSliderValue(Slider slider, float targetValue, float duration)
     {
-        if (barIndex < 0 || barIndex >= barAnimators.Length)
+        float startValue = slider.value;
+        float timeElapsed = 0;
+
+        while (timeElapsed < duration)
         {
-            Debug.LogError("Invalid bar index");
-            return;
-        }
-        // Play the specified animation on the targeted bar
-        switch (state)
-        {
-            case BarAnimationState.MoveTo25Percent:
-                barAnimators[barIndex].Play("MoveTo25Percent");
-                break;
-            case BarAnimationState.MoveTo50Percent:
-                barAnimators[barIndex].Play("MoveTo50Percent");
-                break;
-            case BarAnimationState.MoveTo75Percent:
-                barAnimators[barIndex].Play("MoveTo75Percent");
-                break;
-            case BarAnimationState.MoveTo100Percent:
-                barAnimators[barIndex].Play("MoveTo100Percent");
-                break;
-            case BarAnimationState.MoveTo0:
-                barAnimators[barIndex].Play("MoveTo0");
-                break;
-            default:
-                Debug.LogError("Unknown animation state");
-                break;
+            slider.value = Mathf.Lerp(startValue, targetValue, timeElapsed / duration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
         }
 
+        slider.value = targetValue;
     }
-    public void ResetAllBars()
+    public void ResetBars()
     {
-        foreach (Animator animator in barAnimators)
+        for (int i = 0; i < BarSliders.Length; i++)
         {
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("MoveTo0"))
-            {
-                animator.Play("MoveTo0");
-            }
+            SetSliderValue(i, 0f);
         }
     }
 }

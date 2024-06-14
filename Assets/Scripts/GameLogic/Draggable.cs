@@ -31,6 +31,7 @@ public class Drag : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
+                print("Moused down");
                 Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) + offset;
                 // Find the screen bounds in world coordinates.
                 Vector3 topRight = Camera.main.ViewportToWorldPoint(Vector3.one);
