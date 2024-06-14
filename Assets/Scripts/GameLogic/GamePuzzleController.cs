@@ -8,6 +8,11 @@ public class GamePuzzleController : MonoBehaviour
     [SerializeField] private List<GameObject> SnapPoints = new List<GameObject>();
 
     [SerializeField] private Qubit WinState;
+    [SerializeField] private InputTile inputTile;
+    [SerializeField] private InputTile outputTile;
+    [SerializeField] private GameObject WinScreen;
+
+    [SerializeField] public BarChartManager barChartManager;
     
     // qbits are represented as either 0 or 1, and their sign is true for positive and false for negative
     private List<Qubit> snapPointStates = new List<Qubit>();
@@ -25,9 +30,6 @@ public class GamePuzzleController : MonoBehaviour
         // Clear list
         snapPointStates.Clear();
 
-        // Get input tile component's state
-        InputTile inputTile = GameObject.Find("InputTile").GetComponent<InputTile>();
-        
         // Each snap point's state will match the state of what comes before it, and then the gate operation will affect that state
 
         // First state is the input tile's state
@@ -58,8 +60,6 @@ public class GamePuzzleController : MonoBehaviour
         snapPointStates.Add(snapPointStates[i]);
 
         // The output tile will match the last snap point's state
-        InputTile outputTile = GameObject.Find("OutputTile").GetComponent<InputTile>();
-
         // Set the output tile's state
         outputTile.SetState(snapPointStates[i]);
         
@@ -68,13 +68,26 @@ public class GamePuzzleController : MonoBehaviour
         {
             Debug.Log("You Win!!!");
             // Set time to 0
-            // Time.timeScale = 0;
+            Time.timeScale = 0;
+            WinScreen.SetActive(true);
+        }
+
+        // Display animation
+        Qubit finalState = snapPointStates[i];
+        if (finalState.state == 1)
+        {
+            barChartManager.PlayAnimation(1, BarChartManager.BarAnimationState.MoveTo100Percent);
+        }
+        else
+        {
+            barChartManager.PlayAnimation(0, BarChartManager.BarAnimationState.MoveTo100Percent);
         }
 
         // Display the snap point states
         // DisplaySnapPointStates();
 
     }
+
 
     // Function to display the snap point states
     public void DisplaySnapPointStates()
