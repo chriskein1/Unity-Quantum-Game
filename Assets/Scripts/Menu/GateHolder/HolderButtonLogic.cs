@@ -8,6 +8,7 @@ public class HolderButtonLogic : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if(Time.timeScale > 0) 
         gateHolderScript.SpawnAndDragGate(gateType);
     }
 }
