@@ -8,8 +8,8 @@ public class GamePuzzleController : MonoBehaviour
     [SerializeField] private List<GameObject> SnapPoints = new List<GameObject>();
 
     [SerializeField] private Qubit WinState;
-    [SerializeField] private InputTile inputTile;
-    [SerializeField] private InputTile outputTile;
+    [SerializeField] private ChangeTileState inputTile;
+    [SerializeField] private ChangeTileState outputTile;
     [SerializeField] private GameObject WinScreen;
 
     [SerializeField] private BarChartManager barChartManager;

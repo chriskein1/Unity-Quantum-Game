@@ -28,6 +28,7 @@ public class GateDestroyer : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if(Time.timeScale > 0)
         DestroyAllGates();
     }
     private void DestroyAllGates()

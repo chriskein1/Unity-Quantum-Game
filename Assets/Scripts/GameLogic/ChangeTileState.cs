@@ -4,11 +4,13 @@ using TMPro;
 using UnityEngine;
 
 using QubitType;
-public class InputTile : MonoBehaviour
+public class ChangeTileState : MonoBehaviour
 {
     [Header("Starting Qubit State")]
     [SerializeField] Qubit qubit;
-    [SerializeField] private ChangeState blochSphere;
+    [SerializeField] GameObject OutputTile;
+    [SerializeField] GameObject SuperPositionTile;
+
 
     private TextMeshPro text;
 
@@ -27,19 +29,25 @@ public class InputTile : MonoBehaviour
         {
             if (qubit.PositiveState)
             {
-                qubitStr = qubit.ImaginaryState ? "i/√2(|0> + |1>)" : "1/√2(|0> + |1>)";
+                OutputTile.SetActive(false);
+                SuperPositionTile.SetActive(true);
             }
             else
             {
-                qubitStr = qubit.ImaginaryState ? "i/√2(|0> - |1>)" : "1/√2(|0> - |1>)";
+                OutputTile.SetActive(false);
+                SuperPositionTile.SetActive(true);
             }
         }
         else if (qubit.ImaginaryState)
         {
+            OutputTile.SetActive(true);
+            SuperPositionTile.SetActive(false);
             qubitStr = $"{sign}i|{qubit.state}>";
         }
         else
         {
+            OutputTile.SetActive(true);
+            SuperPositionTile.SetActive(false);
             qubitStr = $"{sign}|{qubit.state}>";
         }
 
@@ -61,39 +69,7 @@ public class InputTile : MonoBehaviour
         qubit.ImaginaryState = newState.ImaginaryState;
         qubit.HApplied = newState.HApplied;
         UpdateText();
-        UpdateBlochSphere();
     }
 
-    public void UpdateBlochSphere()
-    {
-        if (blochSphere == null)
-        {
-            Debug.LogWarning("BlochSphere reference is not set.");
-            return;
-        }
-
-        if (qubit.state == 0)
-        {
-            if (qubit.PositiveState)
-            {
-                blochSphere.SetZeroState();
-            }
-            else
-            {
-                blochSphere.SetNegativeState();
-            }
-        }
-        else if (qubit.state == 1)
-        {
-            if (qubit.PositiveState)
-            {
-                blochSphere.SetOneState();
-            }
-            else
-            {
-                blochSphere.SetPositiveState();
-            }
-
-        }
-    }
+    
 }

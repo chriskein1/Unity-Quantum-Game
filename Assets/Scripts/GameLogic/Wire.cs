@@ -29,7 +29,7 @@ public class DrawWire : MonoBehaviour
     void Update()
     {
 
-        Qubit qubit = inputTile.GetComponent<InputTile>().GetState();
+        Qubit qubit = inputTile.GetComponent<ChangeTileState>().GetState();
         // Draw wire in order
         // First from input to first snap point
         DrawLine(inputTile.transform.position, snapLocation.transform.GetChild(0).position, qubit, 0);
