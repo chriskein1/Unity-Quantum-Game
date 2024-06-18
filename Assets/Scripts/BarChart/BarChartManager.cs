@@ -5,8 +5,16 @@ using UnityEngine.UI;
 public class BarChartManager : MonoBehaviour
 {
     public Slider[] BarSliders; // Array to hold references to the Slider components of the bars
+    [SerializeField] private float animationDuration = 1;
 
-    [SerializeField] private float animationDuration=1;
+    // Store references to active coroutines to stop them if necessary
+    private Coroutine[] activeCoroutines;
+
+    private void Awake()
+    {
+        activeCoroutines = new Coroutine[BarSliders.Length];
+    }
+
     // Method to set the target value for a specific slider
     /// <summary>
     /// Sets the target value for a specific slider and smoothly transitions to it over the given duration.
@@ -17,7 +25,11 @@ public class BarChartManager : MonoBehaviour
     {
         if (sliderIndex >= 0 && sliderIndex < BarSliders.Length)
         {
-            StartCoroutine(SmoothSliderValue(BarSliders[sliderIndex], targetValue, animationDuration));
+            if (activeCoroutines[sliderIndex] != null)
+            {
+                StopCoroutine(activeCoroutines[sliderIndex]);
+            }
+            activeCoroutines[sliderIndex] = StartCoroutine(SmoothSliderValue(BarSliders[sliderIndex], targetValue, animationDuration));
         }
     }
 
@@ -30,17 +42,29 @@ public class BarChartManager : MonoBehaviour
         while (timeElapsed < duration)
         {
             slider.value = Mathf.Lerp(startValue, targetValue, timeElapsed / duration);
-            timeElapsed += Time.deltaTime;
+            timeElapsed += Time.unscaledDeltaTime;
             yield return null;
         }
 
         slider.value = targetValue;
     }
+
     public void ResetBars()
     {
         for (int i = 0; i < BarSliders.Length; i++)
         {
             SetSliderValue(i, 0f);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        for (int i = 0; i < activeCoroutines.Length; i++)
+        {
+            if (activeCoroutines[i] != null)
+            {
+                StopCoroutine(activeCoroutines[i]);
+            }
         }
     }
 }
