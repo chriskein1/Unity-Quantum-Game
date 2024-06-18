@@ -20,6 +20,7 @@ public class GamePuzzleController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DisplayAnimation(outputTile.GetState());
         SetSnapPoints();
     }
 
@@ -55,16 +56,20 @@ public class GamePuzzleController : MonoBehaviour
         }
 
         int i = snapPointStates.Count - 1;
+        Qubit finalState = snapPointStates[i];
+
 
         // Additional item for the output tile
-        snapPointStates.Add(snapPointStates[i]);
+        snapPointStates.Add(finalState);
 
         // The output tile will match the last snap point's state
         // Set the output tile's state
-        outputTile.SetState(snapPointStates[i]);
+        outputTile.SetState(finalState);
         
-        if (snapPointStates[i].state == WinState.state && snapPointStates[i].PositiveState == WinState.PositiveState 
-            && snapPointStates[i].ImaginaryState == WinState.ImaginaryState && snapPointStates[i].HApplied == WinState.HApplied)
+        if (finalState.state == WinState.state 
+            && finalState.PositiveState == WinState.PositiveState 
+            && finalState.ImaginaryState == WinState.ImaginaryState 
+            && finalState.HApplied == WinState.HApplied)
         {
             Debug.Log("You Win!!!");
             // Set time to 0
@@ -73,24 +78,36 @@ public class GamePuzzleController : MonoBehaviour
         }
 
         // Display animation
-        Qubit finalState = snapPointStates[i];
-        barChartManager.ResetBars();   //resets all bars positions
-        if (finalState.state == 1)
+        DisplayAnimation(finalState);
+
+        // Print the snap point states
+        // DisplaySnapPointStates();
+    }
+
+    private void DisplayAnimation(Qubit finalState)
+    {
+        // Reset all bars
+        barChartManager.ResetBars();
+
+        // Display animation
+        if (finalState.HApplied)
         {
-            barChartManager.SetSliderValue(1, 1f); //Slider 1 is being set to 100% or 1f
+            // Set both sliders to 50%
+            barChartManager.SetSliderValue(0, 0.5f); // Slider 0 is being set to 50% (0.5f)
+            barChartManager.SetSliderValue(1, 0.5f); // Slider 1 is being set to 50% (0.5f)
+        }
+        else if (finalState.state == 1)
+        {
+            barChartManager.SetSliderValue(1, 1f); // Slider 1 is being set to 100% (1f)
         }
         else
         {
-            barChartManager.SetSliderValue(0, 1f); //Slider 0 is being set to 100% or 1f
+            barChartManager.SetSliderValue(0, 1f); // Slider 0 is being set to 100% (1f)
         }
-
-        // Display the snap point states
-        // DisplaySnapPointStates();
-
     }
 
 
-    // Function to display the snap point states
+    // Function to Print the snap point states
     public void DisplaySnapPointStates()
     {
         foreach(Qubit state in snapPointStates)
@@ -157,27 +174,9 @@ public class GamePuzzleController : MonoBehaviour
         }
 
     }
-
-
-
-    // private bool complete=false;
-    // private void Update()
-    // {
-    //     foreach( GameObject p in SnapPoints)
-    //     {
-    //         complete = true;
-    //         Snap snapComp = p.GetComponent<Snap>();
-    //         if (snapComp.GetGateStatus() == false)
-    //         {
-    //             complete=false;
-    //             break;
-    //         }
-    //     }
-    //     if (complete == true)
-    //     {
-    //         print("Puzzle Complete!!!!");
-    //     }
-  
-    // }
+    public Qubit GetWinState()
+    {
+        return WinState;
+    }
 }
 
