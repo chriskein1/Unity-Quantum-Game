@@ -57,14 +57,4 @@ public class BarChartManager : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
-    {
-        for (int i = 0; i < activeCoroutines.Length; i++)
-        {
-            if (activeCoroutines[i] != null)
-            {
-                StopCoroutine(activeCoroutines[i]);
-            }
-        }
-    }
 }
