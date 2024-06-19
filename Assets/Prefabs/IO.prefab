@@ -1252,6 +1252,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6928623871246993116, guid: 221f3211d981caf45ad75ec44f616a38, type: 3}
+      propertyPath: m_Color.b
+      value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 6928623871246993116, guid: 221f3211d981caf45ad75ec44f616a38, type: 3}
+      propertyPath: m_Color.g
+      value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 6928623871246993116, guid: 221f3211d981caf45ad75ec44f616a38, type: 3}
+      propertyPath: m_Color.r
+      value: 0.7058824
+      objectReference: {fileID: 0}
     - target: {fileID: 7788767180440546092, guid: 221f3211d981caf45ad75ec44f616a38, type: 3}
       propertyPath: m_LocalPosition.z
       value: 9.09
@@ -1331,9 +1343,9 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
+    border: {x: 0.25, y: 0.25, z: 0.25, w: 0.25}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 0.984375, y: 0.984375}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1406,12 +1418,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8091234235973719257, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5929976373884288343}
-    - targetCorrespondingSourceObject: {fileID: 6321504717432775863, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5931440274576668109}
-    - targetCorrespondingSourceObject: {fileID: 6321504717432775863, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7080513425429855784}
   m_SourcePrefab: {fileID: 100100000, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
 --- !u!1 &1929339279233054123 stripped
 GameObject:
@@ -1435,75 +1441,10 @@ MonoBehaviour:
     PositiveState: 0
     ImaginaryState: 0
     HApplied: 0
-  blochSphere: {fileID: 0}
+  OutputTile: {fileID: 0}
+  SuperPositionTile: {fileID: 0}
 --- !u!4 &3135349526121992717 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4687484945984484223, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
   m_PrefabInstance: {fileID: 7678555387302617458}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4410654048581895621 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6321504717432775863, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
-  m_PrefabInstance: {fileID: 7678555387302617458}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5931440274576668109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4410654048581895621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bc940c1321d911478e92de95cd1aa72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  header: 'Output '
-  content: This is the state of the qubit after passing through the gates
-  headerColor: {r: 1, g: 0, b: 0.6342063, a: 1}
-  contentColor: {r: 1, g: 1, b: 1, a: 1}
---- !u!61 &7080513425429855784
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4410654048581895621}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
