@@ -37,10 +37,16 @@ public class TutorialLevelFunctionality : MonoBehaviour
             
         }
     }
+    public void Replay()
+    {
+        OnEnable();
+
+    }
 
     // Start is called before the first frame update
     void OnEnable()
     {
+        currentStep = 0;
         // Initialize by setting only the first step active and all others inactive
         for (int i = 0; i < tutorialSteps.Count; i++)
         {

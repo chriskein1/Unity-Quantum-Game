@@ -23,6 +23,12 @@ public class Goal : MonoBehaviour
         string sign = winState.PositiveState ? "" : "-";
         string qubitStr = "";
 
+
+        if (winState.state==2)
+        {
+            text.text = "Goal: NaN";
+            return;
+        }
         if (winState.HApplied)
         {
             if (winState.PositiveState)
