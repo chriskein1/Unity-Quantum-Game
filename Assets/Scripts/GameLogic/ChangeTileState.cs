@@ -35,7 +35,6 @@ public class ChangeTileState : MonoBehaviour
     {
         string sign = qubit.PositiveState ? "": "-";
         string qubitStr = "";
-        Debug.Log(qubit.state + " " + qubit.PositiveState + " " + qubit.ImaginaryState + " " + qubit.HApplied);
         
         if (qubit.HApplied)
         {
