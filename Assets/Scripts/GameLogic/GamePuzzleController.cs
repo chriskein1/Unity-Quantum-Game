@@ -82,11 +82,17 @@ public class GamePuzzleController : MonoBehaviour
         {
             Debug.Log("You Win!!!");
             // Set time to 0
+            StartCoroutine(WaitAndShowWinScreen());
+          
+        }
+
+         IEnumerator WaitAndShowWinScreen()
+        {
+            yield return new WaitForSeconds(0.02f);
+            // Set time to 0
             Time.timeScale = 0;
             WinScreen.SetActive(true);
         }
-
-
         // Print the snap point states
         // DisplaySnapPointStates();
     }

@@ -11,7 +11,7 @@ public class PauseMenuFunctionality : MonoBehaviour
 {
     [SerializeField] private GameObject PauseMenu; //holds reference to pause menu
     [SerializeField] private GameObject OptionsMenu; //holds reference to optionsMenu
-    [SerializeField] private GameObject ResetButton; //holds reference to Reset Button
+    
     private bool isTransitioning = true;    //checks if we are in transition animation
 
     void Start()
@@ -42,7 +42,7 @@ public class PauseMenuFunctionality : MonoBehaviour
     private void TogglePauseMenu()
     {
         PauseMenu.SetActive(!PauseMenu.activeSelf);
-        //ResetButton.SetActive(!ResetButton.activeSelf);
+        
         
         if (PauseMenu.activeSelf) //if pause menu is active 
         {
@@ -58,7 +58,7 @@ public class PauseMenuFunctionality : MonoBehaviour
     {
         PauseMenu.SetActive(false);
         OptionsMenu.SetActive(false);
-        //ResetButton.SetActive(true);
+    
         Time.timeScale = 1;  
     }
 
