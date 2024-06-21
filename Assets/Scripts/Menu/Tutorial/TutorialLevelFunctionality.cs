@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class TutorialLevelFunctionality : MonoBehaviour
 {
     public List<GameObject> tutorialSteps; // List to hold the tutorial step GameObjects
-    public GameObject continueButton;
+    public GameObject Replaybutton;
     public GameObject endTutorialButton;
 
     private int currentStep = 0;
@@ -23,18 +23,14 @@ public class TutorialLevelFunctionality : MonoBehaviour
             currentStep++;
             tutorialSteps[currentStep].SetActive(true);
 
-            // Change button text if it's the last step
-            if (currentStep == tutorialSteps.Count - 1)
-            {
-                continueButton.SetActive(false);
-                endTutorialButton.SetActive(true);
-            }
+           
         }
         else
         {
             // If it's the last step, you might want to add functionality for ending the tutorial
-            Debug.Log("Tutorial Completed");
-            
+            Replaybutton.SetActive(true);
+            endTutorialButton.SetActive(true);
+            tutorialSteps[tutorialSteps.Count-1].SetActive(false);
         }
     }
     public void Replay()
