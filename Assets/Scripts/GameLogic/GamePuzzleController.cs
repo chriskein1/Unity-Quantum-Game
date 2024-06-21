@@ -20,7 +20,7 @@ public class GamePuzzleController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-    // Prevent -0 win state
+        // Prevent -0 win state
         if (WinState.state == 0 && !WinState.PositiveState && !WinState.ImaginaryState)
         {
             WinState.PositiveState = true;
@@ -54,7 +54,6 @@ public class GamePuzzleController : MonoBehaviour
             {
                 state.PositiveState = true;
             }
-
             // Do a gate operation on the current state
             GateOperation(gateObject, ref state);
 
