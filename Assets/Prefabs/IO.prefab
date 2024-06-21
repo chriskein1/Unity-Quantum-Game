@@ -60,8 +60,8 @@ MonoBehaviour:
     PositiveState: 0
     ImaginaryState: 0
     HApplied: 0
-  inputTile: {fileID: 0}
-  outputTile: {fileID: 0}
+  inputTile: {fileID: 223756067039266274}
+  outputTile: {fileID: 2308886007176545394}
   WinScreen: {fileID: 0}
   barChartManager: {fileID: 0}
 --- !u!1 &1593549960959617819
@@ -1283,6 +1283,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 6034614969120131621}
   m_SourcePrefab: {fileID: 100100000, guid: 221f3211d981caf45ad75ec44f616a38, type: 3}
+--- !u!114 &223756067039266274 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4188183109988327679, guid: 221f3211d981caf45ad75ec44f616a38, type: 3}
+  m_PrefabInstance: {fileID: 4108860299125450013}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5281680056964526532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85bedade81a61ac42b3a4f2af633b529, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5281680056964526532 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8091234235973719257, guid: 221f3211d981caf45ad75ec44f616a38, type: 3}
@@ -1407,6 +1418,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5369833259053442304, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
+      propertyPath: States
+      value: 
+      objectReference: {fileID: 5206764934747626660}
+    - target: {fileID: 5369833259053442304, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
+      propertyPath: Numerator
+      value: 
+      objectReference: {fileID: 7197065364836952676}
     - target: {fileID: 8091234235973719257, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
       propertyPath: m_Name
       value: OutputTile
@@ -1414,21 +1433,17 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8091234235973719257, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5929976373884288343}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
 --- !u!1 &1929339279233054123 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8091234235973719257, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
   m_PrefabInstance: {fileID: 7678555387302617458}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5929976373884288343
+--- !u!114 &2308886007176545394 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 5369833259053442304, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
+  m_PrefabInstance: {fileID: 7678555387302617458}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1929339279233054123}
   m_Enabled: 1
@@ -1436,15 +1451,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85bedade81a61ac42b3a4f2af633b529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  qubit:
-    state: 0
-    PositiveState: 0
-    ImaginaryState: 0
-    HApplied: 0
-  OutputTile: {fileID: 0}
-  SuperPositionTile: {fileID: 0}
 --- !u!4 &3135349526121992717 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4687484945984484223, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
+  m_PrefabInstance: {fileID: 7678555387302617458}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5206764934747626660 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2507819370521181654, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
+  m_PrefabInstance: {fileID: 7678555387302617458}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7197065364836952676 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 679667100453309206, guid: 0d2f7ac0f81e3234ea32437c6f3023f3, type: 3}
   m_PrefabInstance: {fileID: 7678555387302617458}
   m_PrefabAsset: {fileID: 0}
