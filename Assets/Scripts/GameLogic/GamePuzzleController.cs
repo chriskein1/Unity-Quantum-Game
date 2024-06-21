@@ -20,7 +20,11 @@ public class GamePuzzleController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DisplayAnimation(outputTile.GetState());
+    // Prevent -0 win state
+        if (WinState.state == 0 && !WinState.PositiveState && !WinState.ImaginaryState)
+        {
+            WinState.PositiveState = true;
+        }
         SetSnapPoints();
     }
 
@@ -45,6 +49,12 @@ public class GamePuzzleController : MonoBehaviour
             // Get the state of last snap point
             Qubit state = snapPointStates[snapPointStates.Count - 1]; // First state is the input tile's state
             
+            // Prevent -0
+            if (state.state == 0 && !state.PositiveState && !state.ImaginaryState)
+            {
+                state.PositiveState = true;
+            }
+
             // Do a gate operation on the current state
             GateOperation(gateObject, ref state);
 
@@ -55,10 +65,10 @@ public class GamePuzzleController : MonoBehaviour
             snapComp.SetState(state);
         }
 
-        int i = snapPointStates.Count - 1;
-        Qubit finalState = snapPointStates[i];
-
-
+        Qubit finalState = snapPointStates[snapPointStates.Count - 1];
+        // Display animation
+        DisplayAnimation(finalState);
+        
         // Additional item for the output tile
         snapPointStates.Add(finalState);
 
@@ -77,8 +87,6 @@ public class GamePuzzleController : MonoBehaviour
             WinScreen.SetActive(true);
         }
 
-        // Display animation
-        DisplayAnimation(finalState);
 
         // Print the snap point states
         // DisplaySnapPointStates();
@@ -155,6 +163,11 @@ public class GamePuzzleController : MonoBehaviour
                 state.state = (state.state + 1) % 2;
                 state.ImaginaryState = !state.ImaginaryState;
 
+                // Prevent -0
+                if (state.state == 0 && !state.PositiveState && !state.ImaginaryState)
+                {
+                    state.PositiveState = true;
+                }
                 break;
             
             case "ZGate":
@@ -172,11 +185,9 @@ public class GamePuzzleController : MonoBehaviour
                 state.HApplied = !state.HApplied;
                 break;
         }
-
     }
     public Qubit GetWinState()
     {
         return WinState;
     }
 }
-
