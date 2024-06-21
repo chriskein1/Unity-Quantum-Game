@@ -10,13 +10,24 @@ public class ChangeTileState : MonoBehaviour
     [SerializeField] Qubit qubit;
     [SerializeField] GameObject OutputTile;
     [SerializeField] GameObject SuperPositionTile;
-
-
+    [SerializeField] GameObject Numerator;
+    [SerializeField] GameObject States;
     private TextMeshPro text;
+    private TextMeshPro numeratorText;
+    private TextMeshPro statesText;
+
 
     void Start()
     {
+        // Prevent -0
+        if (qubit.state == 0 && !qubit.PositiveState && !qubit.ImaginaryState)
+        {
+            qubit.PositiveState = true;
+        }
+
         text = GetComponentInChildren<TextMeshPro>();
+        numeratorText = Numerator.GetComponentInChildren<TextMeshPro>();
+        statesText = States.GetComponentInChildren<TextMeshPro>();
         UpdateText();
     }
     // updates sprites text 
@@ -24,20 +35,34 @@ public class ChangeTileState : MonoBehaviour
     {
         string sign = qubit.PositiveState ? "": "-";
         string qubitStr = "";
+        Debug.Log(qubit.state + " " + qubit.PositiveState + " " + qubit.ImaginaryState + " " + qubit.HApplied);
         
         if (qubit.HApplied)
         {
-            if (qubit.PositiveState)
+            numeratorText.text = qubit.ImaginaryState ? "i" : "1";
+            OutputTile.SetActive(false);
+            SuperPositionTile.SetActive(true);
+
+            if (qubit.state == 0 && qubit.PositiveState)
             {
-                OutputTile.SetActive(false);
-                SuperPositionTile.SetActive(true);
+                statesText.text = "(|0>+|1>)";
             }
+            // For -i|0>
+            // -|0> is treated the same as |0>
+            else if (qubit.state == 0 && !qubit.PositiveState)
+            {
+                statesText.text = "(|0>-|1>)";
+            }
+            else if (qubit.state == 1 && qubit.PositiveState)
+            {
+                statesText.text = "(|0>-|1>)";
+            }
+            // -1(|0> - |1>) = 1(|0> + |1>)
             else
             {
-                OutputTile.SetActive(false);
-                SuperPositionTile.SetActive(true);
+                statesText.text = "(|0>+|1>)";
             }
-        }
+        } 
         else if (qubit.ImaginaryState)
         {
             OutputTile.SetActive(true);
