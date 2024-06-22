@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 using QubitType;
 public class GamePuzzleController : MonoBehaviour
@@ -11,11 +12,12 @@ public class GamePuzzleController : MonoBehaviour
     [SerializeField] private ChangeTileState inputTile;
     [SerializeField] private ChangeTileState outputTile;
     [SerializeField] private GameObject WinScreen;
-
     [SerializeField] private BarChartManager barChartManager;
     
     // qbits are represented as either 0 or 1, and their sign is true for positive and false for negative
     private List<Qubit> snapPointStates = new List<Qubit>();
+
+    public UnityEvent OutputChanged;
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +68,10 @@ public class GamePuzzleController : MonoBehaviour
 
         Qubit finalState = snapPointStates[snapPointStates.Count - 1];
         // Display animation
-        DisplayAnimation(finalState);
+        if (barChartManager != null)
+        {
+            DisplayAnimation(finalState);
+        }
         
         // Additional item for the output tile
         snapPointStates.Add(finalState);
@@ -74,8 +79,10 @@ public class GamePuzzleController : MonoBehaviour
         // The output tile will match the last snap point's state
         // Set the output tile's state
         outputTile.SetState(finalState);
+        OutputChanged.Invoke();
         
-        if (finalState.state == WinState.state 
+        if (WinScreen != null 
+            && finalState.state == WinState.state 
             && finalState.PositiveState == WinState.PositiveState 
             && finalState.ImaginaryState == WinState.ImaginaryState 
             && finalState.HApplied == WinState.HApplied)
