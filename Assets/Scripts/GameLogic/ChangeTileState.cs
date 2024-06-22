@@ -19,6 +19,10 @@ public class ChangeTileState : MonoBehaviour
 
     void Start()
     {
+        if (OutputTile == null || SuperPositionTile == null || Numerator == null || States == null)
+        {
+            return;
+        }
         // Prevent -0
         if (qubit.state == 0 && !qubit.PositiveState && !qubit.ImaginaryState)
         {
