@@ -1,5 +1,4 @@
 // Script will handle the output of two one-qubit Game Controllers to create one cohesive output
-// Using q1q0 notation
 
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +13,7 @@ public class TwoQubitController : MonoBehaviour
     [SerializeField] private ChangeTileState outputTile2;
     [SerializeField] private BarChartManager barChartManager;
     [SerializeField] private GameObject WinScreen;
+    [SerializeField] private TwoQubitTile twoQubitTile;
     
     // Start is called before the first frame update
     void Start()
@@ -38,6 +38,12 @@ public class TwoQubitController : MonoBehaviour
         if (barChartManager != null)
         {
             DisplayAnimation(qubits);
+        }
+
+        // Update the result state
+        if (twoQubitTile != null)
+        {
+            twoQubitTile.SetState(qubits[0], qubits[1]);
         }
         
         // Check if the output matches the win state
@@ -79,10 +85,10 @@ public class TwoQubitController : MonoBehaviour
             barChartManager.SetSliderValue(3, 0.25f);
         }
         // If q1 is in superposition and q0 is not
-        else if (qubits[1].HApplied && !qubits[0].HApplied)
+        else if (qubits[0].HApplied && !qubits[1].HApplied)
         {
             // 50% chance of |00> and |10>
-            if (qubits[0].state == 0)
+            if (qubits[1].state == 0)
             {
                 barChartManager.SetSliderValue(0, 0.5f);
                 barChartManager.SetSliderValue(2, 0.5f);
@@ -95,10 +101,10 @@ public class TwoQubitController : MonoBehaviour
             }
         }
         // If q0 is in superposition and q1 is not
-        else if (!qubits[1].HApplied && qubits[0].HApplied)
+        else if (!qubits[0].HApplied && qubits[1].HApplied)
         {
             // 50% chance of |00> and |01>
-            if (qubits[1].state == 0)
+            if (qubits[0].state == 0)
             {
                 barChartManager.SetSliderValue(0, 0.5f);
                 barChartManager.SetSliderValue(1, 0.5f);
@@ -114,17 +120,17 @@ public class TwoQubitController : MonoBehaviour
         else
         {
             // 100% chance of |00>
-            if (qubits[1].state == 0 && qubits[0].state == 0)
+            if (qubits[0].state == 0 && qubits[1].state == 0)
             {
                 barChartManager.SetSliderValue(0, 1f);
             }
             // 100% chance of |01>
-            else if (qubits[1].state == 0 && qubits[0].state == 1)
+            else if (qubits[0].state == 0 && qubits[1].state == 1)
             {
                 barChartManager.SetSliderValue(1, 1f);
             }
             // 100% chance of |10>
-            else if (qubits[1].state == 1 && qubits[0].state == 0)
+            else if (qubits[0].state == 1 && qubits[1].state == 0)
             {
                 barChartManager.SetSliderValue(2, 1f);
             }
