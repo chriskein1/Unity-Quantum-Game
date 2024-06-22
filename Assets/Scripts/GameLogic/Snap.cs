@@ -28,6 +28,7 @@ public class Snap : MonoBehaviour
             Drag dragComponent = other.GetComponent<Drag>();
             if (dragComponent != null)
             {
+                ClickOnSound();
                 dragComponent.Snapping();
                 //Snap the object to the center of the trigger plus any adjustment
                 other.transform.position = transform.position;
@@ -44,6 +45,7 @@ public class Snap : MonoBehaviour
     {
         if(gameObj==collision.gameObject) 
         {
+            ClickOffSound();
             occupied = false;
             gameObj = null;
             correctGate = false;
@@ -72,9 +74,26 @@ public class Snap : MonoBehaviour
     {
         return qubit;
     }
-
-    private void OnMouseDown()
+    private void ClickOnSound()
     {
-        print("Clicked snappoint");
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("SnapOn");
+        }
+        else
+        {
+            Debug.LogError("AudioManager instance not found!");
+        }
+    }
+    private void ClickOffSound()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("SnapOff");
+        }
+        else
+        {
+            Debug.LogError("AudioManager instance not found!");
+        }
     }
 }

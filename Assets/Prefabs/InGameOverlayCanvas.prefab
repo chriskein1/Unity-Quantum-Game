@@ -1186,7 +1186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   header: H Gate
-  content: This is an H gate
+  content: puts qubit into superposition
   headerColor: {r: 0.015463829, g: 0, b: 1, a: 1}
   contentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!50 &2350435478730773677
@@ -1670,7 +1670,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   header: Y Gate
-  content: This is a Y gate
+  content: flips the phase and state of qubit
   headerColor: {r: 1, g: 0.88244104, b: 0, a: 1}
   contentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!50 &946798954288791185
@@ -1845,7 +1845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   header: Z Gate
-  content: This is a Z gate
+  content: flips phase if state is one
   headerColor: {r: 0.034872293, g: 1, b: 0, a: 1}
   contentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!50 &5750778659377107903
@@ -2154,7 +2154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   header: X Gate
-  content: This is an X gate
+  content: flips the state of the qubit
   headerColor: {r: 1, g: 0, b: 0, a: 1}
   contentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!50 &1272423764568668086
@@ -3197,10 +3197,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4355846474412982426, guid: ffc23528efd8e5b4aaa22ff0834f6a50, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4355846474412982426, guid: ffc23528efd8e5b4aaa22ff0834f6a50, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355846474412982426, guid: ffc23528efd8e5b4aaa22ff0834f6a50, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4355846474412982426, guid: ffc23528efd8e5b4aaa22ff0834f6a50, type: 3}
@@ -3208,11 +3212,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6612415229154318943}
     - target: {fileID: 4355846474412982426, guid: ffc23528efd8e5b4aaa22ff0834f6a50, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355846474412982426, guid: ffc23528efd8e5b4aaa22ff0834f6a50, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: DisableTutorial
       objectReference: {fileID: 0}
     - target: {fileID: 4355846474412982426, guid: ffc23528efd8e5b4aaa22ff0834f6a50, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TutorialOverlay, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355846474412982426, guid: ffc23528efd8e5b4aaa22ff0834f6a50, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: TutorialOverlay, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4355846474412982426, guid: ffc23528efd8e5b4aaa22ff0834f6a50, type: 3}

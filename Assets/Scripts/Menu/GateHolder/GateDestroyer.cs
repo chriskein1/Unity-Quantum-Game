@@ -29,6 +29,7 @@ public class GateDestroyer : MonoBehaviour
     private void OnMouseDown()
     {
         if(Time.timeScale > 0)
+        ClickSound();
         DestroyAllGates();
     }
     private void DestroyAllGates()
@@ -45,6 +46,18 @@ public class GateDestroyer : MonoBehaviour
                     Destroy(gate);
                 }
             }
+        }
+    }
+
+    public void ClickSound()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("ClickingTrashCan");
+        }
+        else
+        {
+            Debug.LogError("AudioManager instance not found!");
         }
     }
 }
