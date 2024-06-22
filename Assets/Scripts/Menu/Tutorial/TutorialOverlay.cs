@@ -8,12 +8,15 @@ public class TutorialOverlay : MonoBehaviour
 
     public void DisableTutorial()
     {
+        ClickSound();
         gameObject.SetActive(false);
         enabledOverlay = false;
+        
     }
 
     public void EnableTutorial()
     {
+        ClickSound();
         gameObject.SetActive(true);
         enabledOverlay = true;
     }
@@ -21,5 +24,17 @@ public class TutorialOverlay : MonoBehaviour
     public bool getStatus()
     {
         return enabledOverlay; 
+    }
+
+    public void ClickSound()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("ButtonClick");
+        }
+        else
+        {
+            Debug.LogError("AudioManager instance not found!");
+        }
     }
 }

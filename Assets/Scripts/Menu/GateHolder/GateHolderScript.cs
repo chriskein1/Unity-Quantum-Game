@@ -31,6 +31,7 @@ public class GateHolderScript : MonoBehaviour
 
             if (gatePrefab != null)
             {
+                GrabGateSound();
                 // Get the mouse position in world space
                 Vector3 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
                 mousePos.z = 0;
@@ -50,6 +51,7 @@ public class GateHolderScript : MonoBehaviour
                 gateCounts[gateTag]--;
                 Debug.Log($"{gateTag} spawned. New count: {gateCounts[gateTag]}");
                 UpdateGateCountTexts();
+                
             }
         }
     }
@@ -82,6 +84,18 @@ public class GateHolderScript : MonoBehaviour
             {
                 tmpText.text = $"{count}";
             }
+        }
+    }
+
+    private void GrabGateSound()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("GrabbingGateFromGateholder");
+        }
+        else
+        {
+            Debug.LogError("AudioManager instance not found!");
         }
     }
 }
