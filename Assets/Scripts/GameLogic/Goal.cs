@@ -33,11 +33,11 @@ public class Goal : MonoBehaviour
         {
             if (winState.PositiveState)
             {
-                //qubitStr = winState.ImaginaryState ? "i/√2(|0> + |1>)" : "1/√2(|0> + |1>)";
+                // qubitStr = winState.ImaginaryState ? "i/√2(|0> + |1>)" : "1/√2(|0> + |1>)";
             }
             else
             {
-               // qubitStr = winState.ImaginaryState ? "i/√2(|0> - |1>)" : "1/√2(|0> - |1>)";
+                // qubitStr = winState.ImaginaryState ? "i/√2(|0> - |1>)" : "1/√2(|0> - |1>)";
             }
         }
         else if (winState.ImaginaryState)
