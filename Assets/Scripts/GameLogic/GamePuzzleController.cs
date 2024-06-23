@@ -202,4 +202,10 @@ public class GamePuzzleController : MonoBehaviour
     {
         return WinState;
     }
+
+
+    public bool GetWinScreenStatus()
+    {
+        return WinScreen.activeInHierarchy;
+    }
 }

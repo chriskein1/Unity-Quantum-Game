@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,7 @@ public class TutorialLevelFunctionality : MonoBehaviour
     {
         if (currentStep < tutorialSteps.Count - 1)
         {
+            ClickSound();
             // Disable the current step
             tutorialSteps[currentStep].SetActive(false);
             // Enable the next step
@@ -27,6 +29,7 @@ public class TutorialLevelFunctionality : MonoBehaviour
         }
         else
         {
+            ClickSound();
             // If it's the last step, you might want to add functionality for ending the tutorial
             Replaybutton.SetActive(true);
             endTutorialButton.SetActive(true);
@@ -35,6 +38,7 @@ public class TutorialLevelFunctionality : MonoBehaviour
     }
     public void Replay()
     {
+        ClickSound();
         OnEnable();
 
     }
@@ -47,6 +51,18 @@ public class TutorialLevelFunctionality : MonoBehaviour
         for (int i = 0; i < tutorialSteps.Count; i++)
         {
             tutorialSteps[i].SetActive(i == 0);
+        }
+    }
+
+    public void ClickSound()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("ButtonClick");
+        }
+        else
+        {
+            Debug.LogError("AudioManager instance not found!");
         }
     }
 }

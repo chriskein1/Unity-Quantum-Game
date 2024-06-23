@@ -39,7 +39,7 @@ public class AudioManager : MonoBehaviour
             // Assign the appropriate AudioMixerGroup based on the sound's name
             if (s.name == "GameMusic")
                 s.source.outputAudioMixerGroup = musicMixerGroup;
-            else if (s.name == "ButtonClick")
+            else 
                 s.source.outputAudioMixerGroup = SFXMixerGroup;
         }
     }

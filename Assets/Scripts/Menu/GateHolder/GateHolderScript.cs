@@ -61,7 +61,6 @@ public class GateHolderScript : MonoBehaviour
         if (gateCounts.ContainsKey(gateTag))
         {
             gateCounts[gateTag]++;
-            Debug.Log($"{gateTag} returned. New count: {gateCounts[gateTag]}");
             UpdateGateCountTexts();
         }
     }
