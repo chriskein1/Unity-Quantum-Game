@@ -156,6 +156,75 @@ public class TwoQubitTile : MonoBehaviour
             numeratorText2.text = numeratorStr2;
             statesText2.text = statesStr2;
         }
+        // Only q1 is in superposition
+        else if (qubits[0].HApplied && !qubits[1].HApplied)
+        {
+            // Determine if numerator is imaginary
+            if (qubits[0].ImaginaryState && !qubits[1].ImaginaryState 
+                || !qubits[0].ImaginaryState && qubits[1].ImaginaryState)
+            {
+                numeratorStr1 = "i";
+            }
+            else {
+                numeratorStr1 = "1";
+            }
+
+            bool negativeSign = false;
+            // Determine if numerator is negative
+            if (qubits[0].PositiveState && !qubits[1].PositiveState
+                || !qubits[0].PositiveState && qubits[1].PositiveState
+                || qubits[0].ImaginaryState && qubits[1].ImaginaryState)
+            {
+                negativeSign = true;
+            }
+
+            string sign = negativeSign ? "-" : "+";
+
+            qubitStr = $"(|0{qubits[1].state}>{sign}|1{qubits[1].state}>)";
+
+            // Active the superposition tile and deactivate others
+            SuperPositionTile.SetActive(true);
+            OutputTile.SetActive(false);
+            TwoSuperPositionTile.SetActive(false);
+
+            numeratorText1.text = numeratorStr1;
+            statesText1.text = qubitStr;
+        }
+
+        // Only q2 is in superposition
+        else if (!qubits[0].HApplied && qubits[1].HApplied)
+        {
+            // Determine if numerator is imaginary
+            if (qubits[0].ImaginaryState && !qubits[1].ImaginaryState 
+                || !qubits[0].ImaginaryState && qubits[1].ImaginaryState)
+            {
+                numeratorStr1 = "i";
+            }
+            else {
+                numeratorStr1 = "1";
+            }
+
+            bool negativeSign = false;
+            // Determine if numerator is negative
+            if (qubits[0].PositiveState && !qubits[1].PositiveState
+                || !qubits[0].PositiveState && qubits[1].PositiveState
+                || qubits[0].ImaginaryState && qubits[1].ImaginaryState)
+            {
+                negativeSign = true;
+            }
+
+            string sign = negativeSign ? "-" : "+";
+
+            qubitStr = $"(|{qubits[0].state}0>{sign}|{qubits[0].state}1>)";
+
+            // Active the superposition tile and deactivate others
+            SuperPositionTile.SetActive(true);
+            OutputTile.SetActive(false);
+            TwoSuperPositionTile.SetActive(false);
+
+            numeratorText1.text = numeratorStr1;
+            statesText1.text = qubitStr;
+        }
     }    
 
     // Function to set the state and its sign
@@ -163,7 +232,6 @@ public class TwoQubitTile : MonoBehaviour
     {
         qubits[0] = q1;
         qubits[1] = q2;
-        Debug.Log("q1 state: " + q1.state + "\nq2 state: " + q2.state);
         UpdateText();
     }
 }
