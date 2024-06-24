@@ -82,10 +82,7 @@ public class GamePuzzleController : MonoBehaviour
         OutputChanged.Invoke();
         
         if (WinScreen != null 
-            && finalState.state == WinState.state 
-            && finalState.PositiveState == WinState.PositiveState 
-            && finalState.ImaginaryState == WinState.ImaginaryState 
-            && finalState.HApplied == WinState.HApplied)
+            && finalState == WinState)
         {
             Debug.Log("You Win!!!");
             // Set time to 0
