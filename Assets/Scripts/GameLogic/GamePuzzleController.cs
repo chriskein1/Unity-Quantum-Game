@@ -206,6 +206,10 @@ public class GamePuzzleController : MonoBehaviour
 
     public bool GetWinScreenStatus()
     {
+        if (WinScreen == null)
+        {
+            return false;
+        }
         return WinScreen.activeInHierarchy;
     }
 }
