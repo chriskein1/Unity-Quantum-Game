@@ -21,7 +21,8 @@ public class TwoQubitTile : MonoBehaviour
     private TextMeshPro numeratorText2;
     private TextMeshPro statesText2;
 
-
+    string qubitStr = "";
+    
     void Start()
     {
         if (OutputTile == null || SuperPositionTile == null 
@@ -51,11 +52,9 @@ public class TwoQubitTile : MonoBehaviour
     // updates sprites text 
     void UpdateText()
     {
-        string qubitStr = "";
+        qubitStr = "";
         string numeratorStr1 = "";
         string numeratorStr2 = "";
-        string statesStr1 = "";
-        string statesStr2 = "";
 
         // No H gate on either qubit
         if (!qubits[0].HApplied && !qubits[1].HApplied)
@@ -105,11 +104,14 @@ public class TwoQubitTile : MonoBehaviour
 
             bool negativeSign = false;
             // Determine if numerator is negative
-            if ((!qubits[0].PositiveState && qubits[1].PositiveState)
-                || (qubits[0].PositiveState && !qubits[1].PositiveState)
-                || (!qubits[0].PositiveState && !qubits[1].PositiveState))
+            if (qubits[0].PositiveState != qubits[1].PositiveState)
             {
                 negativeSign = true;
+            }
+            // i * i = -1
+            if (qubits[0].ImaginaryState && qubits[1].ImaginaryState)
+            {
+                negativeSign = !negativeSign;
             }
 
             // State combinations (with 1/2 or i/2 factored out):
@@ -127,25 +129,25 @@ public class TwoQubitTile : MonoBehaviour
                 || (qubits[0].state == 1 && qubits[1].state == 0 && negativeSign)
                 || (qubits[0].state == 0 && qubits[1].state == 1 && negativeSign))
             {
-                statesStr2 = "(|00>+|01>+|10>+|11>)";
+                qubitStr = "(|00>+|01>+|10>+|11>)";
             }
             // 2)
             else if ((qubits[0].state == 0 && qubits[1].state == 1 && !negativeSign)
                     || (qubits[0].state == 1 && qubits[1].state == 0 && negativeSign))
             {
-                statesStr2 = "(|00>-|01>+|10>-|11>)";
+                qubitStr = "(|00>-|01>+|10>-|11>)";
             }
             // 3)
             else if ((qubits[0].state == 1 && qubits[1].state == 0 && !negativeSign)
                     || (qubits[0].state == 0 && qubits[1].state == 1 && negativeSign))
             {
-                statesStr2 = "(|00>+|01>-|10>-|11>)";
+                qubitStr = "(|00>+|01>-|10>-|11>)";
             }
             // 4)
             else if ((qubits[0].state == 1 && qubits[1].state == 1 && !negativeSign)
                     || (qubits[0].state == 0 && qubits[1].state == 0 && negativeSign))
             {
-                statesStr2 = "(|00>-|01>-|10>+|11>)";
+                qubitStr = "(|00>-|01>-|10>+|11>)";
             }
 
             // Active the two superposition tile and deactivate others
@@ -154,7 +156,7 @@ public class TwoQubitTile : MonoBehaviour
             SuperPositionTile.SetActive(false);
 
             numeratorText2.text = numeratorStr2;
-            statesText2.text = statesStr2;
+            statesText2.text = qubitStr;
         }
         // Only q1 is in superposition
         else if (qubits[0].HApplied && !qubits[1].HApplied)
@@ -170,12 +172,21 @@ public class TwoQubitTile : MonoBehaviour
             }
 
             bool negativeSign = false;
-            // Determine if numerator is negative
-            if (qubits[0].PositiveState && !qubits[1].PositiveState
-                || !qubits[0].PositiveState && qubits[1].PositiveState
-                || qubits[0].ImaginaryState && qubits[1].ImaginaryState)
+            // Determine if sign between bits is negative
+            // H gate is on q1
+            // 1) H|1> both qubits positive
+            // 2) H|0> only one qubit negative
+            if (qubits[0].state == 1 && qubits[0].PositiveState && qubits[1].PositiveState
+                || qubits[0].state == 0 && !qubits[0].PositiveState && qubits[1].PositiveState
+                || qubits[0].state == 0 && qubits[0].PositiveState && !qubits[1].PositiveState
+                )
             {
                 negativeSign = true;
+            }
+            // i * i = -1
+            if (qubits[0].ImaginaryState && qubits[1].ImaginaryState)
+            {
+                negativeSign = !negativeSign;
             }
 
             string sign = negativeSign ? "-" : "+";
@@ -205,12 +216,21 @@ public class TwoQubitTile : MonoBehaviour
             }
 
             bool negativeSign = false;
-            // Determine if numerator is negative
-            if (qubits[0].PositiveState && !qubits[1].PositiveState
-                || !qubits[0].PositiveState && qubits[1].PositiveState
-                || qubits[0].ImaginaryState && qubits[1].ImaginaryState)
+            // Determine if sign between bits is negative
+            // H gate is on q2
+            // 1) H|1> both qubits positive
+            // 2) H|0> only one qubit negative
+            if (qubits[1].state == 1 && qubits[0].PositiveState && qubits[1].PositiveState
+                || qubits[1].state == 0 && !qubits[0].PositiveState && qubits[1].PositiveState
+                || qubits[1].state == 0 && qubits[0].PositiveState && !qubits[1].PositiveState
+                )
             {
                 negativeSign = true;
+            }
+            // i * i = -1
+            if (qubits[0].ImaginaryState && qubits[1].ImaginaryState)
+            {
+                negativeSign = !negativeSign;
             }
 
             string sign = negativeSign ? "-" : "+";
@@ -233,5 +253,10 @@ public class TwoQubitTile : MonoBehaviour
         qubits[0] = q1;
         qubits[1] = q2;
         UpdateText();
+    }
+
+    public string GetStr()
+    {
+        return qubitStr;
     }
 }
