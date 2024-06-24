@@ -111,7 +111,7 @@ public class GamePuzzleController : MonoBehaviour
         }
         
         if (WinScreen != null 
-            && finalState == WinState)
+            && win)
         {
             Debug.Log("You Win!!!");
             // Set time to 0
