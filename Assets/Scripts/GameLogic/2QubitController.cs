@@ -46,20 +46,57 @@ public class TwoQubitController : MonoBehaviour
             twoQubitTile.SetState(qubits[0], qubits[1]);
         }
         
+        bool win = qubits[0] == WinState[0] && qubits[1] == WinState[1];
+
+        // If the two qubits do not match exactly, check if it is because
+        // of a sign mismatch (i.e. a negative sign on a different qubit or i*i = -1)
+        if (!win)
+        {
+            // Check output qubits for negative sign
+            bool negativeSign = qubits[0].PositiveState != qubits[1].PositiveState;
+
+            // i * i = -1
+            if (qubits[0].ImaginaryState && qubits[1].ImaginaryState)
+            {
+                negativeSign = !negativeSign;
+            }
+            // Check for one i
+            bool imaginaryOutput = qubits[0].ImaginaryState != qubits[1].ImaginaryState;
+
+            // Check win state for negative sign
+            bool negativeWin = WinState[0].PositiveState != WinState[1].PositiveState;
+            
+            // i * i = -1
+            if (WinState[0].ImaginaryState && WinState[1].ImaginaryState)
+            {
+                negativeWin = !negativeWin;
+            }
+            // Check for one i
+            bool ImaginaryWin = WinState[0].ImaginaryState != WinState[1].ImaginaryState;
+
+
+            Debug.Log("Negative goal: " + negativeWin);
+            Debug.Log("Negative output: " + negativeSign);
+
+            // Check if the initial states match/H gate order
+            if (qubits[0].state == WinState[0].state && qubits[1].state == WinState[1].state
+                && qubits[0].HApplied == WinState[0].HApplied && qubits[1].HApplied == WinState[1].HApplied)
+            {
+                // Check if the signs and imaginary parts match
+                if (negativeSign == negativeWin && imaginaryOutput == ImaginaryWin)
+                {
+                    win = true;
+                }
+            }
+        }
+       
+
         // Check if the output matches the win state
-        if (WinScreen != null && qubits[0].state == WinState[0].state 
-            && qubits[1].state == WinState[1].state 
-            && qubits[0].PositiveState == WinState[0].PositiveState 
-            && qubits[1].PositiveState == WinState[1].PositiveState 
-            && qubits[0].ImaginaryState == WinState[0].ImaginaryState 
-            && qubits[1].ImaginaryState == WinState[1].ImaginaryState
-            && qubits[0].HApplied == WinState[0].HApplied
-            && qubits[1].HApplied == WinState[1].HApplied)
+        if (WinScreen != null && win)
         {
             Debug.Log("You Win!!!");
             // Set time to 0
             StartCoroutine(WaitAndShowWinScreen());
-          
         }
 
          IEnumerator WaitAndShowWinScreen()
@@ -69,8 +106,6 @@ public class TwoQubitController : MonoBehaviour
             Time.timeScale = 0;
             WinScreen.SetActive(true);
         }
-
-
     }
 
     private void DisplayAnimation(Qubit[] qubits)
@@ -142,4 +177,16 @@ public class TwoQubitController : MonoBehaviour
         }
     }
 
+    public Qubit[] GetWinState()
+    {
+        // Prevent -0 win state
+        for (int i = 0; i < 2; i++)
+        {
+            if (WinState[i].state == 0 && !WinState[i].PositiveState && !WinState[i].ImaginaryState)
+            {
+                WinState[i].PositiveState = true;
+            }
+        }
+        return WinState;
+    }
 }
