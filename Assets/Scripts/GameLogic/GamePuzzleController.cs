@@ -80,6 +80,35 @@ public class GamePuzzleController : MonoBehaviour
         // Set the output tile's state
         outputTile.SetState(finalState);
         OutputChanged.Invoke();
+
+        // Check if the final state matches the win state
+        bool win = finalState == WinState;
+
+        // Check if the final state is equivalent but not directly equal
+        if (!win)
+        {
+            if (WinState.HApplied)
+            {
+                // H|0> = -H|1>
+                if (WinState.state == 0)
+                {
+                    if (finalState.state == 1 && finalState.HApplied && !finalState.PositiveState
+                        && finalState.ImaginaryState == WinState.ImaginaryState)
+                    {
+                        win = true;
+                    }
+                }
+                // iH|1> = -iH|0>
+                else
+                {
+                    if (finalState.state == 0 && finalState.HApplied && !finalState.PositiveState
+                        && finalState.ImaginaryState == WinState.ImaginaryState)
+                    {
+                        win = true;
+                    }
+                }
+            }
+        }
         
         if (WinScreen != null 
             && finalState == WinState)
