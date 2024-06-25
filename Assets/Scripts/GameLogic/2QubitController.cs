@@ -48,34 +48,35 @@ public class TwoQubitController : MonoBehaviour
         
         bool win = qubits[0] == WinState[0] && qubits[1] == WinState[1];
 
-        bool negativeSign, negativeOutput;
+        bool negativeSign, negativeWin;
         bool imaginaryOutput, imaginaryWin;
+        // Check output qubits for negative sign
+        negativeSign = qubits[0].PositiveState != qubits[1].PositiveState;
+
+        // i * i = -1
+        if (qubits[0].ImaginaryState && qubits[1].ImaginaryState)
+        {
+            negativeSign = !negativeSign;
+        }
+        // Check for one i
+        imaginaryOutput = qubits[0].ImaginaryState != qubits[1].ImaginaryState;
+
+        // Check win state for negative sign
+        negativeWin = WinState[0].PositiveState != WinState[1].PositiveState;
+            
+        // i * i = -1
+        if (WinState[0].ImaginaryState && WinState[1].ImaginaryState)
+        {
+                negativeWin = !negativeWin;
+        }
+        // Check for one i
+        imaginaryWin = WinState[0].ImaginaryState != WinState[1].ImaginaryState;
 
         // If the two qubits do not match exactly, check if it is because
         // of a sign mismatch (i.e. a negative sign on a different qubit or i*i = -1)
         if (!win)
         {
-            // Check output qubits for negative sign
-            negativeSign = qubits[0].PositiveState != qubits[1].PositiveState;
-
-            // i * i = -1
-            if (qubits[0].ImaginaryState && qubits[1].ImaginaryState)
-            {
-                negativeSign = !negativeSign;
-            }
-            // Check for one i
-            imaginaryOutput = qubits[0].ImaginaryState != qubits[1].ImaginaryState;
-
-            // Check win state for negative sign
-            negativeWin = WinState[0].PositiveState != WinState[1].PositiveState;
             
-            // i * i = -1
-            if (WinState[0].ImaginaryState && WinState[1].ImaginaryState)
-            {
-                negativeWin = !negativeWin;
-            }
-            // Check for one i
-            ImaginaryWin = WinState[0].ImaginaryState != WinState[1].ImaginaryState;
 
 
             Debug.Log("Negative goal: " + negativeWin);
@@ -86,7 +87,7 @@ public class TwoQubitController : MonoBehaviour
                 && qubits[0].HApplied == WinState[0].HApplied && qubits[1].HApplied == WinState[1].HApplied)
             {
                 // Check if the signs and imaginary parts match
-                if (negativeSign == negativeWin && imaginaryOutput == ImaginaryWin)
+                if (negativeSign == negativeWin && imaginaryOutput == imaginaryWin)
                 {
                     win = true;
                 }
@@ -104,7 +105,7 @@ public class TwoQubitController : MonoBehaviour
                 {
                     // Check if q2 matches win state
                     if (negativeSign && qubits[1].state == WinState[1].state
-                        && imaginaryOutput == ImaginaryWin)
+                        && imaginaryOutput == imaginaryWin)
                         {
                             win = true;
                         }
@@ -114,7 +115,7 @@ public class TwoQubitController : MonoBehaviour
                 {
                     // check if q2 matches win state
                     if (negativeSign && qubits[1].state == WinState[1].state
-                        && imaginaryOutput == ImaginaryWin)
+                        && imaginaryOutput == imaginaryWin)
                         {
                             win = true;
                         }
@@ -128,7 +129,7 @@ public class TwoQubitController : MonoBehaviour
                 {
                     // Check if q1 matches win state
                     if (negativeSign && qubits[0].state == WinState[0].state
-                        && imaginaryOutput == ImaginaryWin)
+                        && imaginaryOutput == imaginaryWin)
                         {
                             win = true;
                         }
@@ -138,7 +139,7 @@ public class TwoQubitController : MonoBehaviour
                 {
                     // Check if q1 matches win state
                     if (negativeSign && qubits[0].state == WinState[0].state
-                        && imaginaryOutput == ImaginaryWin)
+                        && imaginaryOutput == imaginaryWin)
                         {
                             win = true;
                         }
