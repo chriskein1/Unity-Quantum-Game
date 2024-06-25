@@ -48,12 +48,15 @@ public class TwoQubitController : MonoBehaviour
         
         bool win = qubits[0] == WinState[0] && qubits[1] == WinState[1];
 
+        bool negativeSign, negativeOutput;
+        bool imaginaryOutput, imaginaryWin;
+
         // If the two qubits do not match exactly, check if it is because
         // of a sign mismatch (i.e. a negative sign on a different qubit or i*i = -1)
         if (!win)
         {
             // Check output qubits for negative sign
-            bool negativeSign = qubits[0].PositiveState != qubits[1].PositiveState;
+            negativeSign = qubits[0].PositiveState != qubits[1].PositiveState;
 
             // i * i = -1
             if (qubits[0].ImaginaryState && qubits[1].ImaginaryState)
@@ -61,10 +64,10 @@ public class TwoQubitController : MonoBehaviour
                 negativeSign = !negativeSign;
             }
             // Check for one i
-            bool imaginaryOutput = qubits[0].ImaginaryState != qubits[1].ImaginaryState;
+            imaginaryOutput = qubits[0].ImaginaryState != qubits[1].ImaginaryState;
 
             // Check win state for negative sign
-            bool negativeWin = WinState[0].PositiveState != WinState[1].PositiveState;
+            negativeWin = WinState[0].PositiveState != WinState[1].PositiveState;
             
             // i * i = -1
             if (WinState[0].ImaginaryState && WinState[1].ImaginaryState)
@@ -72,7 +75,7 @@ public class TwoQubitController : MonoBehaviour
                 negativeWin = !negativeWin;
             }
             // Check for one i
-            bool ImaginaryWin = WinState[0].ImaginaryState != WinState[1].ImaginaryState;
+            ImaginaryWin = WinState[0].ImaginaryState != WinState[1].ImaginaryState;
 
 
             Debug.Log("Negative goal: " + negativeWin);
@@ -89,7 +92,66 @@ public class TwoQubitController : MonoBehaviour
                 }
             }
         }
-       
+
+        // H gate mismatch
+        if (!win)
+        {
+            // Case 1) only q1 has an H gate
+            if (qubits[0].HApplied && !qubits[1].HApplied)
+            {
+                // H|0> = -H|1>
+                if (qubits[0].state == 0)
+                {
+                    // Check if q2 matches win state
+                    if (negativeSign && qubits[1].state == WinState[1].state
+                        && imaginaryOutput == ImaginaryWin)
+                        {
+                            win = true;
+                        }
+                }
+                // iH|1> = -iH|0>
+                else
+                {
+                    // check if q2 matches win state
+                    if (negativeSign && qubits[1].state == WinState[1].state
+                        && imaginaryOutput == ImaginaryWin)
+                        {
+                            win = true;
+                        }
+                } 
+            }
+            // Case 2) Only q2 has an H gate
+            else if (!qubits[0].HApplied && qubits[1].HApplied)
+            {
+                // H|0> = -H|1>
+                if (qubits[1].state == 0)
+                {
+                    // Check if q1 matches win state
+                    if (negativeSign && qubits[0].state == WinState[0].state
+                        && imaginaryOutput == ImaginaryWin)
+                        {
+                            win = true;
+                        }
+                }
+                // iH|1> = -iH|0>
+                else
+                {
+                    // Check if q1 matches win state
+                    if (negativeSign && qubits[0].state == WinState[0].state
+                        && imaginaryOutput == ImaginaryWin)
+                        {
+                            win = true;
+                        }
+                }
+            }
+            // Case 3) Both qubits have an H gate
+            else if(qubits[0].HApplied && qubits[1].HApplied)
+            {
+                // Ask Dr Terletska
+            }
+
+        }
+
 
         // Check if the output matches the win state
         if (WinScreen != null && win)
