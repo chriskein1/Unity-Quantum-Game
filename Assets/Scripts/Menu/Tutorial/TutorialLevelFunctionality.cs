@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class TutorialLevelFunctionality : MonoBehaviour
 {
     public List<GameObject> tutorialSteps; // List to hold the tutorial step GameObjects
-    public GameObject Replaybutton;
     public GameObject endTutorialButton;
 
     private int currentStep = 0;
@@ -31,17 +30,12 @@ public class TutorialLevelFunctionality : MonoBehaviour
         {
             ClickSound();
             // If it's the last step, you might want to add functionality for ending the tutorial
-            Replaybutton.SetActive(true);
             endTutorialButton.SetActive(true);
             tutorialSteps[tutorialSteps.Count-1].SetActive(false);
+            gameObject.SetActive(false);
         }
     }
-    public void Replay()
-    {
-        ClickSound();
-        OnEnable();
-
-    }
+  
 
     // Start is called before the first frame update
     void OnEnable()
