@@ -10,6 +10,7 @@ public class GateHolderScript : MonoBehaviour
     [SerializeField] private int amountOfYGates;
     [SerializeField] private int amountOfZGates;
     [SerializeField] private int amountOfHGates;
+    [SerializeField] private List<HolderButtonLogic> buttons = new List<HolderButtonLogic>();
 
     private Dictionary<string, int> gateCounts = new Dictionary<string, int>();
     private GameObject currentDraggedGate;
@@ -71,6 +72,8 @@ public class GateHolderScript : MonoBehaviour
         UpdateText("YGateText", gateCounts["YGate"]);
         UpdateText("ZGateText", gateCounts["ZGate"]);
         UpdateText("HGateText", gateCounts["HGate"]);
+        foreach (var button in buttons)
+            button.UpdateButtonAppearance();
     }
 
     private void UpdateText(string tag, int count)
