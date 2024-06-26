@@ -72,7 +72,14 @@ public class OptionsMenuFunctionality : MonoBehaviour
         }
         resolutionDropdown.AddOptions(options);
 
-        // Load the resolution setting from PlayerPrefs or set to current resolution if not found
+        // Check if it's the first launch and save the current resolution as default if it is
+        if (!PlayerPrefs.HasKey("resolutionIndex"))
+        {
+            PlayerPrefs.SetInt("resolutionIndex", currentResolutionIndex);
+            PlayerPrefs.Save();
+        }
+
+        // Load the resolution setting from PlayerPrefs
         int savedResolutionIndex = PlayerPrefs.GetInt("resolutionIndex", currentResolutionIndex);
         SetResolution(savedResolutionIndex);
         resolutionDropdown.value = savedResolutionIndex;
