@@ -76,9 +76,6 @@ public class TwoQubitController : MonoBehaviour
         // of a sign mismatch (i.e. a negative sign on a different qubit or i*i = -1)
         if (!win)
         {
-            
-
-
             Debug.Log("Negative goal: " + negativeWin);
             Debug.Log("Negative output: " + negativeSign);
 
@@ -146,13 +143,62 @@ public class TwoQubitController : MonoBehaviour
                 }
             }
             // Case 3) Both qubits have an H gate
-            else if(qubits[0].HApplied && qubits[1].HApplied)
+            if (imaginaryOutput == imaginaryWin && negativeSign == negativeWin)
             {
-                // Ask Dr Terletska
+                // State combinations (with 1/2 or i/2 factored out):
+                // 1) |00> + |01> + |10> + |11>
+                    // H|0> * H|0>
+                // 2) |00> - |01> + |10> - |11>
+                    // H|0> * H|1>
+                // 3) |00> + |01> - |10> - |11>
+                    // H|1> * H|0>
+                // 4) |00> - |01> - |10> + |11>
+                    // H|1> * H|1>
+
+                // 1)
+                if ((qubits[0].state == 0 && qubits[1].state == 0 && !negativeSign)
+                    || (qubits[0].state == 1 && qubits[1].state == 0 && negativeSign)
+                    || (qubits[0].state == 0 && qubits[1].state == 1 && negativeSign))
+                {
+                    if (WinState[0].state == 0 && WinState[1].state == 0 && !negativeWin
+                        || (WinState[0].state == 1 && WinState[1].state == 0 && negativeWin)
+                        || (WinState[0].state == 0 && WinState[1].state == 1 && negativeWin))
+                    {
+                        win = true;
+                    }
+                }
+                // 2)
+                else if ((qubits[0].state == 0 && qubits[1].state == 1 && !negativeSign)
+                        || (qubits[0].state == 1 && qubits[1].state == 0 && negativeSign))
+                {
+                    if ((WinState[0].state == 0 && WinState[1].state == 1 && !negativeWin)
+                        || (WinState[0].state == 1 && WinState[1].state == 0 && negativeWin))
+                    {
+                        win = true;
+                    }
+                }
+                // 3)
+                else if ((qubits[0].state == 1 && qubits[1].state == 0 && !negativeSign)
+                        || (qubits[0].state == 0 && qubits[1].state == 1 && negativeSign))
+                {
+                    if ((WinState[0].state == 1 && WinState[1].state == 0 && !negativeWin)
+                        || (WinState[0].state == 0 && WinState[1].state == 1 && negativeWin))
+                    {
+                        win = true;
+                    }
+                }
+                // 4)
+                else if ((qubits[0].state == 1 && qubits[1].state == 1 && !negativeSign)
+                        || (qubits[0].state == 0 && qubits[1].state == 0 && negativeSign))
+                {
+                    if ((WinState[0].state == 1 && WinState[1].state == 1 && !negativeWin)
+                        || (WinState[0].state == 0 && WinState[1].state == 0 && negativeWin))
+                    {
+                        win = true;
+                    }
+                }
             }
-
         }
-
 
         // Check if the output matches the win state
         if (WinScreen != null && win)
