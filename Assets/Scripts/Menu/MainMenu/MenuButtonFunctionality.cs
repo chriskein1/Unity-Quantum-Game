@@ -35,8 +35,9 @@ public class MenuButtonFunctionality : MonoBehaviour
     IEnumerator LoadLevel(int levelIndex)
     {
         ClickSound();
-        print("Going to NextLevel");
+        Debug.Log("Going to NextLevel");
         transition.SetTrigger("Start"); //calls trigger for the animation
+        Debug.Log("Past Trigger");
         yield return new WaitForSeconds(transitionTime);  //this waits transitionTime amount of seconds 
         SceneManager.LoadScene(levelIndex); //loads selected scene 
 
@@ -59,7 +60,6 @@ public class MenuButtonFunctionality : MonoBehaviour
     {
         if (Time.deltaTime == 0)
             Time.timeScale = 1;
-        print("Going to main menu");
         transition.SetTrigger("Start"); //calls trigger for the animation
         StartCoroutine(LoadLevel(0));
     }

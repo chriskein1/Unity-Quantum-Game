@@ -29,7 +29,7 @@ public class HolderButtonLogic : MonoBehaviour, IPointerDownHandler
         {
             if (hasTutorialOverlay)
             {
-                if (!tutorialOverlay.getStatus())
+                if (!tutorialOverlay.GetStatus())
                 {
                     gateHolderScript.SpawnAndDragGate(gateType);
                 }
@@ -51,7 +51,7 @@ public class HolderButtonLogic : MonoBehaviour, IPointerDownHandler
         }
         else
         {
-            buttonImage.color = Color.white; // or the original color you want when the count is not zero
+            buttonImage.color = Color.white; 
         }
     }
 }

@@ -2,27 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorialOverlay : MonoBehaviour
+public class TutorialLevelController : MonoBehaviour
 {
+    public GameObject levelTutorial;
+    public GameObject introTutorial;
     private bool enabledOverlay = true;
 
-    public void DisableTutorial()
+    public void DisableIntroTutorial()
     {
         ClickSound();
-        gameObject.SetActive(false);
-        enabledOverlay = false;
+        introTutorial.SetActive(false);
+        levelTutorial.SetActive(true);
+        enabledOverlay = true;
 
     }
 
-    public void EnableTutorial()
+    public void EnableIntroTutorial()
     {
         ClickSound();
-        gameObject.SetActive(true);
+        introTutorial.SetActive(true);
+        levelTutorial.SetActive(false);
         enabledOverlay = true;
     }
 
+    public void DisableLevelTutorial()
+    {
+        ClickSound();
+        levelTutorial.SetActive(false);
+        enabledOverlay = false;
+    }
     public bool GetStatus()
     {
+
         return enabledOverlay;
     }
 
@@ -37,4 +48,5 @@ public class TutorialOverlay : MonoBehaviour
             Debug.LogError("AudioManager instance not found!");
         }
     }
+
 }
