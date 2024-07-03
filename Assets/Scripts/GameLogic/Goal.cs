@@ -16,39 +16,39 @@ public class Goal : MonoBehaviour
         Qubit winState = gamePuzzleController.GetWinState();
 
         text = GetComponentInChildren<TextMeshProUGUI>();
-        UpdateText(winState);
+        // UpdateText(winState);
     }
-    private void UpdateText(Qubit winState)
-    {
-        string sign = winState.PositiveState ? "" : "-";
-        string qubitStr = "";
+    // private void UpdateText(Qubit winState)
+    // {
+    //     string sign = winState.PositiveState ? "" : "-";
+    //     string qubitStr = "";
 
 
-        if (winState.state==2)
-        {
-            text.text = "Goal: NaN";
-            return;
-        }
-        if (winState.HApplied)
-        {
-            if (winState.PositiveState)
-            {
-                // qubitStr = winState.ImaginaryState ? "i/√2(|0> + |1>)" : "1/√2(|0> + |1>)";
-            }
-            else
-            {
-                // qubitStr = winState.ImaginaryState ? "i/√2(|0> - |1>)" : "1/√2(|0> - |1>)";
-            }
-        }
-        else if (winState.ImaginaryState)
-        {
-            qubitStr = $"{sign}i|{winState.state}>";
-        }
-        else
-        {
-            qubitStr = $"{sign}|{winState.state}>";
-        }
+    //     if (winState.state==2)
+    //     {
+    //         text.text = "Goal: NaN";
+    //         return;
+    //     }
+    //     if (winState.HApplied)
+    //     {
+    //         if (winState.PositiveState)
+    //         {
+    //             // qubitStr = winState.ImaginaryState ? "i/√2(|0> + |1>)" : "1/√2(|0> + |1>)";
+    //         }
+    //         else
+    //         {
+    //             // qubitStr = winState.ImaginaryState ? "i/√2(|0> - |1>)" : "1/√2(|0> - |1>)";
+    //         }
+    //     }
+    //     else if (winState.ImaginaryState)
+    //     {
+    //         qubitStr = $"{sign}i|{winState.state}>";
+    //     }
+    //     else
+    //     {
+    //         qubitStr = $"{sign}|{winState.state}>";
+    //     }
 
-        text.text += qubitStr;
-    }
+    //     text.text += qubitStr;
+    // }
 }

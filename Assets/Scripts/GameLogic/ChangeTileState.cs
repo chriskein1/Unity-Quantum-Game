@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using TMPro;
 using UnityEngine;
 
@@ -7,8 +9,12 @@ using QubitType;
 public class ChangeTileState : MonoBehaviour
 {
     [Header("Starting Qubit State")]
-    [SerializeField] Qubit qubit;
-    [SerializeField] GameObject OutputTile;
+    [SerializeField] public float alphaReal;
+    [SerializeField] public float alphaImaginary;
+    [SerializeField] public float betaReal;
+    [SerializeField] public float betaImaginary;
+
+    [SerializeField] TextMeshPro OutputTile;
     [SerializeField] GameObject SuperPositionTile;
     [SerializeField] GameObject Numerator;
     [SerializeField] GameObject States;
@@ -16,70 +22,70 @@ public class ChangeTileState : MonoBehaviour
     private TextMeshPro numeratorText;
     private TextMeshPro statesText;
 
+    private Qubit qubit;
 
-    void Start()
+
+    void Start()    
     {
+        ToQubit();
+        
         if (OutputTile == null || SuperPositionTile == null || Numerator == null || States == null)
         {
             return;
         }
-        // Prevent -0
-        if (qubit.state == 0 && !qubit.PositiveState && !qubit.ImaginaryState)
-        {
-            qubit.PositiveState = true;
-        }
-
-        text = GetComponentInChildren<TextMeshPro>();
-        numeratorText = Numerator.GetComponentInChildren<TextMeshPro>();
-        statesText = States.GetComponentInChildren<TextMeshPro>();
+            
+        // text = OutputTile.GetComponentInChildren<TextMeshProUGUI>();
+        // numeratorText = Numerator.GetComponentInChildren<TextMeshPro>();
+        // statesText = States.GetComponentInChildren<TextMeshPro>();
         UpdateText();
     }
-    // updates sprites text 
+
+    private void ToQubit()
+    {
+        qubit = new Qubit(new Complex(alphaReal, alphaImaginary), new Complex(betaReal, betaImaginary));
+    }
+    
     void UpdateText()
     {
-        string sign = qubit.PositiveState ? "": "-";
         string qubitStr = "";
-        
-        if (qubit.HApplied)
-        {
-            numeratorText.text = qubit.ImaginaryState ? "i" : "1";
-            OutputTile.SetActive(false);
-            SuperPositionTile.SetActive(true);
 
-            if (qubit.state == 0 && qubit.PositiveState)
-            {
-                statesText.text = "(|0>+|1>)";
-            }
-            // For -i|0>
-            // -|0> is treated the same as |0>
-            else if (qubit.state == 0 && !qubit.PositiveState)
-            {
-                statesText.text = "(|0>-|1>)";
-            }
-            else if (qubit.state == 1 && qubit.PositiveState)
-            {
-                statesText.text = "(|0>-|1>)";
-            }
-            // -1(|0> - |1>) = 1(|0> + |1>)
-            else
-            {
-                statesText.text = "(|0>+|1>)";
-            }
-        } 
-        else if (qubit.ImaginaryState)
+        // Check for negative sign
+        bool negativeSign = false;
+        if (qubit.Alpha.Real < 0 || qubit.Beta.Real < 0
+            || qubit.Alpha.Imaginary < 0 || qubit.Beta.Imaginary < 0)
         {
-            OutputTile.SetActive(true);
-            SuperPositionTile.SetActive(false);
-            qubitStr = $"{sign}i|{qubit.state}>";
+            negativeSign = true;
+        }
+        qubitStr += negativeSign ? "-" : "";
+
+        // Check for imaginary part
+        if (qubit.Alpha.Imaginary != 0 || qubit.Beta.Imaginary != 0)
+        {
+            qubitStr += "i";
+        }
+
+        // Check if state is 0 or 1
+        if (Math.Abs(qubit.Alpha.Real) == 1 || Math.Abs(qubit.Alpha.Imaginary) == 1)
+        {
+            qubitStr += "|0>";
+        }
+        else if (Math.Abs(qubit.Beta.Real) == 1 || Math.Abs(qubit.Beta.Imaginary) == 1)
+        {
+            qubitStr += "|1>";
         }
         else
         {
-            OutputTile.SetActive(true);
-            SuperPositionTile.SetActive(false);
-            qubitStr = $"{sign}|{qubit.state}>";
+            qubitStr = $"|ψ> = {qubit.Alpha} |0> + {qubit.Beta} |1>";
         }
 
-        text.text = qubitStr;
+        Debug.Log("State: " + qubitStr);
+
+        if (text == null)
+        {
+            Debug.LogWarning("TextMeshPro component not found.");
+            return;
+        }
+        OutputTile.text = qubitStr;
     }
 
 
@@ -92,12 +98,7 @@ public class ChangeTileState : MonoBehaviour
     // Function to set the state and its sign
     public void SetState(Qubit newState)
     {
-        qubit.state = newState.state;
-        qubit.PositiveState = newState.PositiveState;
-        qubit.ImaginaryState = newState.ImaginaryState;
-        qubit.HApplied = newState.HApplied;
+        qubit = newState;
         UpdateText();
     }
-
-    
 }

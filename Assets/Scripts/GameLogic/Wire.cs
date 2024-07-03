@@ -49,31 +49,31 @@ public class DrawWire : MonoBehaviour
     void DrawLine(Vector3 start, Vector3 end, Qubit qubit, int index)
     {
         LineRenderer line = LineRenderers[index];
-        if (qubit.HApplied)
-        {
-            line.startColor = Color.green;
-            line.endColor = Color.green;
-        }
-        else if (qubit.ImaginaryState)
-        {
-            line.startColor = Color.yellow;
-            line.endColor = Color.yellow;
-        }
-        else if (!qubit.PositiveState)
-        {
-            line.startColor = Color.red;
-            line.endColor = Color.red;
-        }
-        else if (qubit.state == 1)
-        {
-            line.startColor = Color.blue;
-            line.endColor = Color.blue;
-        }
-        else
-        {
+        // if (qubit.HApplied)
+        // {
+        //     line.startColor = Color.green;
+        //     line.endColor = Color.green;
+        // }
+        // else if (qubit.ImaginaryState)
+        // {
+        //     line.startColor = Color.yellow;
+        //     line.endColor = Color.yellow;
+        // }
+        // else if (!qubit.PositiveState)
+        // {
+        //     line.startColor = Color.red;
+        //     line.endColor = Color.red;
+        // }
+        // else if (qubit.state == 1)
+        // {
+        //     line.startColor = Color.blue;
+        //     line.endColor = Color.blue;
+        // }
+        // else
+        // {
             line.startColor = Color.black;
             line.endColor = Color.black;
-        }
+        // }
 
         line.SetPosition(0, start);
         line.SetPosition(1, end);
