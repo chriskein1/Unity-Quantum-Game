@@ -1,26 +1,49 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
 using QubitType;
+using System.Numerics;
+using System;
+
+public enum WinStateOptions
+{
+    State0,  // |0⟩
+    State1,  // |1⟩
+    SuperpositionPlus,  // |+⟩ = 1/√2 (|0⟩ + |1⟩)
+    SuperpositionMinus, // |−⟩ = 1/√2 (|0⟩ - |1⟩)
+    ComplexSuperposition1, // 1/√3 |0⟩ + √(2/3) |1⟩
+    ComplexSuperposition2  // 1/2 |0⟩ + √3/2 |1⟩
+}
+
+public enum StartingStateOptions
+{
+    State0,  // |0⟩
+    State1,  // |1⟩
+}
+
 public class GamePuzzleController : MonoBehaviour
 {
     [SerializeField] private List<GameObject> SnapPoints = new List<GameObject>();
-
-    [SerializeField] private Qubit WinState;
-    [SerializeField] private ChangeTileState inputTile;
-    [SerializeField] private ChangeTileState outputTile;
+    [SerializeField] private StartingStateOptions startingStateChoice;
+    [SerializeField] private WinStateOptions winStateChoice;
+    [SerializeField] private InputState inputTile;
+    [SerializeField] private OutputState outputTile;
     [SerializeField] private GameObject WinScreen;
     [SerializeField] private BarChartManager barChartManager;
-    
-    private List<Qubit> snapPointStates = new List<Qubit>();
 
+    private List<Qubit> snapPointStates = new List<Qubit>();
+    private Qubit inputState;
+    private Qubit winState;
     public UnityEvent OutputChanged; // Event for 2 qubit controller
 
     // Start is called before the first frame update
     void Start()
     {
+        // Convert input state and win state to qubit objects
+        inputState = ConvertToQubit(startingStateChoice);
+        winState = ConvertToQubit(winStateChoice);
+
         // Initialize the snap point states
         SetSnapPoints();
     }
@@ -33,17 +56,17 @@ public class GamePuzzleController : MonoBehaviour
         // Each snap point's state will match the state of what comes before it, and then the gate operation will affect that state
 
         // First state is the input tile's state
-        snapPointStates.Add(inputTile.GetState());
-        foreach(GameObject p in SnapPoints)
+        snapPointStates.Add(inputState);
+        foreach (GameObject p in SnapPoints)
         {
             Snap snapComp = p.GetComponent<Snap>();
 
             // Get the gate object on the snap point
             GameObject gateObject = snapComp.GetGateObject();
-            
+
             // Get the state of last snap point
             Qubit state = snapPointStates[snapPointStates.Count - 1]; // First state is the input tile's state
-            
+
             // Do a gate operation on the current state
             GateOperation(gateObject, ref state);
 
@@ -57,107 +80,27 @@ public class GamePuzzleController : MonoBehaviour
 
         Qubit finalState = snapPointStates[snapPointStates.Count - 1];
 
-        Debug.Log("Input State: " + inputTile.GetState().ToString());
+        Debug.Log("input State: " + inputState.ToString());
         Debug.Log("Output State: " + finalState.ToString());
         outputTile.SetState(finalState);
 
-
-        // Display animation
-        // if (barChartManager != null)
-        // {
-        //     DisplayAnimation(finalState);
-        // }
-        
-        // // Additional item for the output tile
-        // snapPointStates.Add(finalState);
-
-        // // The output tile will match the last snap point's state
-        // // Set the output tile's state
-        // OutputChanged.Invoke();
-
-        // // Check if the final state matches the win state
-        // bool win = finalState == WinState;
-
-        // // Check if the final state is equivalent but not directly equal
-        // if (!win)
-        // {
-        //     if (WinState.HApplied)
-        //     {
-        //         // H|0> = -H|1>
-        //         if (WinState.state == 0)
-        //         {
-        //             if (finalState.state == 1 && finalState.HApplied && !finalState.PositiveState
-        //                 && finalState.ImaginaryState == WinState.ImaginaryState)
-        //             {
-        //                 win = true;
-        //             }
-        //         }
-        //         // iH|1> = -iH|0>
-        //         else
-        //         {
-        //             if (finalState.state == 0 && finalState.HApplied && !finalState.PositiveState
-        //                 && finalState.ImaginaryState == WinState.ImaginaryState)
-        //             {
-        //                 win = true;
-        //             }
-        //         }
-        //     }
-        // }
-        
-        // if (WinScreen != null 
-        //     && win)
-        // {
-        //     Debug.Log("You Win!!!");
-        //     // Set time to 0
-        //     StartCoroutine(WaitAndShowWinScreen());
-          
-        // }
-
-        //  IEnumerator WaitAndShowWinScreen()
-        // {
-        //     yield return new WaitForSeconds(0.02f);
-        //     // Set time to 0
-        //     Time.timeScale = 0;
-        //     WinScreen.SetActive(true);
-        // }
-        // // Print the snap point states
-        // // DisplaySnapPointStates();
-    }
-
-    // private void DisplayAnimation(Qubit finalState)
-    // {
-    //     // Reset all bars
-    //     barChartManager.ResetBars();
-
-    //     // Display animation
-    //     if (finalState.HApplied)
-    //     {
-    //         // Set both sliders to 50%
-    //         barChartManager.SetSliderValue(0, 0.5f); // Slider 0 is being set to 50% (0.5f)
-    //         barChartManager.SetSliderValue(1, 0.5f); // Slider 1 is being set to 50% (0.5f)
-    //     }
-    //     else if (finalState.state == 1)
-    //     {
-    //         barChartManager.SetSliderValue(1, 1f); // Slider 1 is being set to 100% (1f)
-    //     }
-    //     else
-    //     {
-    //         barChartManager.SetSliderValue(0, 1f); // Slider 0 is being set to 100% (1f)
-    //     }
-    // }
-
-
-    // Function to Print the snap point states
-    public void DisplaySnapPointStates()
-    {
-        foreach(Qubit state in snapPointStates)
+        if (winState.IsApproximatelyEqual(finalState))
         {
-           Debug.Log(state.ToString());
+            StartCoroutine(WaitAndShowWinScreen());
+        }
+
+
+        IEnumerator WaitAndShowWinScreen()
+        {
+            yield return new WaitForSeconds(0.02f);
+            // Set time to 0
+            Time.timeScale = 0;
+            WinScreen.SetActive(true);
         }
     }
 
     // Gate operation function
-    private void GateOperation (GameObject gateObject, ref Qubit state)
+    private void GateOperation(GameObject gateObject, ref Qubit state)
     {
         // Return if there is no gate on the snap point
         if (gateObject == null)
@@ -174,7 +117,7 @@ public class GamePuzzleController : MonoBehaviour
                 Debug.Log("X gate operation");
                 state = QuantumGates.ApplyPauliX(state);
                 break;
-            
+
             case "YGate":
                 // Y gate operation
                 Debug.Log("Y gate operation");
@@ -182,7 +125,7 @@ public class GamePuzzleController : MonoBehaviour
                 // Bit & phase flip
                 state = QuantumGates.ApplyPauliY(state);
                 break;
-            
+
             case "ZGate":
                 // Z gate operation
                 Debug.Log("Z gate operation");
@@ -196,11 +139,21 @@ public class GamePuzzleController : MonoBehaviour
                 break;
         }
     }
-    public Qubit GetWinState()
-    {
-        return WinState;
-    }
 
+    
+
+    public StartingStateOptions GetInputState()
+    {
+        return startingStateChoice;
+    }
+    public Qubit GetInputQubit()
+    {
+        return inputState;
+    }
+    public WinStateOptions GetWinState()
+    {
+        return winStateChoice;
+    }
 
     public bool GetWinScreenStatus()
     {
@@ -209,5 +162,39 @@ public class GamePuzzleController : MonoBehaviour
             return false;
         }
         return WinScreen.activeInHierarchy;
+    }
+
+    private Qubit ConvertToQubit(StartingStateOptions state)
+    {
+        switch (state)
+        {
+            case StartingStateOptions.State0:
+                return new Qubit(new Complex(1, 0), new Complex(0, 0));
+            case StartingStateOptions.State1:
+                return new Qubit(new Complex(0, 0), new Complex(1, 0));
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    private Qubit ConvertToQubit(WinStateOptions state)
+    {
+        switch (state)
+        {
+            case WinStateOptions.State0:
+                return new Qubit(new Complex(1, 0), new Complex(0, 0));
+            case WinStateOptions.State1:
+                return new Qubit(new Complex(0, 0), new Complex(1, 0));
+            case WinStateOptions.SuperpositionPlus:
+                return new Qubit(new Complex(1 / Mathf.Sqrt(2), 0), new Complex(1 / Mathf.Sqrt(2), 0));
+            case WinStateOptions.SuperpositionMinus:
+                return new Qubit(new Complex(1 / Mathf.Sqrt(2), 0), new Complex(-1 / Mathf.Sqrt(2), 0));
+            case WinStateOptions.ComplexSuperposition1:
+                return new Qubit(new Complex(1 / Mathf.Sqrt(3), 0), new Complex(Mathf.Sqrt(2 / 3f), 0));
+            case WinStateOptions.ComplexSuperposition2:
+                return new Qubit(new Complex(1 / 2f, 0), new Complex(Mathf.Sqrt(3) / 2f, 0));
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 }

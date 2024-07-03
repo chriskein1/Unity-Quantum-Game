@@ -50,7 +50,7 @@ public class GateHolderScript : MonoBehaviour
                 }
 
                 gateCounts[gateTag]--;
-                Debug.Log($"{gateTag} spawned. New count: {gateCounts[gateTag]}");
+            
                 UpdateGateCountTexts();
                 
             }
