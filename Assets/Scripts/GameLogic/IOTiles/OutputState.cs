@@ -11,12 +11,6 @@ public class OutputState : MonoBehaviour
     [SerializeField] private GameObject OutputTile;
     [SerializeField] private TextMeshPro OutputTileText;
     [SerializeField] private GameObject SuperPositionTile;
-    [SerializeField] private GameObject ZeroSquareRoot;
-    [SerializeField] private GameObject OneSquareRoot;
-    [SerializeField] private TextMeshPro ZeroNumerator;
-    [SerializeField] private TextMeshPro ZeroDenominator;
-    [SerializeField] private TextMeshPro OneNumerator;
-    [SerializeField] private TextMeshPro OneDenominator;
     [SerializeField] private TextMeshPro sign;
     private Qubit qubit;
 
@@ -50,11 +44,6 @@ public class OutputState : MonoBehaviour
                 sign.text = "-";
             else
                 sign.text = "+";
-            // Assuming the superposition is 50% |0⟩ and 50% |1⟩
-            ZeroNumerator.text = "1";
-            ZeroDenominator.text = "2";
-            OneNumerator.text = "1";
-            OneDenominator.text = "2";
         }
         else
         {

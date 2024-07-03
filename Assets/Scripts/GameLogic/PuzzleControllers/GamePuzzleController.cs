@@ -13,7 +13,8 @@ public enum WinStateOptions
     SuperpositionPlus,  // |+⟩ = 1/√2 (|0⟩ + |1⟩)
     SuperpositionMinus, // |−⟩ = 1/√2 (|0⟩ - |1⟩)
     ComplexSuperposition1, // 1/√3 |0⟩ + √(2/3) |1⟩
-    ComplexSuperposition2  // 1/2 |0⟩ + √3/2 |1⟩
+    ComplexSuperposition2, // 1/2 |0⟩ + √3/2 |1⟩
+    NoWinState // No win state
 }
 
 public enum StartingStateOptions
@@ -35,7 +36,7 @@ public class GamePuzzleController : MonoBehaviour
     private List<Qubit> snapPointStates = new List<Qubit>();
     private Qubit inputState;
     private Qubit winState;
-    public UnityEvent OutputChanged; // Event for 2 qubit controller
+    public UnityEvent OutputChanged; // Event for qubit controller
 
     // Start is called before the first frame update
     void Start()
@@ -83,8 +84,10 @@ public class GamePuzzleController : MonoBehaviour
         Debug.Log("input State: " + inputState.ToString());
         Debug.Log("Output State: " + finalState.ToString());
         outputTile.SetState(finalState);
+        // Update the bar chart with the final state probabilities
+        UpdateBarChart(finalState);
 
-        if (winState.IsApproximatelyEqual(finalState))
+        if (winStateChoice != WinStateOptions.NoWinState && winState.IsApproximatelyEqual(finalState))
         {
             StartCoroutine(WaitAndShowWinScreen());
         }
@@ -140,16 +143,16 @@ public class GamePuzzleController : MonoBehaviour
         }
     }
 
-    
-
     public StartingStateOptions GetInputState()
     {
         return startingStateChoice;
     }
+
     public Qubit GetInputQubit()
     {
         return inputState;
     }
+
     public WinStateOptions GetWinState()
     {
         return winStateChoice;
@@ -193,8 +196,21 @@ public class GamePuzzleController : MonoBehaviour
                 return new Qubit(new Complex(1 / Mathf.Sqrt(3), 0), new Complex(Mathf.Sqrt(2 / 3f), 0));
             case WinStateOptions.ComplexSuperposition2:
                 return new Qubit(new Complex(1 / 2f, 0), new Complex(Mathf.Sqrt(3) / 2f, 0));
+            case WinStateOptions.NoWinState:
+                return default; // No win state
             default:
                 throw new ArgumentOutOfRangeException();
         }
+    }
+
+    private void UpdateBarChart(Qubit finalState)
+    {
+        // Calculate the probabilities
+        float probability0 = (float)(finalState.Alpha.Magnitude * finalState.Alpha.Magnitude);
+        float probability1 = (float)(finalState.Beta.Magnitude * finalState.Beta.Magnitude);
+
+        // Update the bar chart
+        barChartManager.SetSliderValue(0, probability0);
+        barChartManager.SetSliderValue(1, probability1);
     }
 }
