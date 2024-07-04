@@ -1,30 +1,40 @@
 ﻿using QubitType;
+using System.Numerics;
 using TMPro;
 using UnityEngine;
-using System;
+
 public class InputState : MonoBehaviour
 {
     [SerializeField] private TextMeshPro text;
-    private QubitWireController controller;
-    private StartingStateOptions currentState;
-
-    // Start is called before the first frame update
-    void Start()
+ 
+    public void UpdateText(SingleQubitStateOptions state)
     {
-        controller = FindObjectOfType<QubitWireController>();
-        if (controller != null)
+        switch (state)
         {
-            // Update the text with the initial input state
-            currentState = controller.GetInputState();
-            if (currentState == 0)
-            {
+            case SingleQubitStateOptions.State0:
                 text.text = "|0>";
-
-            }
-            else
-            {
+                break;
+            case SingleQubitStateOptions.State1:
                 text.text = "|1>";
-            }
+                break;
+            case SingleQubitStateOptions.Imaginary0:
+                text.text = "i|0>";
+                break;
+            case SingleQubitStateOptions.Imaginary1:
+                text.text = "i|1>";
+                break;
+            case SingleQubitStateOptions.NegativeState1:
+                text.text = "-|1>";
+                break;
+            case SingleQubitStateOptions.NegativeImaginary1:
+                text.text = "-i|1>";
+                break;
+            case SingleQubitStateOptions.NegativeImaginary0:
+                text.text = ("-i|0>");
+                break;
+            default:
+                text.text = "-|0>";
+                break;
         }
     }
 

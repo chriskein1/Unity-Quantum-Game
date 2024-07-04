@@ -7,8 +7,10 @@ using System.Numerics;
 public class TwoQubitGameManager : MonoBehaviour
 {
     [SerializeField] private GameObject winScreen;
-    [SerializeField] private WinStateOptions winStateChoiceQubit1;
-    [SerializeField] private WinStateOptions winStateChoiceQubit2;
+    [SerializeField] private SingleQubitStateOptions InputStateChoice1;
+    [SerializeField] private SingleQubitStateOptions InputStateChoice2;
+    [SerializeField] private SingleQubitStateOptions winStateChoiceQubit1;
+    [SerializeField] private SingleQubitStateOptions winStateChoiceQubit2;
     [SerializeField] private QubitWireController qubitWireController1;
     [SerializeField] private QubitWireController qubitWireController2;
     [SerializeField] private BarChartManager barChartManager;
@@ -56,7 +58,12 @@ public class TwoQubitGameManager : MonoBehaviour
     void Awake()
     {
         winStateQubit1 = qubitOperations.ConvertToQubit(winStateChoiceQubit1);
-        winStateQubit2 = qubitOperations.ConvertToQubit(winStateChoiceQubit2);
+        winStateQubit2 = qubitOperations.ConvertToQubit(winStateChoiceQubit2); 
+        if (qubitWireController1 != null && qubitWireController2 != null)
+        {
+            qubitWireController1.SetInputState(InputStateChoice1);
+            qubitWireController2.SetInputState(InputStateChoice2);
+        }
     }
 
     private void UpdateQubit1State(Qubit finalState)
@@ -76,7 +83,7 @@ public class TwoQubitGameManager : MonoBehaviour
         if (finalStateQubit1 != null && finalStateQubit2 != null)
         {
             UpdateBarChart(finalStateQubit1, finalStateQubit2);
-            if (winStateChoiceQubit1 != WinStateOptions.NoWinState && winStateChoiceQubit2 != WinStateOptions.NoWinState &&
+            if (winStateChoiceQubit1 != SingleQubitStateOptions.NoState && winStateChoiceQubit2 != SingleQubitStateOptions.NoState &&
                 winStateQubit1.IsApproximatelyEqual(finalStateQubit1) && winStateQubit2.IsApproximatelyEqual(finalStateQubit2))
             {
                 StartCoroutine(WaitAndShowWinScreen());

@@ -12,6 +12,9 @@ public class OutputState : MonoBehaviour
     [SerializeField] private TextMeshPro OutputTileText;
     [SerializeField] private GameObject SuperPositionTile;
     [SerializeField] private TextMeshPro sign;
+    [SerializeField] private TextMeshPro numerator;
+
+    private QubitOperations qubitOperations = new QubitOperations();
     private Qubit qubit;
 
     void Start()
@@ -19,7 +22,6 @@ public class OutputState : MonoBehaviour
         // Initialize the visual representation based on the initial qubit state
         UpdateVisualRepresentation();
     }
-
 
     // Function to set the state and its sign
     public void SetState(Qubit newState)
@@ -30,41 +32,63 @@ public class OutputState : MonoBehaviour
 
     private void UpdateVisualRepresentation()
     {
-        
+        // Determine the current state as an enum
+        SingleQubitStateOptions currentState = qubitOperations.ConvertToStateOption(qubit);
 
-        // Update the visual representation based on the current qubit state
-        if (qubit.IsInSuperposition())
+        // Update the visual representation based on the current state
+        switch (currentState)
         {
-            
-            // Show superposition tile
-            SuperPositionTile.SetActive(true);
-            OutputTile.SetActive(false);
-
-            if (qubit.Beta.Real < 0)
-                sign.text = "-";
-            else
-                sign.text = "+";
-        }
-        else
-        {
-            
-            // Show basis state tile
-            SuperPositionTile.SetActive(false);
-            OutputTile.SetActive(true);
-
-            double epsilon = 0.0001; // Small threshold for floating-point comparison
-            if (Math.Abs(qubit.Alpha.Real - 1) < epsilon && Math.Abs(qubit.Beta.Real) < epsilon)
-            {
-                OutputTileText.text = "|0>";
-            }
-            else if (Math.Abs(qubit.Alpha.Real) < epsilon && Math.Abs(qubit.Beta.Real - 1) < epsilon)
-            {
-                OutputTileText.text = "|1>";
-            }
-            else
-            {
+            case SingleQubitStateOptions.State0:
+                ShowBasisState("|0>");
+                break;
+            case SingleQubitStateOptions.State1:
+                ShowBasisState("|1>");
+                break;
+            case SingleQubitStateOptions.Imaginary0:
+                ShowBasisState("i|0>");
+                break;
+            case SingleQubitStateOptions.Imaginary1:
+                ShowBasisState("i|1>");
+                break;
+            case SingleQubitStateOptions.NegativeState1:
+                ShowBasisState("-|1>");
+                break;
+            case SingleQubitStateOptions.NegativeImaginary1:
+                ShowBasisState("-i|1>");
+                break;
+            case SingleQubitStateOptions.NegativeImaginary0:
+                ShowBasisState("-i|0>");
+                break;
+            case SingleQubitStateOptions.SuperpositionPlus:
+                ShowSuperpositionState("+", "1");
+                break;
+            case SingleQubitStateOptions.SuperpositionMinus:
+                ShowSuperpositionState("-", "1");
+                break;
+            case SingleQubitStateOptions.ImaginarySuperpositionPlus:
+                ShowSuperpositionState("+", "i");
+                break;
+            case SingleQubitStateOptions.ImaginarySuperpositionMinus:
+                ShowSuperpositionState("-", "i");
+                break;
+            default:
                 OutputTileText.text = "|ψ>";
-            }
+                break;
         }
+    }
+
+    private void ShowBasisState(string stateText)
+    {
+        SuperPositionTile.SetActive(false);
+        OutputTile.SetActive(true);
+        OutputTileText.text = stateText;
+    }
+
+    private void ShowSuperpositionState(string stateSign, string stateNumerator)
+    {
+        SuperPositionTile.SetActive(true);
+        OutputTile.SetActive(false);
+        sign.text = stateSign;
+        numerator.text = stateNumerator;
     }
 }

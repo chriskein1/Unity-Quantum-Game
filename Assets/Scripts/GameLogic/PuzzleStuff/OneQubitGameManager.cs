@@ -5,10 +5,12 @@ using QubitType;
 public class OneQubitGameManager : MonoBehaviour
 {
     [SerializeField] private GameObject winScreen;
-    [SerializeField] private WinStateOptions winStateChoice;
+    [SerializeField] private SingleQubitStateOptions startingStateChoice;
+    [SerializeField] private SingleQubitStateOptions winStateChoice;
     [SerializeField] private QubitWireController qubitWireController;
     [SerializeField] private BarChartManager barChartManager;
     private Qubit winState;
+    
     private QubitOperations qubitOperations = new QubitOperations();
 
     private void OnEnable()
@@ -31,15 +33,22 @@ public class OneQubitGameManager : MonoBehaviour
         }
     }
 
-     void Awake()
+    void Awake()
     {
         winState = qubitOperations.ConvertToQubit(winStateChoice);
+
+        if (qubitWireController != null)
+        {
+            qubitWireController.SetInputState(startingStateChoice);
+        }
     }
 
     private void CheckWinState(Qubit finalState)
     {
+        
         UpdateBarChart(finalState);
-        if (winStateChoice != WinStateOptions.NoWinState && winState.IsApproximatelyEqual(finalState))
+        print( finalState);
+        if (winStateChoice != SingleQubitStateOptions.NoState && winState.IsApproximatelyEqual(finalState))
         {
             StartCoroutine(WaitAndShowWinScreen());
         }
@@ -64,6 +73,9 @@ public class OneQubitGameManager : MonoBehaviour
 
         barChartManager.SetSliderValue(0, probability0);
         barChartManager.SetSliderValue(1, probability1);
-
+    }
+    public SingleQubitStateOptions GetInputState()
+    {
+        return startingStateChoice;
     }
 }

@@ -7,7 +7,6 @@ using System.Numerics;
 public class QubitWireController : MonoBehaviour
 {
     [SerializeField] private List<GameObject> SnapPoints = new List<GameObject>();
-    [SerializeField] private StartingStateOptions startingStateChoice;
     [SerializeField] private InputState inputTile;
     [SerializeField] private OutputState outputTile;
     private QubitOperations qubitOperations = new QubitOperations();
@@ -15,12 +14,17 @@ public class QubitWireController : MonoBehaviour
     private List<Qubit> snapPointStates = new List<Qubit>();
     private Qubit inputState;
     public UnityEvent<Qubit> FinalStateChanged;
-    void Start()
+
+    private void Start()
     {
-        inputState = qubitOperations.ConvertToQubit(startingStateChoice);
         SetSnapPoints();
     }
-
+    public void SetInputState(SingleQubitStateOptions state)
+    {
+        inputState = qubitOperations.ConvertToQubit(state);
+        inputTile.UpdateText(state); // Update the input text
+        SetSnapPoints();
+    }
     public void SetSnapPoints()
     {
         snapPointStates.Clear();
@@ -45,10 +49,6 @@ public class QubitWireController : MonoBehaviour
         FinalStateChanged?.Invoke(finalState);
     }
 
-    public StartingStateOptions GetInputState()
-    {
-        return startingStateChoice;
-    }
     public Qubit GetInputQubit()
     {
         return inputState;
