@@ -57,4 +57,16 @@ public class BarChartManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the bar chart with the given probabilities. Only updates as many bars as are available.
+    /// </summary>
+    /// <param name="probabilities">Array of probabilities to update the bar chart with.</param>
+    public void UpdateBarChart(params float[] probabilities)
+    {
+        int count = Mathf.Min(probabilities.Length, BarSliders.Length);
+        for (int i = 0; i < count; i++)
+        {
+            SetSliderValue(i, probabilities[i]);
+        }
+    }
 }

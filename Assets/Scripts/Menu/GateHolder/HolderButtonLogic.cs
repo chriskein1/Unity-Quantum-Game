@@ -44,6 +44,11 @@ public class HolderButtonLogic : MonoBehaviour, IPointerDownHandler
 
     public void UpdateButtonAppearance()
     {
+        if (gateCountText == null || buttonImage == null)
+        {
+            return;
+        }
+
         int gateCount;
         if (int.TryParse(gateCountText.text, out gateCount) && gateCount == 0)
         {
@@ -51,7 +56,7 @@ public class HolderButtonLogic : MonoBehaviour, IPointerDownHandler
         }
         else
         {
-            buttonImage.color = Color.white; 
+            buttonImage.color = Color.white;
         }
     }
 }

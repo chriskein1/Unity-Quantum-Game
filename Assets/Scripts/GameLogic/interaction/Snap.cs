@@ -12,16 +12,9 @@ public class Snap : MonoBehaviour
     private GameObject gameObj;
 
     private Qubit qubit;
-    private GamePuzzleController puzzleController;
 
-    private void Awake()
-    {
-        puzzleController = FindObjectOfType<GamePuzzleController>();
-        if (puzzleController == null)
-        {
-            Debug.LogWarning("WinScreenFunctionality not found in the scene!");
-        }
-    }
+
+ 
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -45,10 +38,8 @@ public class Snap : MonoBehaviour
     {
         if (gameObj == collision.gameObject)
         {
-            if (!puzzleController.GetWinScreenStatus())
-            {
                 ClickOffSound();
-            }
+            
             occupied = false;
             gameObj = null;
             correctGate = false;

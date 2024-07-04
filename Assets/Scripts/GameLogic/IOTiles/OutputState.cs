@@ -30,12 +30,12 @@ public class OutputState : MonoBehaviour
 
     private void UpdateVisualRepresentation()
     {
-        Debug.Log($"UpdateVisualRepresentation called with Qubit: {qubit}");
+        
 
         // Update the visual representation based on the current qubit state
         if (qubit.IsInSuperposition())
         {
-            Debug.Log("Qubit is in superposition");
+            
             // Show superposition tile
             SuperPositionTile.SetActive(true);
             OutputTile.SetActive(false);
@@ -47,7 +47,7 @@ public class OutputState : MonoBehaviour
         }
         else
         {
-            Debug.Log("Qubit is in basis state");
+            
             // Show basis state tile
             SuperPositionTile.SetActive(false);
             OutputTile.SetActive(true);

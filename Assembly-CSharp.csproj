@@ -62,6 +62,8 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\VisualElements\ChangeImageAlphaOnHover.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Qubit.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\PuzzleStuff\QubitOperations.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\PuzzleStuff\TwoQubitGameManager.cs" />
     <Compile Include="Assets\Scripts\ToolTip\ToolTipSystem.cs" />
     <Compile Include="Assets\Scripts\GameLogic\ResetGatePositions.cs" />
     <Compile Include="Assets\Scripts\Menu\GateHolder\TimeToLive.cs" />
@@ -76,7 +78,6 @@
     <Compile Include="Assets\Scripts\Menu\GateHolder\GateDestroyer.cs" />
     <Compile Include="Assets\Scripts\GameLogic\QuantumGates.cs" />
     <Compile Include="Assets\Scripts\Menu\Pause Options\OptionsMenuFunctionality.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\PuzzleControllers\TwoQubitController.cs" />
     <Compile Include="Assets\Scripts\GameLogic\interaction\Draggable.cs" />
     <Compile Include="Assets\Scripts\Menu\MainMenu\MenuButtonFunctionality.cs" />
     <Compile Include="Assets\Scripts\Menu\Pause Options\PauseMenuFunctionality.cs" />
@@ -88,13 +89,14 @@
     <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Audio\PlaySound.cs" />
     <Compile Include="Assets\Scripts\Menu\PopupModularResizer.cs" />
-    <Compile Include="Assets\Scripts\GameLogic\PuzzleControllers\GamePuzzleController.cs" />
     <Compile Include="Assets\Scripts\Menu\Tutorial\TutorialLevelFunctionality.cs" />
     <Compile Include="Assets\Scripts\GameLogic\IOTiles\OutputState.cs" />
     <Compile Include="Assets\Scripts\Menu\MainMenu\MainMenuFunctionality.cs" />
     <Compile Include="Assets\Scripts\Menu\MainMenu\GuideGateButtonFunctionality.cs" />
     <Compile Include="Assets\Scripts\Menu\Tutorial\TutorialOverlay.cs" />
     <Compile Include="Assets\Scripts\VisualElements\LevelTextSetter.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\PuzzleStuff\OneQubitGameManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\PuzzleStuff\QubitWireController.cs" />
     <Compile Include="Assets\Scripts\BarChart\BarChartManager.cs" />
     <Compile Include="Assets\Scripts\GameLogic\2QubitTile.cs" />
   </ItemGroup>
