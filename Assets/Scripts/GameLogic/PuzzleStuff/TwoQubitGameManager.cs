@@ -26,6 +26,8 @@ public class TwoQubitGameManager : MonoBehaviour
         if (qubitWireController1 != null)
         {
             qubitWireController1.FinalStateChanged.AddListener(UpdateQubit1State);
+            qubitWireController1.CNot.AddListener(ControlNode1);
+            qubitWireController1.CNotRemoved.AddListener(ControlNode1);
         }
         else
         {
@@ -35,6 +37,8 @@ public class TwoQubitGameManager : MonoBehaviour
         if (qubitWireController2 != null)
         {
             qubitWireController2.FinalStateChanged.AddListener(UpdateQubit2State);
+            qubitWireController2.CNot.AddListener(ControlNode2);
+            qubitWireController2.CNotRemoved.AddListener(ControlNode2);
         }
         else
         {
@@ -47,11 +51,15 @@ public class TwoQubitGameManager : MonoBehaviour
         if (qubitWireController1 != null)
         {
             qubitWireController1.FinalStateChanged.RemoveListener(UpdateQubit1State);
+            qubitWireController1.CNot.RemoveListener(ControlNode1);
+            qubitWireController1.CNotRemoved.RemoveListener(ControlNode1Removed);
         }
 
         if (qubitWireController2 != null)
         {
             qubitWireController2.FinalStateChanged.RemoveListener(UpdateQubit2State);
+            qubitWireController2.CNot.RemoveListener(ControlNode2);
+            qubitWireController2.CNotRemoved.RemoveListener(ControlNode2Removed);
         }
     }
 
@@ -76,6 +84,56 @@ public class TwoQubitGameManager : MonoBehaviour
     {
         finalStateQubit2 = finalState;
         CheckWinState();
+    }
+
+    private void ControlNode1(int qubitIndex)
+    {
+        // Get the current state of wire 1
+        Qubit qubit1 = qubitWireController1.GetSnapPointState(qubitIndex);
+
+        // Get gate type of snap point on wire 2
+        GameObject gateObject = qubitWireController2.GetGateObject(qubitIndex);
+
+        // Check if gate type is X
+        if (gateObject == null || gateObject.tag != "XGate") return;
+
+        // If control node is state |0>, prevent applying X gate to wire 2
+        if (qubit1.Alpha.Real == 0)
+        {
+            // Disable the gate on wire 2
+            qubitWireController2.DisableGate(qubitIndex);
+        }
+    }
+
+    private void ControlNode2(int qubitIndex)
+    {
+        // Get the current state of wire 2
+        Qubit qubit2 = qubitWireController2.GetSnapPointState(qubitIndex);
+
+        // Get gate type of snap point on wire 1
+        GameObject gateObject = qubitWireController1.GetGateObject(qubitIndex);
+
+        // Check if gate type is X
+        if (gateObject == null || gateObject.tag != "XGate") return;
+
+        // If control node is state |0>, prevent applying X gate to wire 1
+        if (qubit2.Alpha.Real == 0)
+        {
+            // Disable the gate on wire 1
+            qubitWireController1.DisableGate(qubitIndex);
+        }        
+    }
+
+    private void ControlNode1Removed(int qubitIndex)
+    {
+        // Enable the gate on wire 2
+        qubitWireController2.EnableGate(qubitIndex);
+    }
+
+    private void ControlNode2Removed(int qubitIndex)
+    {
+        // Enable the gate on wire 1
+        qubitWireController1.EnableGate(qubitIndex);
     }
 
     private void CheckWinState()
