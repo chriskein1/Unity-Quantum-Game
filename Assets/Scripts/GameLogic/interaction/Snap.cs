@@ -9,6 +9,7 @@ public class Snap : MonoBehaviour
     public UnityEvent GateChanged;
     private bool occupied = false;
     private bool correctGate = false;
+    private bool active = true;
     private GameObject gameObj;
 
     private Qubit qubit;
@@ -57,6 +58,11 @@ public class Snap : MonoBehaviour
         return gameObj;
     }
 
+    public void SetGateObject(GameObject gate)
+    {
+        gameObj = gate;
+    }
+
     public void SetState(Qubit qubit)
     {
         this.qubit = qubit;
@@ -89,5 +95,21 @@ public class Snap : MonoBehaviour
         {
             Debug.LogError("AudioManager instance not found!");
         }
+    }
+
+    // To be used by CNot
+    public void ActivateGate()
+    {
+        active = true;
+    }
+
+    public void DeactivateGate()
+    {
+        active = false;
+    }
+
+    public bool IsActive()
+    {
+        return active;
     }
 }
