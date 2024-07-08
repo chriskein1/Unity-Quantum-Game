@@ -7,7 +7,7 @@ using UnityEngine;
 
 public static class QuantumGates
 {
-   
+
     public static Qubit ApplyHadamard(Qubit qubit)
     {
         // The Hadamard matrix is 1/√2 * [[1, 1], [1, -1]]
@@ -42,5 +42,21 @@ public static class QuantumGates
         Complex newBeta = -qubit.Beta;
 
         return new Qubit(newAlpha, newBeta);
+    }
+    public static void ApplyCNOT(ref Qubit controlQubit, ref Qubit targetQubit)
+    {
+        // If the control qubit is in state |1>, flip the target qubit
+        if (controlQubit.Beta.Magnitude > 0)
+        {
+            targetQubit = ApplyPauliX(targetQubit);
+        }
+    }
+
+    public static void ApplySWAP(ref Qubit qubit1, ref Qubit qubit2)
+    {
+        // Swap the states of qubit1 and qubit2
+        Qubit temp = qubit1;
+        qubit1 = qubit2;
+        qubit2 = temp;
     }
 }

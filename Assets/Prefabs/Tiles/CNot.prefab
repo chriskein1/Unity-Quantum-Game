@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1944052055414329114}
   m_Layer: 0
-  m_Name: YGate
-  m_TagString: YGate
+  m_Name: CNot
+  m_TagString: CNot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,12 +44,12 @@ GameObject:
   - component: {fileID: 4842876225768587816}
   - component: {fileID: 955778337717246029}
   - component: {fileID: 375423314463990796}
-  - component: {fileID: 7718710978211783504}
-  - component: {fileID: 8131767418326713762}
-  - component: {fileID: 2270854738408699324}
+  - component: {fileID: 7981813793020953683}
+  - component: {fileID: 2314360428507421791}
+  - component: {fileID: 5882187048038683546}
   m_Layer: 0
-  m_Name: YGate
-  m_TagString: YGate
+  m_Name: CNot
+  m_TagString: CNot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,7 +64,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1944052055414329114}
@@ -109,13 +109,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -841996231
   m_SortingLayer: 2
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 09c8b02aec768de4b843cb1cd6b68990, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: f3be689a2179e5140b37698a90680318, type: 3}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 10.87, y: 10.84}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -169,8 +169,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.045, y: 0.737}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 10.87, y: 10.84}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -178,7 +178,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7718710978211783504
+--- !u!114 &7981813793020953683
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -190,11 +190,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bc940c1321d911478e92de95cd1aa72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  header: Y Gate
-  content: flips the phase and state of qubit
-  headerColor: {r: 1, g: 0.88244104, b: 0, a: 1}
+  header: Z Gate
+  content: flips phase if state is one
+  headerColor: {r: 0.034872293, g: 1, b: 0, a: 1}
   contentColor: {r: 1, g: 1, b: 1, a: 1}
---- !u!50 &8131767418326713762
+--- !u!50 &2314360428507421791
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -221,7 +221,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &2270854738408699324
+--- !u!114 &5882187048038683546
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -21,7 +21,7 @@ public class OneQubitGameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("QubitWireController reference is missing in OneQubitWinStateManager.");
+            Debug.LogError("QubitWireController reference is missing in OneQubitGameManager.");
         }
     }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using System.Collections.Generic;
 using UnityEngine;
 using QubitType;
 using UnityEngine.Events;
@@ -13,7 +12,7 @@ public enum SingleQubitStateOptions
     Imaginary0, //i|0⟩
     NegativeState1,  // -|1⟩
     NegativeImaginary1, //-i|1⟩
-    NegativeImaginary0, //-i|0⟩
+    NegativeImaginary0, //-i|1⟩
     SuperpositionPlus,  // |+⟩ = 1/√2 (|0⟩ + |1⟩)
     SuperpositionMinus, // |−⟩ = 1/√2 (|0⟩ - |1⟩)
     ImaginarySuperpositionPlus, // i/√2 (|0⟩ + |1⟩)
@@ -24,9 +23,6 @@ public enum SingleQubitStateOptions
 public class QubitOperations
 {
     public UnityEvent OutputChanged; // Event for qubit controller
-    public UnityEvent<int> Control; // Event for CNot gate
-    public UnityEvent<int> ControlRemoved; // Event for removing CNot gate
-    private HashSet<int> controlNodes = new HashSet<int>();
 
     public Qubit ConvertToQubit(SingleQubitStateOptions state)
     {
@@ -109,11 +105,9 @@ public class QubitOperations
         return SingleQubitStateOptions.NoState; // Default fallback
     }
 
-    public void ApplyGateOperation(Snap snapComp, ref Qubit state, int qubitIndex)
+    public void ApplyGateOperation(GameObject gateObject, ref Qubit state)
     {
-
-        GameObject gateObject = snapComp.GetGateObject();
-        if (gateObject == null || !snapComp.IsActive())
+        if (gateObject == null)
         {
             return;
         }
@@ -135,21 +129,6 @@ public class QubitOperations
             case "HGate":
                 state = QuantumGates.ApplyHadamard(state);
                 break;
-
-            case "CNot":
-                // Invoke event passing the index of the qubit with the control node
-                if (!controlNodes.Contains(qubitIndex))
-                {
-                    controlNodes.Add(qubitIndex);
-                }
-                Control?.Invoke(qubitIndex);
-                break;
-        }
-
-        if (controlNodes.Contains(qubitIndex) && gateObject.tag != "CNot")
-        {
-            controlNodes.Remove(qubitIndex);
-            ControlRemoved?.Invoke(qubitIndex);
         }
     }
 }

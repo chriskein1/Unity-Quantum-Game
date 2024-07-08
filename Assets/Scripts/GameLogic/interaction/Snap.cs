@@ -9,7 +9,7 @@ public class Snap : MonoBehaviour
     public UnityEvent GateChanged;
     private bool occupied = false;
     private bool correctGate = false;
-    private bool active = true;
+   // private bool active = true;
     private GameObject gameObj;
 
     private Qubit qubit;
@@ -97,19 +97,19 @@ public class Snap : MonoBehaviour
         }
     }
 
-    // To be used by CNot
-    public void ActivateGate()
-    {
-        active = true;
-    }
+   
+    //public void ActivateGate()
+    //{
+    //    active = true;
+    //}
 
-    public void DeactivateGate()
-    {
-        active = false;
-    }
+    //public void DeactivateGate()
+    //{
+    //    active = false;
+    //}
 
-    public bool IsActive()
-    {
-        return active;
-    }
+    //public bool IsActive()
+    //{
+    //    return active;
+    //}
 }
