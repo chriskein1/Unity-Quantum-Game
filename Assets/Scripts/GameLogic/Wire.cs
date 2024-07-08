@@ -29,21 +29,21 @@ public class DrawWire : MonoBehaviour
     void Update()
     {
 
-        Qubit qubit = FindAnyObjectByType<QubitWireController>().GetInputQubit();
-        // Draw wire in order
-        // First from input to first snap point
-        DrawLine(inputTile.transform.position, snapLocation.transform.GetChild(0).position, qubit, 0);
+        //Qubit qubit = FindAnyObjectByType<QubitWireController>().GetInputQubit();
+        //// Draw wire in order
+        //// First from input to first snap point
+        //DrawLine(inputTile.transform.position, snapLocation.transform.GetChild(0).position, qubit, 0);
 
-        // Then from snap point to snap point
-        for (int i = 0; i < snapLocation.transform.childCount - 1; i++)
-        {
-            qubit = snapLocation.transform.GetChild(i).GetComponent<Snap>().GetState();
-            DrawLine(snapLocation.transform.GetChild(i).position, snapLocation.transform.GetChild(i + 1).position, qubit, i + 1);
-        }
+        //// Then from snap point to snap point
+        //for (int i = 0; i < snapLocation.transform.childCount - 1; i++)
+        //{
+        //    qubit = snapLocation.transform.GetChild(i).GetComponent<Snap>().GetState();
+        //    DrawLine(snapLocation.transform.GetChild(i).position, snapLocation.transform.GetChild(i + 1).position, qubit, i + 1);
+        //}
 
-        // Finally from last snap point to output
-        qubit = snapLocation.transform.GetChild(snapLocation.transform.childCount - 1).GetComponent<Snap>().GetState();
-        DrawLine(snapLocation.transform.GetChild(snapLocation.transform.childCount - 1).position, outputTile.transform.position, qubit, snapLocation.transform.childCount);
+        //// Finally from last snap point to output
+        //qubit = snapLocation.transform.GetChild(snapLocation.transform.childCount - 1).GetComponent<Snap>().GetState();
+        //DrawLine(snapLocation.transform.GetChild(snapLocation.transform.childCount - 1).position, outputTile.transform.position, qubit, snapLocation.transform.childCount);
     }
 
     void DrawLine(Vector3 start, Vector3 end, Qubit qubit, int index)

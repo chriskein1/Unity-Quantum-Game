@@ -11,6 +11,7 @@ public enum SingleQubitStateOptions
     Imaginary1, //i|1⟩
     Imaginary0, //i|0⟩
     NegativeState1,  // -|1⟩
+    NegativeState0,
     NegativeImaginary1, //-i|1⟩
     NegativeImaginary0, //-i|1⟩
     SuperpositionPlus,  // |+⟩ = 1/√2 (|0⟩ + |1⟩)
@@ -61,39 +62,45 @@ public class QubitOperations
     {
         double epsilon = 0.0001; // Small threshold for floating-point comparison
 
-        if (Math.Abs(qubit.Alpha.Real - 1) < epsilon && Math.Abs(qubit.Beta.Real) < epsilon)
+        Debug.Log($"Alpha: ({qubit.Alpha.Real}, {qubit.Alpha.Imaginary}), Beta: ({qubit.Beta.Real}, {qubit.Beta.Imaginary})");
+
+        if (Math.Abs(qubit.Alpha.Real - 1) < epsilon && Math.Abs(qubit.Alpha.Imaginary) < epsilon && Math.Abs(qubit.Beta.Real) < epsilon && Math.Abs(qubit.Beta.Imaginary) < epsilon)
         {
             return SingleQubitStateOptions.State0;
         }
-        if (Math.Abs(qubit.Alpha.Real) < epsilon && Math.Abs(qubit.Beta.Real - 1) < epsilon)
+        if (Math.Abs(qubit.Alpha.Real) < epsilon && Math.Abs(qubit.Alpha.Imaginary) < epsilon && Math.Abs(qubit.Beta.Real - 1) < epsilon && Math.Abs(qubit.Beta.Imaginary) < epsilon)
         {
             return SingleQubitStateOptions.State1;
         }
-        if (Math.Abs(qubit.Alpha.Real) < epsilon && Math.Abs(qubit.Beta.Real) < epsilon && Math.Abs(qubit.Alpha.Imaginary - 1) < epsilon)
+        if (Math.Abs(qubit.Alpha.Real - 1) < epsilon && Math.Abs(qubit.Alpha.Imaginary) < epsilon && Math.Abs(qubit.Beta.Real) < epsilon && Math.Abs(qubit.Beta.Imaginary - 1) < epsilon)
         {
             return SingleQubitStateOptions.Imaginary0;
         }
-        if (Math.Abs(qubit.Alpha.Real) < epsilon && Math.Abs(qubit.Beta.Imaginary - 1) < epsilon)
+        if (Math.Abs(qubit.Alpha.Real) < epsilon && Math.Abs(qubit.Alpha.Imaginary) < epsilon && Math.Abs(qubit.Beta.Real) < epsilon && Math.Abs(qubit.Beta.Imaginary - 1) < epsilon)
         {
             return SingleQubitStateOptions.Imaginary1;
         }
-        if (Math.Abs(qubit.Alpha.Real + 1) < epsilon || Math.Abs(qubit.Beta.Real + 1) < epsilon)
+        if (Math.Abs(qubit.Alpha.Real + 1) < epsilon && Math.Abs(qubit.Alpha.Imaginary) < epsilon && Math.Abs(qubit.Beta.Real) < epsilon && Math.Abs(qubit.Beta.Imaginary) < epsilon)
+        {
+            return SingleQubitStateOptions.NegativeState0;  // Added for negative |0>
+        }
+        if (Math.Abs(qubit.Alpha.Real) < epsilon && Math.Abs(qubit.Alpha.Imaginary) < epsilon && Math.Abs(qubit.Beta.Real + 1) < epsilon && Math.Abs(qubit.Beta.Imaginary) < epsilon)
         {
             return SingleQubitStateOptions.NegativeState1;
         }
-        if (Math.Abs(qubit.Alpha.Real) < epsilon && Math.Abs(qubit.Beta.Imaginary + 1) < epsilon)
-        {
-            return SingleQubitStateOptions.NegativeImaginary1;
-        }
-        if (Math.Abs(qubit.Alpha.Imaginary + 1) < epsilon || Math.Abs(qubit.Beta.Imaginary + 1) < epsilon)
+        if (Math.Abs(qubit.Alpha.Real) < epsilon && Math.Abs(qubit.Alpha.Imaginary + 1) < epsilon && Math.Abs(qubit.Beta.Real) < epsilon && Math.Abs(qubit.Beta.Imaginary) < epsilon)
         {
             return SingleQubitStateOptions.NegativeImaginary0;
+        }
+        if (Math.Abs(qubit.Alpha.Real) < epsilon && Math.Abs(qubit.Alpha.Imaginary) < epsilon && Math.Abs(qubit.Beta.Real) < epsilon && Math.Abs(qubit.Beta.Imaginary + 1) < epsilon)
+        {
+            return SingleQubitStateOptions.NegativeImaginary1;
         }
         if (Math.Abs(qubit.Alpha.Imaginary - 1 / Math.Sqrt(2)) < epsilon && Math.Abs(qubit.Beta.Imaginary - 1 / Math.Sqrt(2)) < epsilon)
         {
             return SingleQubitStateOptions.ImaginarySuperpositionPlus;
         }
-        if ((Math.Abs(qubit.Alpha.Imaginary + 1 / Math.Sqrt(2)) < epsilon || Math.Abs(qubit.Beta.Imaginary + 1 / Math.Sqrt(2)) < epsilon))
+        if (Math.Abs(qubit.Alpha.Imaginary + 1 / Math.Sqrt(2)) < epsilon && Math.Abs(qubit.Beta.Imaginary + 1 / Math.Sqrt(2)) < epsilon)
         {
             return SingleQubitStateOptions.ImaginarySuperpositionMinus;
         }
@@ -104,6 +111,8 @@ public class QubitOperations
 
         return SingleQubitStateOptions.NoState; // Default fallback
     }
+
+
 
     public void ApplyGateOperation(GameObject gateObject, ref Qubit state)
     {

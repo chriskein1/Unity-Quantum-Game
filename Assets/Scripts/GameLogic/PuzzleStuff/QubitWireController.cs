@@ -1,55 +1,44 @@
 ﻿using QubitType;
 using System.Collections.Generic;
-using UnityEngine.Events;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class QubitWireController : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> SnapPoints = new List<GameObject>();
+    private List<GameObject> SnapPoints = new List<GameObject>();
     [SerializeField] private InputState inputTile;
     [SerializeField] private OutputState outputTile;
-    private QubitOperations qubitOperations = new QubitOperations();
 
-    private List<Qubit> snapPointStates = new List<Qubit>();
-    private Qubit inputState;
-    public UnityEvent<Qubit> FinalStateChanged;
-
-    private void Start()
+    private void Awake()
     {
-        SetSnapPoints();
+        PopulateSnapPoints();
     }
-    public void SetInputState(SingleQubitStateOptions state)
-    {
-        inputState = qubitOperations.ConvertToQubit(state);
-        inputTile.UpdateText(state); // Update the input text
-        SetSnapPoints();
-    }
-    public void SetSnapPoints()
-    {
-        snapPointStates.Clear();
-        snapPointStates.Add(inputState);
 
-        foreach (GameObject p in SnapPoints)
+
+    private void PopulateSnapPoints()
+    {
+        SnapPoints.Clear();
+        for (int i = 0; i < transform.childCount; i++)
         {
-            Snap snapComp = p.GetComponent<Snap>();
-            GameObject gateObject = snapComp.GetGateObject();
-            Qubit state = snapPointStates[snapPointStates.Count - 1];
+            SnapPoints.Add(transform.GetChild(i).gameObject);
 
-            qubitOperations.ApplyGateOperation(gateObject, ref state);
-            snapPointStates.Add(state);
-
-            snapComp.SetState(state);
         }
-
-        Qubit finalState = snapPointStates[snapPointStates.Count - 1];
-        outputTile.SetState(finalState);
-
-
-        FinalStateChanged?.Invoke(finalState);
     }
-
-    public Qubit GetInputQubit()
+    public List<GameObject> GetSnapPoints()
     {
-        return inputState;
+        return SnapPoints;
     }
+
+    public void SetInput(SingleQubitStateOptions q)
+    {
+        inputTile.UpdateText(q);
+    }
+
+
+    public void SetOutput(Qubit q)
+    {
+        outputTile.SetState(q);
+    }
+
+
 }

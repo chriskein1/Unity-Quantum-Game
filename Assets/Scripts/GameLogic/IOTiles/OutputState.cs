@@ -50,6 +50,9 @@ public class OutputState : MonoBehaviour
             case SingleQubitStateOptions.Imaginary1:
                 ShowBasisState("i|1>");
                 break;
+            case SingleQubitStateOptions.NegativeState0:
+                ShowBasisState("-|0>"); // Added handling for NegativeState0
+                break;
             case SingleQubitStateOptions.NegativeState1:
                 ShowBasisState("-|1>");
                 break;
