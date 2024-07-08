@@ -13,6 +13,8 @@ public class CircuitManager : MonoBehaviour
     private List<List<GameObject>> snapPointLists = new List<List<GameObject>>();
     private List<List<Qubit>> snapPointStates = new List<List<Qubit>>();
     private QubitOperations qubitOperations = new QubitOperations();
+    public List<VisualQubit> visualInput;
+    public List<VisualQubit> visualOutput;
 
     private void Start()
     {
@@ -126,12 +128,15 @@ public class CircuitManager : MonoBehaviour
             Qubit finalStateQubit2 = snapPointStates[1][numColumns - 1];
             UpdateBarChart(finalStateQubit1, finalStateQubit2);
             win = EvaluateWin(new List<Qubit> { finalStateQubit1, finalStateQubit2 });
+            visualOutput[0].SetQubit(finalStateQubit1, 0);
+            visualOutput[1].SetQubit(finalStateQubit2, 1);
         }
         else if (qubitWireControllers.Count == 1)
         {
             Qubit finalStateQubit = snapPointStates[0][numColumns - 1];
             UpdateBarChartSingle(finalStateQubit);
             win = EvaluateWin(new List<Qubit> { finalStateQubit });
+            visualOutput[0].SetQubit(finalStateQubit, 0);
         }
 
         if (win)
@@ -214,6 +219,7 @@ public class CircuitManager : MonoBehaviour
                 Qubit inputQubit = qubitOperations.ConvertToQubit(qubitInputs[i]);
                 snapPointStates[i][0] = inputQubit;
                 qubitWireControllers[i].SetInput(qubitInputs[i]);
+                visualInput[i].SetQubit(inputQubit, i);
             }
         }
     }
