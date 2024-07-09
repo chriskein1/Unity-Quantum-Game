@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TutorialLevelController : MonoBehaviour
 {
-
+    public GameObject levelTutorial;
     public GameObject introTutorial;
     private bool enabledOverlay = true;
 
@@ -12,7 +12,8 @@ public class TutorialLevelController : MonoBehaviour
     {
         ClickSound();
         introTutorial.SetActive(false);
-        enabledOverlay = false;
+        levelTutorial.SetActive(true);
+        enabledOverlay = true;
 
     }
 
@@ -20,9 +21,16 @@ public class TutorialLevelController : MonoBehaviour
     {
         ClickSound();
         introTutorial.SetActive(true);
+        levelTutorial.SetActive(false);
         enabledOverlay = true;
     }
 
+    public void DisableLevelTutorial()
+    {
+        ClickSound();
+        levelTutorial.SetActive(false);
+        enabledOverlay = false;
+    }
     public bool GetStatus()
     {
 

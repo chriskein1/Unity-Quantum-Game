@@ -43,15 +43,6 @@ public class CircuitManager : MonoBehaviour
             snapPointStates.Add(qubitList);
         }
 
-        // Ensure that all snapPointLists and snapPointStates are correctly populated
-        for (int i = 0; i < snapPointLists.Count; i++)
-        {
-            Debug.Log($"snapPointLists[{i}] has {snapPointLists[i].Count} elements.");
-        }
-        for (int i = 0; i < snapPointStates.Count; i++)
-        {
-            Debug.Log($"snapPointStates[{i}] has {snapPointStates[i].Count} elements.");
-        }
     }
 
     public void Evaluate()
@@ -63,8 +54,8 @@ public class CircuitManager : MonoBehaviour
         }
 
         int numColumns = snapPointLists[0].Count;
-        Debug.Log($"Evaluating circuit with {numColumns} columns and {qubitWireControllers.Count} rows.");
 
+        // Evaluate each column from left to right
         for (int col = 0; col < numColumns; col++)
         {
             for (int row = 0; row < qubitWireControllers.Count; row++)
@@ -78,6 +69,21 @@ public class CircuitManager : MonoBehaviour
                 GameObject snapPoint = snapPointLists[row][col];
                 Snap snapComp = snapPoint.GetComponent<Snap>();
                 GameObject gateObject = snapComp.GetGateObject();
+
+                bool skipSecondRow = false;
+
+                // Check for adjacent 2bit gates in the previous row
+                if (row > 0)
+                {
+                    GameObject adjacentSnapPoint = snapPointLists[row - 1][col];
+                    Snap adjacentSnapComp = adjacentSnapPoint.GetComponent<Snap>();
+                    GameObject adjacentGateObject = adjacentSnapComp.GetGateObject();
+
+                    if (adjacentGateObject != null && (adjacentGateObject.CompareTag("ctrl") || adjacentGateObject.CompareTag("swap")))
+                    {
+                        skipSecondRow = true;
+                    }
+                }
 
                 if (gateObject != null)
                 {
@@ -100,42 +106,45 @@ public class CircuitManager : MonoBehaviour
                     {
                         snapPointStates[row][col] = qubitOperations.ConvertToQubit(qubitInputs[row]);
                     }
-                    else
+                    else if (!skipSecondRow) // Only set the state from the previous column if no adjacent CNOT or swap
                     {
                         snapPointStates[row][col] = snapPointStates[row][col - 1];
                     }
                 }
 
                 snapComp.SetState(snapPointStates[row][col]);
+                Debug.Log($"Snap point state at row {row}, col {col}: {snapPointStates[row][col]}");
+
+                // Set the output state for the current column
+                if (col == numColumns - 1)
+                {
+                    Qubit finalState = snapPointStates[row][col];
+                    Debug.Log($"Set outputs for row {row}: {finalState}");
+                    qubitWireControllers[row].SetOutput(finalState);
+                }
             }
         }
 
         bool win = false;
 
-        // Update the final state for each qubit wire
-        for (int row = 0; row < qubitWireControllers.Count; row++)
-        {
-            Qubit finalState = snapPointStates[row][numColumns - 1];
-            Debug.Log($"Set outputs for row {row}: {finalState}");
-            qubitWireControllers[row].SetOutput(finalState);
-        }
+        // Update the visual outputs and evaluate the win condition
         if (qubitWireControllers.Count >= 2)
         {
             Qubit finalStateQubit1 = snapPointStates[0][numColumns - 1];
             Qubit finalStateQubit2 = snapPointStates[1][numColumns - 1];
             UpdateBarChart(finalStateQubit1, finalStateQubit2);
             win = EvaluateWin(new List<Qubit> { finalStateQubit1, finalStateQubit2 });
-            visualOutput[0].SetQubit(finalStateQubit1, 0);
-            visualOutput[1].SetQubit(finalStateQubit2, 1);
+           // visualOutput[0].SetQubit(finalStateQubit1, 0);
+           // visualOutput[1].SetQubit(finalStateQubit2, 1);
         }
         else if (qubitWireControllers.Count == 1)
         {
             Qubit finalStateQubit = snapPointStates[0][numColumns - 1];
-            Debug.Log("updating bar chart");
+            Debug.Log("Updating bar chart");
 
             UpdateBarChartSingle(finalStateQubit);
             win = EvaluateWin(new List<Qubit> { finalStateQubit });
-            visualOutput[0].SetQubit(finalStateQubit, 0);
+            //visualOutput[0].SetQubit(finalStateQubit, 0);
         }
 
         if (win)
@@ -145,54 +154,81 @@ public class CircuitManager : MonoBehaviour
         }
     }
 
+
+
     private void HandleCNOTGate(int row, int col, GameObject gateObject)
     {
-        Qubit controlQubit = snapPointStates[row][col - 1];
+        // Ensure col is not the first column
+        if (col == 0)
+        {
+            Debug.LogError("CNOT gate cannot be applied in the first column.");
+            return;
+        }
 
-        // Check for target qubits in adjacent rows in the same column
+        Qubit controlQubit = snapPointStates[row][col - 1];
+        Debug.Log($"Control qubit state at row {row}, col {col - 1}: {controlQubit}");
+
+        // Apply CNOT gate to the target qubits in adjacent rows
         for (int targetRow = 0; targetRow < qubitWireControllers.Count; targetRow++)
         {
             if (targetRow == row) continue;
 
-            GameObject targetSnapPoint = snapPointLists[targetRow][col];
-            Snap targetSnapComp = targetSnapPoint.GetComponent<Snap>();
-            GameObject targetGateObject = targetSnapComp.GetGateObject();
-
-            if (targetGateObject != null)
+            if (col >= snapPointLists[targetRow].Count)
             {
-                Qubit targetQubit = snapPointStates[targetRow][col - 1];
-                QuantumGates.ApplyCNOT(ref controlQubit, ref targetQubit);
-                snapPointStates[targetRow][col] = targetQubit;
-                targetSnapComp.SetState(targetQubit);
+                Debug.LogError($"Column index {col} out of range for target row {targetRow}");
+                continue;
             }
+
+            Qubit targetQubit = snapPointStates[targetRow][col - 1];
+            Debug.Log($"Applying CNOT gate: control qubit state at row {row}, col {col - 1}: {controlQubit}, target qubit state at row {targetRow}, col {col - 1}: {targetQubit}");
+            QuantumGates.ApplyCNOT(ref controlQubit, ref targetQubit);
+            snapPointStates[targetRow][col] = targetQubit;
+            snapPointLists[targetRow][col].GetComponent<Snap>().SetState(targetQubit);
+            Debug.Log($"Resulting target qubit state at row {targetRow}, col {col}: {targetQubit}");
         }
 
         snapPointStates[row][col] = controlQubit;
+        Debug.Log($"Resulting control qubit state at row {row}, col {col}: {controlQubit}");
     }
+
+
+
 
     private void HandleSWAPGate(int row, int col, GameObject gateObject)
     {
-        // Find the other qubit to swap with
-        for (int swapRow = 0; swapRow < qubitWireControllers.Count; swapRow++)
+        Debug.Log($"Handling SWAP gate at row {row}, col {col}");
+
+        // Ensure col is not the first column
+        if (col == 0)
         {
-            if (swapRow == row) continue;
-
-            GameObject swapSnapPoint = snapPointLists[swapRow][col];
-            Snap swapSnapComp = swapSnapPoint.GetComponent<Snap>();
-            GameObject swapGateObject = swapSnapComp.GetGateObject();
-
-            if (swapGateObject != null && swapGateObject.CompareTag("swap"))
-            {
-                Qubit qubit1 = snapPointStates[row][col - 1];
-                Qubit qubit2 = snapPointStates[swapRow][col - 1];
-                QuantumGates.ApplySWAP(ref qubit1, ref qubit2);
-                snapPointStates[row][col] = qubit1;
-                snapPointStates[swapRow][col] = qubit2;
-                swapSnapComp.SetState(qubit2);
-                break;
-            }
+            Debug.LogError("SWAP gate cannot be applied in the first column.");
+            return;
         }
+
+        // Calculate the adjacent row to swap with (next row, wrapping around)
+        int swapRow = (row + 1) % qubitWireControllers.Count;
+
+        // Ensure the swapRow is valid and not out of range
+        if (col >= snapPointLists[swapRow].Count)
+        {
+            Debug.LogError($"Column index {col} out of range for swap row {swapRow}");
+            return;
+        }
+
+        Qubit qubit1 = snapPointStates[row][col - 1];
+        Qubit qubit2 = snapPointStates[swapRow][col - 1];
+        QuantumGates.ApplySWAP(ref qubit1, ref qubit2);
+
+        snapPointStates[row][col] = qubit1;
+        snapPointStates[swapRow][col] = qubit2;
+
+        Debug.Log($"Swapped qubits: qubit1={qubit1}, qubit2={qubit2} at row {row} and swapRow {swapRow}");
+
+        // Update the state of the snap points
+        snapPointLists[row][col].GetComponent<Snap>().SetState(qubit1);
+        snapPointLists[swapRow][col].GetComponent<Snap>().SetState(qubit2);
     }
+
 
     private void ApplySingleQubitGate(int row, int col, GameObject gateObject)
     {
@@ -219,7 +255,7 @@ public class CircuitManager : MonoBehaviour
                 Qubit inputQubit = qubitOperations.ConvertToQubit(qubitInputs[i]);
                 snapPointStates[i][0] = inputQubit;
                 qubitWireControllers[i].SetInput(qubitInputs[i]);
-                visualInput[i].SetQubit(inputQubit, i);
+                //visualInput[i].SetQubit(inputQubit, i);
             }
         }
     }
@@ -267,6 +303,10 @@ public class CircuitManager : MonoBehaviour
             return false;
         }
 
+        if(qubitWireControllers.Count == 1)
+        {
+            return winState[0] == qubitOperations.ConvertToStateOption(finalStates[0]); 
+        }
         List<Qubit> winStateQ = new List<Qubit>();
         foreach (SingleQubitStateOptions state in winState)
         {
@@ -355,4 +395,5 @@ public class CircuitManager : MonoBehaviour
         // Compare positive values for alpha and beta
         return (Math.Abs(q1.Alpha.Real - q2.Alpha.Real) < tolerance && Math.Abs(q1.Beta.Real - q2.Beta.Real) < tolerance);
     }
+
 }

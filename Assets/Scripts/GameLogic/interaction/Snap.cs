@@ -7,6 +7,7 @@ public class Snap : MonoBehaviour
 {
     // Events for a gate being added or removed
     public UnityEvent GateChanged;
+    [SerializeField] private bool disableSnapping = false;
     private bool occupied = false;
     private bool correctGate = false;
    // private bool active = true;
@@ -19,7 +20,7 @@ public class Snap : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (occupied == false)
+        if (!disableSnapping && occupied == false)
         {
             Drag dragComponent = other.GetComponent<Drag>();
             if (dragComponent != null)

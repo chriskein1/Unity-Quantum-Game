@@ -5,6 +5,9 @@ using UnityEngine;
 /// </summary>
 public class Drag : MonoBehaviour
 {
+    [SerializeField] private GameObject dragPoint;
+
+
     private bool hasRigidbody;
     private bool dragging = false;
     private Vector3 offset;
@@ -61,8 +64,20 @@ public class Drag : MonoBehaviour
             snapped = false;
             // Reset the object's rotation to the original rotation.
             transform.rotation = originalRotation;
-            // Calculate the offset based on the current position.
-            offset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            // If dragPoint is set, position the mouse over the dragPoint
+            if (dragPoint != null)
+            {
+                offset = dragPoint.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                // Move the object to place the dragPoint under the mouse
+                transform.position = dragPoint.transform.position;
+            }
+            else
+            {
+                // Calculate the offset based on the current position.
+                offset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            }
+
             dragging = true;
         }
     }

@@ -40,7 +40,26 @@ namespace QubitType
                 throw new ArgumentException("The qubit state must be normalized: |α|^2 + |β|^2 = 1");
             }
         }
+        public int Measure()
+        {
+            float prob0 = (float)(Alpha.Real * Alpha.Real + Alpha.Imaginary * Alpha.Imaginary);
+            float rand = UnityEngine.Random.Range(0.0f, 1.0f);
 
+            if (rand < prob0)
+            {
+                // Collapse to state |0⟩
+                Alpha = new Complex(1, 0);
+                Beta = new Complex(0, 0);
+                return 0;
+            }
+            else
+            {
+                // Collapse to state |1⟩
+                Alpha = new Complex(0, 0);
+                Beta = new Complex(1, 0);
+                return 1;
+            }
+        }
         // Method to check if the qubit is in superposition
         public bool IsInSuperposition()
         {
