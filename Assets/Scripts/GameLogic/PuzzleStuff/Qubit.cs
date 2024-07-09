@@ -82,9 +82,9 @@ namespace QubitType
         }
 
         // Method to compare two qubits with a tolerance for floating-point precision
-        public bool IsApproximatelyEqual(Qubit other, double tolerance = 1e-10)
+        public bool IsApproximatelyEqual(Qubit other, double epsilon = 1e-10)
         {
-            return Complex.Abs(Alpha - other.Alpha) < tolerance && Complex.Abs(Beta - other.Beta) < tolerance;
+            return Complex.Abs(Alpha - other.Alpha) < epsilon && Complex.Abs(Beta - other.Beta) < epsilon;
         }
     }
 }

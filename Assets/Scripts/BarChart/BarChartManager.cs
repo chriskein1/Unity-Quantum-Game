@@ -25,7 +25,7 @@ public class BarChartManager : MonoBehaviour
     {
         if (sliderIndex >= 0 && sliderIndex < BarSliders.Length)
         {
-            if (activeCoroutines[sliderIndex] != null)
+            if (activeCoroutines[sliderIndex] != null && this != null && gameObject != null)
             {
                 StopCoroutine(activeCoroutines[sliderIndex]);
             }

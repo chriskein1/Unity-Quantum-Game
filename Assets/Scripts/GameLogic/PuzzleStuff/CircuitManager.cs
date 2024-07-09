@@ -9,6 +9,7 @@ public class CircuitManager : MonoBehaviour
     [SerializeField] private List<QubitWireController> qubitWireControllers;
     [SerializeField] private List<SingleQubitStateOptions> qubitInputs;
     [SerializeField] private List<SingleQubitStateOptions> winState;
+    [SerializeField] private GameObject winScreen;
     [SerializeField] private BarChartManager barChartManager;
     private List<List<GameObject>> snapPointLists = new List<List<GameObject>>();
     private List<List<Qubit>> snapPointStates = new List<List<Qubit>>();
@@ -86,10 +87,6 @@ public class CircuitManager : MonoBehaviour
                     {
                         HandleSWAPGate(row, col, gateObject);
                     }
-                    else if (gateObject.CompareTag("target"))
-                    {
-                        // Target gates are handled by the control gate
-                    }
                     else
                     {
                         ApplySingleQubitGate(row, col, gateObject);
@@ -130,12 +127,15 @@ public class CircuitManager : MonoBehaviour
         else if (qubitWireControllers.Count == 1)
         {
             Qubit finalStateQubit = snapPointStates[0][numColumns - 1];
+            Debug.Log("updating bar chart");
+
             UpdateBarChartSingle(finalStateQubit);
             win = EvaluateWin(new List<Qubit> { finalStateQubit });
         }
 
         if (win)
         {
+            winScreen.SetActive(true);
             Debug.Log("YOU WIN!!!!!!");
         }
     }

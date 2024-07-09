@@ -5,7 +5,7 @@ using UnityEngine;
 public class GateHolderScript : MonoBehaviour
 {
     [SerializeField] private List<GameObject> Gates = new List<GameObject>();
-    [SerializeField] private Camera mainCamera; // Reference to the main camera
+     private Camera mainCamera; // Reference to the main camera
     [SerializeField] private int amountOfXGates;
     [SerializeField] private int amountOfYGates;
     [SerializeField] private int amountOfZGates;
@@ -22,6 +22,7 @@ public class GateHolderScript : MonoBehaviour
         gateCounts["ZGate"] = amountOfZGates;
         gateCounts["HGate"] = amountOfHGates;
         UpdateGateCountTexts();
+        mainCamera = FindObjectOfType<Camera>();
     }
 
     public void SpawnAndDragGate(string gateTag)
