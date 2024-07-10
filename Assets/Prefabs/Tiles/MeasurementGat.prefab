@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 2314360428507421791}
   - component: {fileID: 5882187048038683546}
   m_Layer: 0
-  m_Name: ZGate
+  m_Name: measurementgate
   m_TagString: ZGate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,6 +133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0639c926f20bc6b4a85b9c2893764f4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SnapPosition: {fileID: 0}
+  disableSnap: 0
 --- !u!61 &375423314463990796
 BoxCollider2D:
   m_ObjectHideFlags: 0

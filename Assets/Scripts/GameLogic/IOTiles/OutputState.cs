@@ -34,7 +34,6 @@ public class OutputState : MonoBehaviour
     {
         // Determine the current state as an enum
         SingleQubitStateOptions currentState = qubitOperations.ConvertToStateOption(qubit);
-        print($"Current state {currentState}");
         // Update the visual representation based on the current state
         switch (currentState)
         {

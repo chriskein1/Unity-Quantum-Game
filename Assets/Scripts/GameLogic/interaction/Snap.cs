@@ -11,41 +11,67 @@ public class Snap : MonoBehaviour
     private bool occupied = false;
     private bool correctGate = false;
    // private bool active = true;
-    private GameObject gameObj;
-
+    private GameObject gate;
+    private Drag dragComponent;
     private Qubit qubit;
+    private CircuitManager circuitManager;
 
-
- 
+    private void Start()
+    {
+        // Find the CircuitManager in the scene
+        circuitManager = FindObjectOfType<CircuitManager>();
+        if (circuitManager == null)
+        {
+            Debug.LogError("CircuitManager not found in the scene!");
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!disableSnapping && occupied == false)
         {
-            Drag dragComponent = other.GetComponent<Drag>();
-            if (dragComponent != null)
+            dragComponent = other.GetComponent<Drag>();
+
+            if (dragComponent != null && !dragComponent.IsDragging() && dragComponent.CanSnap() && !dragComponent.IsSnapped())
             {
-                ClickOnSound();
-                dragComponent.Snapping();
-                // Snap the object to the center of the trigger plus any adjustment
-                other.transform.position = transform.position;
-                gameObj = other.gameObject;
-                occupied = true;
-                GateChanged.Invoke();
+                SnapObject(other.gameObject);
             }
         }
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (!disableSnapping && occupied == false && dragComponent != null)
+        {
+            if (!dragComponent.IsDragging() && dragComponent.CanSnap() && !dragComponent.IsSnapped())
+            {
+                SnapObject(collision.gameObject);
+            }
+        }
+    }
+
+    //    public void SnapToPosition(GameObject obj)
+    //{
+    //    if (!disableSnapping && !occupied)
+    //    {
+    //        ClickOnSound();
+    //        obj.transform.position = transform.position;
+    //        gameObj = obj;
+    //        occupied = true;
+    //        GateChanged.Invoke();
+    //    }
+    //}
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (gameObj == collision.gameObject)
+        if (gate == collision.gameObject)
         {
                 ClickOffSound();
             
             occupied = false;
-            gameObj = null;
+            gate = null;
             correctGate = false;
             GateChanged.Invoke();
+            dragComponent = null;
         }
     }
 
@@ -56,12 +82,12 @@ public class Snap : MonoBehaviour
 
     public GameObject GetGateObject()
     {
-        return gameObj;
+        return gate;
     }
 
-    public void SetGateObject(GameObject gate)
+    public void SetGateObject(GameObject Gate)
     {
-        gameObj = gate;
+        gate = Gate;
     }
 
     public void SetState(Qubit qubit)
@@ -73,7 +99,39 @@ public class Snap : MonoBehaviour
     {
         return qubit;
     }
+    private void SnapObject(GameObject obj)
+    {
+        ClickOnSound();
+        obj.transform.position = gameObject.transform.position;
 
+        dragComponent.Snapping();
+        gate = obj;
+        occupied = true;
+        if (gate.CompareTag("ctrl") || gate.CompareTag("swap"))
+            Snap2BitGate(gate);
+
+        GateChanged.Invoke();
+    }
+
+
+    public void Snap2BitGate(GameObject obj)
+    {
+        var (row, yDistance) = circuitManager.FindSnapPointRow(gameObject);
+        Vector3 newPosition = obj.transform.position;
+
+
+        if (row == 0)
+        {
+            newPosition.y -= yDistance;  // Add 1 to the y coordinate
+
+        }
+        else if (row == 1)
+        {
+            newPosition.y += yDistance;  // Add 1 to the y coordinate
+            obj.transform.Rotate(0, 0, 180);
+        }
+        obj.transform.position = newPosition;
+    }
     private void ClickOnSound()
     {
         if (AudioManager.instance != null)
@@ -97,20 +155,5 @@ public class Snap : MonoBehaviour
             Debug.LogError("AudioManager instance not found!");
         }
     }
-
-   
-    //public void ActivateGate()
-    //{
-    //    active = true;
-    //}
-
-    //public void DeactivateGate()
-    //{
-    //    active = false;
-    //}
-
-    //public bool IsActive()
-    //{
-    //    return active;
-    //}
+    
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Numerics;
 using System;
+using UnityEditor.Tilemaps;
 
 namespace QubitType
 {
@@ -13,6 +14,7 @@ namespace QubitType
         // Probability amplitude of 1
         public Complex Beta;
 
+        
         // Constructor
         public Qubit(Complex alpha, Complex beta)
         {

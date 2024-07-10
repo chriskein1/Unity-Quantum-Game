@@ -5,9 +5,8 @@ using UnityEngine;
 /// </summary>
 public class Drag : MonoBehaviour
 {
-    [SerializeField] private GameObject dragPoint;
-
-
+    [SerializeField] private GameObject SnapPosition;
+    [SerializeField] private bool disableSnap;
     private bool hasRigidbody;
     private bool dragging = false;
     private Vector3 offset;
@@ -15,7 +14,6 @@ public class Drag : MonoBehaviour
     private Quaternion originalRotation;
     private bool snapped = false;
     private Rigidbody2D rb;
-
     private void Start()
     {
         // Record the size of the sprite so we can limit it to the screen if necessary.
@@ -59,24 +57,16 @@ public class Drag : MonoBehaviour
         if (Time.deltaTime > 0)
         {
             if (snapped && hasRigidbody)
+            {
                 rb.bodyType = RigidbodyType2D.Dynamic;
+            }
 
             snapped = false;
             // Reset the object's rotation to the original rotation.
             transform.rotation = originalRotation;
-
-            // If dragPoint is set, position the mouse over the dragPoint
-            if (dragPoint != null)
-            {
-                offset = dragPoint.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                // Move the object to place the dragPoint under the mouse
-                transform.position = dragPoint.transform.position;
-            }
-            else
-            {
-                // Calculate the offset based on the current position.
+               // Calculate the offset based on the current position.
                 offset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            }
+          
 
             dragging = true;
         }
@@ -107,19 +97,28 @@ public class Drag : MonoBehaviour
     {
         // Stop dragging.
         dragging = false;
+        
     }
 
-    public void StopDragging()
+    public bool IsDragging()
     {
-        dragging = false;
+        return dragging;
     }
 
+    public bool IsSnapped()
+    {
+        return snapped;
+    }
+
+    public bool CanSnap()
+    {
+        return !disableSnap;
+    }
     public void Snapping()
     {
         snapped = true;
         if (hasRigidbody)
             rb.bodyType = RigidbodyType2D.Static;
-        dragging = false;
         // Reset the object's rotation to the original rotation.
         transform.rotation = originalRotation;
     }
@@ -129,4 +128,5 @@ public class Drag : MonoBehaviour
         dragging = true;
         offset = spawnPosition - Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
+ 
 }

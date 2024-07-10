@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using QubitType;
 using System;
 using System.Numerics;
-
+using Vector3 = UnityEngine.Vector3;
 public class CircuitManager : MonoBehaviour
 {
     [SerializeField] private List<QubitWireController> qubitWireControllers;
@@ -16,10 +16,11 @@ public class CircuitManager : MonoBehaviour
     private QubitOperations qubitOperations = new QubitOperations();
     public List<VisualQubit> visualInput;
     public List<VisualQubit> visualOutput;
-
+    float yDistance;
     private void Start()
     {
         InitializeSnapPointLists();
+         yDistance = Mathf.Abs(snapPointLists[1][0].transform.position.y - snapPointLists[0][0].transform.position.y) / 2;
         SetInputs();
         Evaluate();
     }
@@ -33,7 +34,7 @@ public class CircuitManager : MonoBehaviour
         {
             List<GameObject> snapPoints = controller.GetSnapPoints();
             snapPointLists.Add(snapPoints);
-            Debug.Log($"Added {snapPoints.Count} snap points for controller {controller.name}");
+  
 
             List<Qubit> qubitList = new List<Qubit>();
             for (int i = 0; i < snapPoints.Count; i++)
@@ -113,13 +114,12 @@ public class CircuitManager : MonoBehaviour
                 }
 
                 snapComp.SetState(snapPointStates[row][col]);
-                Debug.Log($"Snap point state at row {row}, col {col}: {snapPointStates[row][col]}");
+                
 
                 // Set the output state for the current column
                 if (col == numColumns - 1)
                 {
                     Qubit finalState = snapPointStates[row][col];
-                    Debug.Log($"Set outputs for row {row}: {finalState}");
                     qubitWireControllers[row].SetOutput(finalState);
                 }
             }
@@ -140,7 +140,7 @@ public class CircuitManager : MonoBehaviour
         else if (qubitWireControllers.Count == 1)
         {
             Qubit finalStateQubit = snapPointStates[0][numColumns - 1];
-            Debug.Log("Updating bar chart");
+            
 
             UpdateBarChartSingle(finalStateQubit);
             win = EvaluateWin(new List<Qubit> { finalStateQubit });
@@ -166,7 +166,7 @@ public class CircuitManager : MonoBehaviour
         }
 
         Qubit controlQubit = snapPointStates[row][col - 1];
-        Debug.Log($"Control qubit state at row {row}, col {col - 1}: {controlQubit}");
+        //Debug.Log($"Control qubit state at row {row}, col {col - 1}: {controlQubit}");
 
         // Apply CNOT gate to the target qubits in adjacent rows
         for (int targetRow = 0; targetRow < qubitWireControllers.Count; targetRow++)
@@ -180,15 +180,17 @@ public class CircuitManager : MonoBehaviour
             }
 
             Qubit targetQubit = snapPointStates[targetRow][col - 1];
-            Debug.Log($"Applying CNOT gate: control qubit state at row {row}, col {col - 1}: {controlQubit}, target qubit state at row {targetRow}, col {col - 1}: {targetQubit}");
+            //Debug.Log($"Applying CNOT gate: control qubit state at row {row}, col {col - 1}: {controlQubit}, target qubit state at row {targetRow}, col {col - 1}: {targetQubit}");
             QuantumGates.ApplyCNOT(ref controlQubit, ref targetQubit);
             snapPointStates[targetRow][col] = targetQubit;
             snapPointLists[targetRow][col].GetComponent<Snap>().SetState(targetQubit);
-            Debug.Log($"Resulting target qubit state at row {targetRow}, col {col}: {targetQubit}");
+            //Debug.Log($"Resulting target qubit state at row {targetRow}, col {col}: {targetQubit}");
         }
 
         snapPointStates[row][col] = controlQubit;
-        Debug.Log($"Resulting control qubit state at row {row}, col {col}: {controlQubit}");
+        //Debug.Log($"Resulting control qubit state at row {row}, col {col}: {controlQubit}");
+
+
     }
 
 
@@ -196,7 +198,7 @@ public class CircuitManager : MonoBehaviour
 
     private void HandleSWAPGate(int row, int col, GameObject gateObject)
     {
-        Debug.Log($"Handling SWAP gate at row {row}, col {col}");
+        //Debug.Log($"Handling SWAP gate at row {row}, col {col}");
 
         // Ensure col is not the first column
         if (col == 0)
@@ -227,9 +229,10 @@ public class CircuitManager : MonoBehaviour
         // Update the state of the snap points
         snapPointLists[row][col].GetComponent<Snap>().SetState(qubit1);
         snapPointLists[swapRow][col].GetComponent<Snap>().SetState(qubit2);
+        
     }
 
-
+    
     private void ApplySingleQubitGate(int row, int col, GameObject gateObject)
     {
         Qubit state;
@@ -262,7 +265,7 @@ public class CircuitManager : MonoBehaviour
 
     private void UpdateBarChart(Qubit finalStateQubit1, Qubit finalStateQubit2)
     {
-        // Calculate probabilities for the states 00, 01, 10, and 11
+        // Calculate probabilities for the states |00⟩, |01⟩, |10⟩, and |11⟩
         float prob00 = MagnitudeSquared(finalStateQubit1.Alpha * finalStateQubit2.Alpha);
         float prob01 = MagnitudeSquared(finalStateQubit1.Alpha * finalStateQubit2.Beta);
         float prob10 = MagnitudeSquared(finalStateQubit1.Beta * finalStateQubit2.Alpha);
@@ -270,6 +273,7 @@ public class CircuitManager : MonoBehaviour
 
         barChartManager.UpdateBarChart(prob00, prob01, prob10, prob11);
     }
+
     private float MagnitudeSquared(Complex c)
     {
         return (float)(c.Real * c.Real + c.Imaginary * c.Imaginary);
@@ -395,5 +399,15 @@ public class CircuitManager : MonoBehaviour
         // Compare positive values for alpha and beta
         return (Math.Abs(q1.Alpha.Real - q2.Alpha.Real) < tolerance && Math.Abs(q1.Beta.Real - q2.Beta.Real) < tolerance);
     }
-
+    public (int row, float distance) FindSnapPointRow(GameObject snapPoint)
+    {
+        for (int row = 0; row < snapPointLists.Count; row++)
+        {
+            if (snapPointLists[row].Contains(snapPoint))
+            {
+                return (row, yDistance);
+            }
+        }
+        return (-1, -1f); 
+    }
 }

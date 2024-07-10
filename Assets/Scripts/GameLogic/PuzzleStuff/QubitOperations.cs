@@ -134,6 +134,10 @@ public class QubitOperations
             case "HGate":
                 state = QuantumGates.ApplyHadamard(state);
                 break;
+
+            case "measurement":
+               Debug.Log($"Measurement gate applied {state}");
+                break;
         }
     }
 }
