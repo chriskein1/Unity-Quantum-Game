@@ -14,18 +14,9 @@ public class Snap : MonoBehaviour
     private GameObject gate;
     private Drag dragComponent;
     private Qubit qubit;
-    private CircuitManager circuitManager;
+    private float distance;
     private int row;
-    private void Start()
-    {
-        // Find the CircuitManager in the scene
-        circuitManager = FindObjectOfType<CircuitManager>();
-        if (circuitManager == null)
-        {
-            Debug.LogError("CircuitManager not found in the scene!");
-        }
-    }
-
+ 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!disableSnapping && occupied == false)
@@ -121,12 +112,12 @@ public class Snap : MonoBehaviour
 
         if (row == 0)
         {
-            newPosition.y -= .5f;  // Add 1 to the y coordinate
+            newPosition.y -= distance;  // Add 1 to the y coordinate
 
         }
         else if (row == 1)
         {
-            newPosition.y += .5f;  // Add 1 to the y coordinate
+            newPosition.y += distance;  // Add 1 to the y coordinate
             obj.transform.Rotate(0, 0, 180);
         }
         obj.transform.position = newPosition;
@@ -134,6 +125,10 @@ public class Snap : MonoBehaviour
     public void SetRow(int row)
     {
         this.row = row;
+    }
+    public void SetDistance(float distance)
+    {
+        this.distance= distance;
     }
     private void ClickOnSound()
     {

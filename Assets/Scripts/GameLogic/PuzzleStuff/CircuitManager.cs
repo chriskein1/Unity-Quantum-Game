@@ -21,6 +21,7 @@ public class CircuitManager : MonoBehaviour
     {
         InitializeSnapPointLists();
          yDistance = Mathf.Abs(snapPointLists[1][0].transform.position.y - snapPointLists[0][0].transform.position.y) / 2;
+        SetRowAndDistanceForSnapPoints();
         SetInputs();
         Evaluate();
     }
@@ -34,12 +35,6 @@ public class CircuitManager : MonoBehaviour
         {
             List<GameObject> snapPoints = controller.GetSnapPoints();
             snapPointLists.Add(snapPoints);
-
-            for (int i = 0; i < snapPoints.Count; i++)
-            {
-                snapPoints[i].GetComponent<Snap>().SetRow(qubitWireControllers.IndexOf(controller));
-            }
-
             List<Qubit> qubitList = new List<Qubit>();
             for (int i = 0; i < snapPoints.Count; i++)
             {
@@ -49,7 +44,21 @@ public class CircuitManager : MonoBehaviour
         }
 
     }
-
+    private void SetRowAndDistanceForSnapPoints()
+    {
+        for (int row = 0; row < snapPointLists.Count; row++)
+        {
+            for (int col = 0; col < snapPointLists[row].Count; col++)
+            {
+                Snap snapComponent = snapPointLists[row][col].GetComponent<Snap>();
+                if (snapComponent != null)
+                {
+                    snapComponent.SetRow(row);
+                    snapComponent.SetDistance(yDistance);
+                }
+            }
+        }
+    }
     public void Evaluate()
     {
         if (snapPointLists.Count == 0 || snapPointStates.Count == 0)
