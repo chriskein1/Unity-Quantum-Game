@@ -34,7 +34,11 @@ public class CircuitManager : MonoBehaviour
         {
             List<GameObject> snapPoints = controller.GetSnapPoints();
             snapPointLists.Add(snapPoints);
-  
+
+            for (int i = 0; i < snapPoints.Count; i++)
+            {
+                snapPoints[i].GetComponent<Snap>().SetRow(qubitWireControllers.IndexOf(controller));
+            }
 
             List<Qubit> qubitList = new List<Qubit>();
             for (int i = 0; i < snapPoints.Count; i++)
@@ -399,15 +403,5 @@ public class CircuitManager : MonoBehaviour
         // Compare positive values for alpha and beta
         return (Math.Abs(q1.Alpha.Real - q2.Alpha.Real) < tolerance && Math.Abs(q1.Beta.Real - q2.Beta.Real) < tolerance);
     }
-    public (int row, float distance) FindSnapPointRow(GameObject snapPoint)
-    {
-        for (int row = 0; row < snapPointLists.Count; row++)
-        {
-            if (snapPointLists[row].Contains(snapPoint))
-            {
-                return (row, yDistance);
-            }
-        }
-        return (-1, -1f); 
-    }
+   
 }

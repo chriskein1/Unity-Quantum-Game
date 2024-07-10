@@ -15,7 +15,7 @@ public class Snap : MonoBehaviour
     private Drag dragComponent;
     private Qubit qubit;
     private CircuitManager circuitManager;
-
+    private int row;
     private void Start()
     {
         // Find the CircuitManager in the scene
@@ -116,21 +116,24 @@ public class Snap : MonoBehaviour
 
     public void Snap2BitGate(GameObject obj)
     {
-        var (row, yDistance) = circuitManager.FindSnapPointRow(gameObject);
         Vector3 newPosition = obj.transform.position;
 
 
         if (row == 0)
         {
-            newPosition.y -= yDistance;  // Add 1 to the y coordinate
+            newPosition.y -= .5f;  // Add 1 to the y coordinate
 
         }
         else if (row == 1)
         {
-            newPosition.y += yDistance;  // Add 1 to the y coordinate
+            newPosition.y += .5f;  // Add 1 to the y coordinate
             obj.transform.Rotate(0, 0, 180);
         }
         obj.transform.position = newPosition;
+    }
+    public void SetRow(int row)
+    {
+        this.row = row;
     }
     private void ClickOnSound()
     {
