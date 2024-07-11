@@ -34,7 +34,6 @@ public class QubitWireController : MonoBehaviour
     public void SetInput(SingleQubitStateOptions q)
     {
         inputTile.UpdateText(q);
-        drawWire.SetInput(qubitOperations.ConvertToQubit(q));
     } 
     
     public void SetOutput(Qubit q)
