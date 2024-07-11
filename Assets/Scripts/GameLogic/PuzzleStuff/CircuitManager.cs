@@ -20,7 +20,10 @@ public class CircuitManager : MonoBehaviour
     private void Start()
     {
         InitializeSnapPointLists();
-         yDistance = Mathf.Abs(snapPointLists[1][0].transform.position.y - snapPointLists[0][0].transform.position.y) / 2;
+        if (snapPointLists.Count > 1)
+            yDistance = Mathf.Abs(snapPointLists[1][0].transform.position.y - snapPointLists[0][0].transform.position.y) / 2;
+        else
+            yDistance = 0; // Irrelevant if there is only one row
         SetRowAndDistanceForSnapPoints();
         SetInputs();
         Evaluate();
@@ -149,8 +152,10 @@ public class CircuitManager : MonoBehaviour
             Qubit finalStateQubit2 = snapPointStates[1][numColumns - 1];
             //UpdateBarChart(finalStateQubit1, finalStateQubit2);
             win = EvaluateWin(new List<Qubit> { finalStateQubit1, finalStateQubit2 });
-           // visualOutput[0].SetQubit(finalStateQubit1, 0);
-           // visualOutput[1].SetQubit(finalStateQubit2, 1);
+            visualOutput[0].SetQubit(finalStateQubit1, 0);
+            visualOutput[1].SetQubit(finalStateQubit2, 1);
+            Debug.Log("Setting output");
+            Debug.Log("Final state is " + finalStateQubit1 + " and " + finalStateQubit2);
         }
         else if (qubitWireControllers.Count == 1)
         {
@@ -159,7 +164,9 @@ public class CircuitManager : MonoBehaviour
 
             //UpdateBarChartSingle(finalStateQubit);
             win = EvaluateWin(new List<Qubit> { finalStateQubit });
-            //visualOutput[0].SetQubit(finalStateQubit, 0);
+            visualOutput[0].SetQubit(finalStateQubit, 0);
+            Debug.Log("Setting output 0");
+            Debug.Log("Final state is " + finalStateQubit);
         }
 
         if (win)
@@ -273,7 +280,7 @@ public class CircuitManager : MonoBehaviour
                 Qubit inputQubit = qubitOperations.ConvertToQubit(qubitInputs[i]);
                 snapPointStates[i][0] = inputQubit;
                 qubitWireControllers[i].SetInput(qubitInputs[i]);
-                //visualInput[i].SetQubit(inputQubit, i);
+                visualInput[i].SetQubit(inputQubit, i);
             }
         }
     }
@@ -539,11 +546,11 @@ public class CircuitManager : MonoBehaviour
         // Update the bar chart
         if (numRows >= 2)
         {
-            barChartManager.UpdateBarChart(stateProbabilities["|00⟩"], stateProbabilities["|01⟩"], stateProbabilities["|10⟩"], stateProbabilities["|11⟩"]);
+            // barChartManager.UpdateBarChart(stateProbabilities["|00⟩"], stateProbabilities["|01⟩"], stateProbabilities["|10⟩"], stateProbabilities["|11⟩"]);
         }
         else if (numRows == 1)
         {
-            barChartManager.UpdateBarChart(stateProbabilities["|00⟩"], stateProbabilities["|01⟩"]);
+            // barChartManager.UpdateBarChart(stateProbabilities["|00⟩"], stateProbabilities["|01⟩"]);
         }
 
         // Output probabilities
