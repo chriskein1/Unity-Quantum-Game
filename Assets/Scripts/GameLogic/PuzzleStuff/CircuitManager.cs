@@ -20,7 +20,10 @@ public class CircuitManager : MonoBehaviour
     private void Start()
     {
         InitializeSnapPointLists();
-         yDistance = Mathf.Abs(snapPointLists[1][0].transform.position.y - snapPointLists[0][0].transform.position.y) / 2;
+        if (snapPointLists.Count > 1)
+            yDistance = Mathf.Abs(snapPointLists[1][0].transform.position.y - snapPointLists[0][0].transform.position.y) / 2;
+        else
+            yDistance = 0; // Irrelevant if there is only one row
         SetRowAndDistanceForSnapPoints();
         SetInputs();
         Evaluate();
@@ -136,7 +139,7 @@ public class CircuitManager : MonoBehaviour
                     qubitWireControllers[row].SetOutput(finalState);
                 }
 
-                //EvaluateMultipleTimes(100);
+                EvaluateMultipleTimes(100);
             }
         }
 
@@ -147,19 +150,23 @@ public class CircuitManager : MonoBehaviour
         {
             Qubit finalStateQubit1 = snapPointStates[0][numColumns - 1];
             Qubit finalStateQubit2 = snapPointStates[1][numColumns - 1];
-            UpdateBarChart(finalStateQubit1, finalStateQubit2);
+            //UpdateBarChart(finalStateQubit1, finalStateQubit2);
             win = EvaluateWin(new List<Qubit> { finalStateQubit1, finalStateQubit2 });
             visualOutput[0].SetQubit(finalStateQubit1, 0);
             visualOutput[1].SetQubit(finalStateQubit2, 1);
+            Debug.Log("Setting output");
+            Debug.Log("Final state is " + finalStateQubit1 + " and " + finalStateQubit2);
         }
         else if (qubitWireControllers.Count == 1)
         {
             Qubit finalStateQubit = snapPointStates[0][numColumns - 1];
             
 
-            UpdateBarChartSingle(finalStateQubit);
+            //UpdateBarChartSingle(finalStateQubit);
             win = EvaluateWin(new List<Qubit> { finalStateQubit });
             visualOutput[0].SetQubit(finalStateQubit, 0);
+            Debug.Log("Setting output 0");
+            Debug.Log("Final state is " + finalStateQubit);
         }
 
         if (win)
@@ -169,30 +176,7 @@ public class CircuitManager : MonoBehaviour
         }
     }
 
-    private void UpdateBarChart(Qubit finalStateQubit1, Qubit finalStateQubit2)
-    {
-        // Calculate probabilities for the states |00⟩, |01⟩, |10⟩, and |11⟩
-        float prob00 = MagnitudeSquared(finalStateQubit1.Alpha * finalStateQubit2.Alpha);
-        float prob01 = MagnitudeSquared(finalStateQubit1.Alpha * finalStateQubit2.Beta);
-        float prob10 = MagnitudeSquared(finalStateQubit1.Beta * finalStateQubit2.Alpha);
-        float prob11 = MagnitudeSquared(finalStateQubit1.Beta * finalStateQubit2.Beta);
 
-        barChartManager.UpdateBarChart(prob00, prob01, prob10, prob11);
-    }
-
-    private float MagnitudeSquared(Complex c)
-    {
-        return (float)(c.Real * c.Real + c.Imaginary * c.Imaginary);
-    }
-    private void UpdateBarChartSingle(Qubit finalStateQubit)
-    {
-        // Calculate probabilities for the states |0> and |1>
-        float prob0 = MagnitudeSquared(finalStateQubit.Alpha);
-        float prob1 = MagnitudeSquared(finalStateQubit.Beta);
-
-        // Update the bar chart using the same method but with only two bars
-        barChartManager.UpdateBarChart(prob0, prob1);
-    }
 
     private void HandleCNOTGate(int row, int col, GameObject gateObject)
     {
@@ -562,11 +546,11 @@ public class CircuitManager : MonoBehaviour
         // Update the bar chart
         if (numRows >= 2)
         {
-            barChartManager.UpdateBarChart(stateProbabilities["|00⟩"], stateProbabilities["|01⟩"], stateProbabilities["|10⟩"], stateProbabilities["|11⟩"]);
+            // barChartManager.UpdateBarChart(stateProbabilities["|00⟩"], stateProbabilities["|01⟩"], stateProbabilities["|10⟩"], stateProbabilities["|11⟩"]);
         }
         else if (numRows == 1)
         {
-            barChartManager.UpdateBarChart(stateProbabilities["|00⟩"], stateProbabilities["|01⟩"]);
+            // barChartManager.UpdateBarChart(stateProbabilities["|00⟩"], stateProbabilities["|01⟩"]);
         }
 
         // Output probabilities
