@@ -135,6 +135,8 @@ public class CircuitManager : MonoBehaviour
                     Qubit finalState = snapPointStates[row][col];
                     qubitWireControllers[row].SetOutput(finalState);
                 }
+
+                EvaluateMultipleTimes(100);
             }
         }
 
@@ -145,7 +147,7 @@ public class CircuitManager : MonoBehaviour
         {
             Qubit finalStateQubit1 = snapPointStates[0][numColumns - 1];
             Qubit finalStateQubit2 = snapPointStates[1][numColumns - 1];
-            UpdateBarChart(finalStateQubit1, finalStateQubit2);
+            //UpdateBarChart(finalStateQubit1, finalStateQubit2);
             win = EvaluateWin(new List<Qubit> { finalStateQubit1, finalStateQubit2 });
            // visualOutput[0].SetQubit(finalStateQubit1, 0);
            // visualOutput[1].SetQubit(finalStateQubit2, 1);
@@ -155,7 +157,7 @@ public class CircuitManager : MonoBehaviour
             Qubit finalStateQubit = snapPointStates[0][numColumns - 1];
             
 
-            UpdateBarChartSingle(finalStateQubit);
+            //UpdateBarChartSingle(finalStateQubit);
             win = EvaluateWin(new List<Qubit> { finalStateQubit });
             //visualOutput[0].SetQubit(finalStateQubit, 0);
         }
@@ -276,30 +278,30 @@ public class CircuitManager : MonoBehaviour
         }
     }
 
-    private void UpdateBarChart(Qubit finalStateQubit1, Qubit finalStateQubit2)
-    {
-        // Calculate probabilities for the states |00⟩, |01⟩, |10⟩, and |11⟩
-        float prob00 = MagnitudeSquared(finalStateQubit1.Alpha * finalStateQubit2.Alpha);
-        float prob01 = MagnitudeSquared(finalStateQubit1.Alpha * finalStateQubit2.Beta);
-        float prob10 = MagnitudeSquared(finalStateQubit1.Beta * finalStateQubit2.Alpha);
-        float prob11 = MagnitudeSquared(finalStateQubit1.Beta * finalStateQubit2.Beta);
+    //private void UpdateBarChart(Qubit finalStateQubit1, Qubit finalStateQubit2)
+    //{
+    //    // Calculate probabilities for the states |00⟩, |01⟩, |10⟩, and |11⟩
+    //    float prob00 = MagnitudeSquared(finalStateQubit1.Alpha * finalStateQubit2.Alpha);
+    //    float prob01 = MagnitudeSquared(finalStateQubit1.Alpha * finalStateQubit2.Beta);
+    //    float prob10 = MagnitudeSquared(finalStateQubit1.Beta * finalStateQubit2.Alpha);
+    //    float prob11 = MagnitudeSquared(finalStateQubit1.Beta * finalStateQubit2.Beta);
 
-        barChartManager.UpdateBarChart(prob00, prob01, prob10, prob11);
-    }
+    //    barChartManager.UpdateBarChart(prob00, prob01, prob10, prob11);
+    //}
 
-    private float MagnitudeSquared(Complex c)
-    {
-        return (float)(c.Real * c.Real + c.Imaginary * c.Imaginary);
-    }
-    private void UpdateBarChartSingle(Qubit finalStateQubit)
-    {
-        // Calculate probabilities for the states |0> and |1>
-        float prob0 = MagnitudeSquared(finalStateQubit.Alpha);
-        float prob1 = MagnitudeSquared(finalStateQubit.Beta);
+    //private float MagnitudeSquared(Complex c)
+    //{
+    //    return (float)(c.Real * c.Real + c.Imaginary * c.Imaginary);
+    //}
+    //private void UpdateBarChartSingle(Qubit finalStateQubit)
+    //{
+    //    // Calculate probabilities for the states |0> and |1>
+    //    float prob0 = MagnitudeSquared(finalStateQubit.Alpha);
+    //    float prob1 = MagnitudeSquared(finalStateQubit.Beta);
 
-        // Update the bar chart using the same method but with only two bars
-        barChartManager.UpdateBarChart(prob0, prob1);
-    }
+    //    // Update the bar chart using the same method but with only two bars
+    //    barChartManager.UpdateBarChart(prob0, prob1);
+    //}
 
     // Determine if the win condition is met for the qubits
     private bool EvaluateWin(List<Qubit> finalStates)
@@ -412,5 +414,142 @@ public class CircuitManager : MonoBehaviour
         // Compare positive values for alpha and beta
         return (Math.Abs(q1.Alpha.Real - q2.Alpha.Real) < tolerance && Math.Abs(q1.Beta.Real - q2.Beta.Real) < tolerance);
     }
-   
+
+
+
+
+    public void EvaluateMultipleTimes(int numberOfEvaluations)
+    {
+        if (snapPointLists.Count == 0 || snapPointStates.Count == 0)
+        {
+            Debug.LogError("snapPointLists or snapPointStates is not initialized.");
+            return;
+        }
+
+        int numColumns = snapPointLists[0].Count;
+        int numRows = qubitWireControllers.Count;
+
+        // Dictionary to track probabilities of each possible state
+        Dictionary<string, int> stateCounts = new Dictionary<string, int>
+    {
+        { "|00⟩", 0 },
+        { "|01⟩", 0 },
+        { "|10⟩", 0 },
+        { "|11⟩", 0 }
+    };
+
+        for (int eval = 0; eval < numberOfEvaluations; eval++)
+        {
+            // Reset the states before each evaluation
+            for (int row = 0; row < numRows; row++)
+            {
+                for (int col = 0; col < numColumns; col++)
+                {
+                    snapPointStates[row][col] = new Qubit();
+                }
+            }
+
+            for (int col = 0; col < numColumns; col++)
+            {
+                for (int row = 0; row < numRows; row++)
+                {
+                    if (col >= snapPointLists[row].Count)
+                    {
+                        Debug.LogError($"Column index {col} out of range for row {row}");
+                        continue;
+                    }
+
+                    GameObject snapPoint = snapPointLists[row][col];
+                    Snap snapComp = snapPoint.GetComponent<Snap>();
+                    GameObject gateObject = snapComp.GetGateObject();
+
+                    bool skipSecondRow = false;
+
+                    if (row > 0)
+                    {
+                        GameObject adjacentSnapPoint = snapPointLists[row - 1][col];
+                        Snap adjacentSnapComp = adjacentSnapPoint.GetComponent<Snap>();
+                        GameObject adjacentGateObject = adjacentSnapComp.GetGateObject();
+
+                        if (adjacentGateObject != null && (adjacentGateObject.CompareTag("ctrl") || adjacentGateObject.CompareTag("swap")))
+                        {
+                            skipSecondRow = true;
+                        }
+                    }
+
+                    if (gateObject != null)
+                    {
+                        if (gateObject.CompareTag("ctrl"))
+                        {
+                            HandleCNOTGate(row, col, gateObject);
+                        }
+                        else if (gateObject.CompareTag("swap"))
+                        {
+                            HandleSWAPGate(row, col, gateObject);
+                        }
+                        else
+                        {
+                            ApplySingleQubitGate(row, col, gateObject);
+                        }
+                    }
+                    else
+                    {
+                        if (col == 0)
+                        {
+                            snapPointStates[row][col] = qubitOperations.ConvertToQubit(qubitInputs[row]);
+                        }
+                        else if (!skipSecondRow)
+                        {
+                            snapPointStates[row][col] = snapPointStates[row][col - 1];
+                        }
+                    }
+
+                    snapComp.SetState(snapPointStates[row][col]);
+
+                    if (col == numColumns - 1)
+                    {
+                        Qubit finalState = snapPointStates[row][col];
+                        qubitWireControllers[row].SetOutput(finalState);
+                    }
+                }
+            }
+
+            // Measure the final states and update the state counts
+            if (numRows >= 2)
+            {
+                Qubit finalStateQubit1 = snapPointStates[0][numColumns - 1].Measure();
+                Qubit finalStateQubit2 = snapPointStates[1][numColumns - 1].Measure();
+                string state = $"|{(finalStateQubit1.Beta.Magnitude > 0 ? "1" : "0")}{(finalStateQubit2.Beta.Magnitude > 0 ? "1" : "0")}⟩";
+                stateCounts[state]++;
+            }
+            else if (numRows == 1)
+            {
+                Qubit finalStateQubit = snapPointStates[0][numColumns - 1].Measure();
+                string state = $"|0{(finalStateQubit.Beta.Magnitude > 0 ? "1" : "0")}⟩";
+                stateCounts[state]++;
+            }
+        }
+
+        // Calculate probabilities
+        Dictionary<string, float> stateProbabilities = new Dictionary<string, float>();
+        foreach (var state in stateCounts.Keys)
+        {
+            stateProbabilities[state] = (float)stateCounts[state] / numberOfEvaluations;
+        }
+        // Update the bar chart
+        if (numRows >= 2)
+        {
+            barChartManager.UpdateBarChart(stateProbabilities["|00⟩"], stateProbabilities["|01⟩"], stateProbabilities["|10⟩"], stateProbabilities["|11⟩"]);
+        }
+        else if (numRows == 1)
+        {
+            barChartManager.UpdateBarChart(stateProbabilities["|00⟩"], stateProbabilities["|01⟩"]);
+        }
+
+        // Output probabilities
+        foreach (var state in stateProbabilities)
+        {
+            Debug.Log($"{state.Key}: {state.Value * 100}%");
+        }
+    }
 }

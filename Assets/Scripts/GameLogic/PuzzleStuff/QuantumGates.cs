@@ -45,8 +45,11 @@ public static class QuantumGates
     }
     public static void ApplyCNOT(ref Qubit controlQubit, ref Qubit targetQubit)
     {
-        // If the control qubit is in state |1>, flip the target qubit
-        if (controlQubit.Beta.Magnitude > 0)
+        // Measure the control qubit
+        Qubit measuredControlQubit = controlQubit.Measure();
+
+        // If the measured control qubit is in state |1>, flip the target qubit
+        if (measuredControlQubit.Beta.Magnitude > 0)
         {
             targetQubit = ApplyPauliX(targetQubit);
         }

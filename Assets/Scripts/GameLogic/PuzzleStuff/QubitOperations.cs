@@ -136,7 +136,7 @@ public class QubitOperations
                 break;
 
             case "measurement":
-               Debug.Log($"Measurement gate applied {state}");
+               Debug.Log($"Measurement gate applied {state.Measure()}");
                 break;
         }
     }
