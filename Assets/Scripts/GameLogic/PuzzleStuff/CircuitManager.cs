@@ -17,6 +17,8 @@ public class CircuitManager : MonoBehaviour
     public List<VisualQubit> visualInput;
     public List<VisualQubit> visualOutput;
     float yDistance;
+    bool win = false;
+
     private void Start()
     {
         InitializeSnapPointLists();
@@ -143,7 +145,7 @@ public class CircuitManager : MonoBehaviour
             }
         }
 
-        bool win = false;
+        win = false;
 
         // Update the visual outputs and evaluate the win condition
         if (qubitWireControllers.Count >= 2)
@@ -152,8 +154,10 @@ public class CircuitManager : MonoBehaviour
             Qubit finalStateQubit2 = snapPointStates[1][numColumns - 1];
             //UpdateBarChart(finalStateQubit1, finalStateQubit2);
             win = EvaluateWin(new List<Qubit> { finalStateQubit1, finalStateQubit2 });
-            visualOutput[0].SetQubit(finalStateQubit1, 0);
-            visualOutput[1].SetQubit(finalStateQubit2, 1);
+            if (visualOutput.Count > 0 && visualOutput[0] != null)
+                visualOutput[0].SetQubit(finalStateQubit1, 0);
+            if (visualOutput.Count > 1 && visualOutput[1] != null)
+                visualOutput[1].SetQubit(finalStateQubit2, 1);
             Debug.Log("Setting output");
             Debug.Log("Final state is " + finalStateQubit1 + " and " + finalStateQubit2);
         }
@@ -164,14 +168,16 @@ public class CircuitManager : MonoBehaviour
 
             //UpdateBarChartSingle(finalStateQubit);
             win = EvaluateWin(new List<Qubit> { finalStateQubit });
-            visualOutput[0].SetQubit(finalStateQubit, 0);
+            if (visualOutput.Count > 0 && visualOutput[0] != null)
+                visualOutput[0].SetQubit(finalStateQubit, 0);
             Debug.Log("Setting output 0");
             Debug.Log("Final state is " + finalStateQubit);
         }
 
         if (win)
         {
-            winScreen.SetActive(true);
+            if (winScreen != null)
+                winScreen.SetActive(true);
             Debug.Log("YOU WIN!!!!!!");
         }
     }
@@ -280,7 +286,10 @@ public class CircuitManager : MonoBehaviour
                 Qubit inputQubit = qubitOperations.ConvertToQubit(qubitInputs[i]);
                 snapPointStates[i][0] = inputQubit;
                 qubitWireControllers[i].SetInput(qubitInputs[i]);
-                visualInput[i].SetQubit(inputQubit, i);
+                if (visualInput.Count > i && visualInput[i] != null){
+                    visualInput[i].SetQubit(inputQubit, i);
+                Debug.Log("Setting input" + i);
+                }
             }
         }
     }
@@ -311,7 +320,7 @@ public class CircuitManager : MonoBehaviour
     //}
 
     // Determine if the win condition is met for the qubits
-    private bool EvaluateWin(List<Qubit> finalStates)
+    public bool EvaluateWin(List<Qubit> finalStates)
     {
         if (winState.Count == 0)
         {
@@ -421,8 +430,6 @@ public class CircuitManager : MonoBehaviour
         // Compare positive values for alpha and beta
         return (Math.Abs(q1.Alpha.Real - q2.Alpha.Real) < tolerance && Math.Abs(q1.Beta.Real - q2.Beta.Real) < tolerance);
     }
-
-
 
 
     public void EvaluateMultipleTimes(int numberOfEvaluations)
@@ -556,7 +563,29 @@ public class CircuitManager : MonoBehaviour
         // Output probabilities
         foreach (var state in stateProbabilities)
         {
-            Debug.Log($"{state.Key}: {state.Value * 100}%");
+            // Debug.Log($"{state.Key}: {state.Value * 100}%");
         }
+    }
+    
+    // Return if any wire has a gate on it anywhere
+    public bool HasGate()
+    {
+        for (int i = 0; i < qubitWireControllers.Count; i++)
+        { 
+            for (int j = 0; j < snapPointLists[i].Count; j++)
+            {
+                GameObject gateObject = snapPointLists[i][j].GetComponent<Snap>().GetGateObject();
+                if (gateObject != null)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public bool IsWin()
+    {
+        return win;
     }
 }

@@ -33,12 +33,14 @@ public class QubitWireController : MonoBehaviour
 
     public void SetInput(SingleQubitStateOptions q)
     {
-        inputTile.UpdateText(q);
+        if (inputTile != null)
+            inputTile.UpdateText(q);
     } 
     
     public void SetOutput(Qubit q)
     {
-        outputTile.SetState(q);
+        if (outputTile != null)
+            outputTile.SetState(q);
     }
 
 
