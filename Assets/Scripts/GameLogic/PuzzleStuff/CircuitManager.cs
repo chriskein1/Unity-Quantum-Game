@@ -177,7 +177,9 @@ public class CircuitManager : MonoBehaviour
         if (win)
         {
             if (winScreen != null)
+            {
                 winScreen.SetActive(true);
+            }
             Debug.Log("YOU WIN!!!!!!");
         }
     }

@@ -42,6 +42,8 @@ public class PuzzleManager : MonoBehaviour
             Debug.Log("Puzzle Solved!!!!");
             if (WinScreen != null)
             {
+                // stop time
+                Time.timeScale = 0;
                 Debug.Log("Win Screen Active");
                 WinScreen.SetActive(true);
             }
