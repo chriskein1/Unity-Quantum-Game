@@ -5,7 +5,6 @@ using UnityEngine;
 /// </summary>
 public class Drag : MonoBehaviour
 {
-    [SerializeField] private GameObject SnapPosition;
     [SerializeField] private bool disableSnap;
     private bool hasRigidbody;
     private bool dragging = false;
