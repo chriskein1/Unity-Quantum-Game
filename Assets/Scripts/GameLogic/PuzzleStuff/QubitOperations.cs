@@ -120,18 +120,22 @@ public class QubitOperations
         switch (gateObject.tag)
         {
             case "XGate":
+            case "XGateLock":
                 state = QuantumGates.ApplyPauliX(state);
                 break;
 
             case "YGate":
+            case "YGateLock":
                 state = QuantumGates.ApplyPauliY(state);
                 break;
 
             case "ZGate":
+            case "ZGateLock":
                 state = QuantumGates.ApplyPauliZ(state);
                 break;
 
             case "HGate":
+            case "HGateLock":
                 state = QuantumGates.ApplyHadamard(state);
                 break;
 

@@ -6,6 +6,7 @@ using UnityEngine;
 public class Drag : MonoBehaviour
 {
     [SerializeField] private bool disableSnap;
+    [SerializeField] private bool canGrab = true;
     private bool hasRigidbody;
     private bool dragging = false;
     private Vector3 offset;
@@ -52,6 +53,10 @@ public class Drag : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (!canGrab)
+        {
+            return;
+        }
         // Record the difference between the object's center and the clicked point on the camera plane.
         if (Time.deltaTime > 0)
         {

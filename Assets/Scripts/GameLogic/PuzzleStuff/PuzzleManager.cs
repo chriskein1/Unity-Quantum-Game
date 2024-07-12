@@ -5,7 +5,9 @@ using UnityEngine;
 public class PuzzleManager : MonoBehaviour
 {
     int guessCount = 0;
-    [SerializeField] private List<CircuitManager> qubitCircuitManagers;
+    [SerializeField] private List<CircuitManager> guessTheGateManagers;
+    [SerializeField] private List<CircuitManager> guessTheOutputManagers;
+    [SerializeField] private List<Snap> guessOutputSnap;
     [SerializeField] private GameObject WinScreen;
     // [SerializeField] private List<GameObject> CheckImages;
     // [SerializeField] private List<GameObject> XImages;
@@ -14,30 +16,8 @@ public class PuzzleManager : MonoBehaviour
     public void CheckPuzzle()
     {
         Debug.Log("Checking Puzzle");
-        bool isSolved = true;
-        for (int i = 0; i < qubitCircuitManagers.Count; i++)
-        {
-            if (!qubitCircuitManagers[i].HasGate())
-            {
-                Debug.Log("No Gate in Circuit");
-                isSolved = false;
-                // XImages[i].SetActive(true);
-                // CheckImages[i].SetActive(false);
-            }
-            else if (!qubitCircuitManagers[i].IsWin())
-            {
-                Debug.Log("Puzzle Not Solved");
-                // XImages[i].SetActive(true);
-                // CheckImages[i].SetActive(false);
-                isSolved = false;
-            }
-            else if (qubitCircuitManagers[i].IsWin())
-            {
-                // CheckImages[i].SetActive(true);
-                // XImages[i].SetActive(false);
-            }
-        }
-        if (isSolved)
+        bool fillInGates = CheckGatePuzzles();
+        if (fillInGates)
         {
             Debug.Log("Puzzle Solved!!!!");
             if (WinScreen != null)
@@ -48,5 +28,33 @@ public class PuzzleManager : MonoBehaviour
                 WinScreen.SetActive(true);
             }
         }
+    }
+
+    private bool CheckGatePuzzles()
+    {
+        bool isSolved = true;
+        for (int i = 0; i < guessTheGateManagers.Count; i++)
+        {
+            if (!guessTheGateManagers[i].HasGate())
+            {
+                Debug.Log("No Gate in Circuit");
+                isSolved = false;
+                // XImages[i].SetActive(true);
+                // CheckImages[i].SetActive(false);
+            }
+            else if (!guessTheGateManagers[i].IsWin())
+            {
+                Debug.Log("Puzzle Not Solved");
+                // XImages[i].SetActive(true);
+                // CheckImages[i].SetActive(false);
+                isSolved = false;
+            }
+            else if (guessTheGateManagers[i].IsWin())
+            {
+                // CheckImages[i].SetActive(true);
+                // XImages[i].SetActive(false);
+            }
+        }
+        return isSolved;
     }
 }
