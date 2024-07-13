@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1944052055414329114}
   m_Layer: 0
-  m_Name: BlackCircle
-  m_TagString: ZGate
+  m_Name: PositiveSuperposition
+  m_TagString: PosSuperPosition
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,7 +26,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3981024677729106643}
@@ -45,9 +45,10 @@ GameObject:
   - component: {fileID: 955778337717246029}
   - component: {fileID: 375423314463990796}
   - component: {fileID: 2314360428507421791}
+  - component: {fileID: 4028729258565100409}
   m_Layer: 0
-  m_Name: BlackCircle
-  m_TagString: Untagged
+  m_Name: WhiteCircle
+  m_TagString: PosSuperPosition
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,8 +109,8 @@ SpriteRenderer:
   m_SortingLayerID: -841996231
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6aeafc3d08b91dc4290710200f3468ca, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 9a7b2395291bcc3498aace44f53a744c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -131,6 +132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0639c926f20bc6b4a85b9c2893764f4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableSnap: 0
+  canGrab: 1
 --- !u!61 &375423314463990796
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -167,7 +170,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.26, y: 1.26}
+    oldSize: {x: 1.08, y: 1.08}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -203,3 +206,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &4028729258565100409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5112553168687737339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0096f39905c400469f1121df5356fa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ttl: 1
