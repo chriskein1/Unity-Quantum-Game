@@ -8,11 +8,14 @@ public class OutputHolderScript : MonoBehaviour
 {
     [SerializeField] private List<GameObject> Outputs = new List<GameObject>();
     private Camera mainCamera; // Reference to the main camera
-    [SerializeField] private int amountOfZeros;
-    [SerializeField] private int amountOfOnes;
-    [SerializeField] private int amountOfNegOnes;
-    [SerializeField] private int amountOfPosSuperPosition;
-    [SerializeField] private int amountOfNegSuperPosition;
+    [SerializeField] private int amountOfZeroCircles;
+    [SerializeField] private int amountOfNegZeroCircles;
+    [SerializeField] private int amountOfOneCircles;
+    [SerializeField] private int amountOfNegOneCircles;
+    [SerializeField] private int amountOfZeroSquares;
+    [SerializeField] private int amountOfNegZeroSquares;
+    [SerializeField] private int amountOfOneSquares;
+    [SerializeField] private int amountOfNegOneSquares;
     [SerializeField] private List<OutputbuttonLogic> buttons = new List<OutputbuttonLogic>();
 
 
@@ -22,12 +25,14 @@ public class OutputHolderScript : MonoBehaviour
 
     private void Awake()
     {
-        gateCounts["Zero"] = amountOfZeros;
-        gateCounts["One"] = amountOfOnes;
-        gateCounts["NegOne"] = amountOfNegOnes;
-        gateCounts["PosSuperPosition"] = amountOfPosSuperPosition;
-        gateCounts["NegSuperPosition"] = amountOfNegSuperPosition;
-        UpdateGateCountTexts();
+        gateCounts["State0Circle"] = amountOfZeroCircles;
+        gateCounts["NegativeState0Circle"] = amountOfNegZeroCircles;
+        gateCounts["State1Circle"] = amountOfOneCircles;
+        gateCounts["NegativeState1Circle"] = amountOfNegOneCircles;
+        gateCounts["State0Square"] = amountOfZeroSquares;
+        gateCounts["NegativeState0Square"] = amountOfNegZeroSquares;
+        gateCounts["State1Square"] = amountOfOneSquares;
+        gateCounts["NegativeState1Square"] = amountOfNegOneSquares;
         mainCamera = FindObjectOfType<Camera>();
         GetButtonTexts();
         UpdateGateCountTexts();
@@ -84,11 +89,14 @@ public class OutputHolderScript : MonoBehaviour
     private void UpdateGateCountTexts()
     {
         
-        UpdateText(0, gateCounts["Zero"]);
-        UpdateText(1, gateCounts["One"]);
-        UpdateText(2, gateCounts["NegOne"]);
-        UpdateText(3, gateCounts["PosSuperPosition"]);
-        UpdateText(4, gateCounts["NegSuperPosition"]);
+        UpdateText(0, gateCounts["State0Circle"]);
+        UpdateText(1, gateCounts["NegativeState0Circle"]);
+        UpdateText(2, gateCounts["State1Circle"]);
+        UpdateText(3, gateCounts["NegativeState1Circle"]);
+        UpdateText(4, gateCounts["State0Square"]);
+        UpdateText(5, gateCounts["NegativeState0Square"]);
+        UpdateText(6, gateCounts["State1Square"]);
+        UpdateText(7, gateCounts["NegativeState1Square"]);
         foreach (var button in buttons)
             button.UpdateButtonAppearance();
     }

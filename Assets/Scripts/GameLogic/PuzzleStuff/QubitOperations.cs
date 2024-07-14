@@ -12,7 +12,7 @@ public enum SingleQubitStateOptions
     Imaginary1, //i|1⟩
     Imaginary0, //i|0⟩
     NegativeState1,  // -|1⟩
-    NegativeState0,
+    NegativeState0,  // |-0>
     NegativeImaginary1, //-i|1⟩
     NegativeImaginary0, //-i|1⟩
     SuperpositionPlus,  // |+⟩ = 1/√2 (|0⟩ + |1⟩)

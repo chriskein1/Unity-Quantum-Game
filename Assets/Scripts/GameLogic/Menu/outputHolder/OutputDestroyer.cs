@@ -5,7 +5,7 @@ using UnityEngine;
 public class OutputDestroyer : MonoBehaviour
 {
     [SerializeField] private OutputHolderScript gateHolder;
-    private string[] gateTags = new string[] { "Zero", "One", "NegOne", "PosSuperPosition", "NegSuperPosition" };
+    private string[] gateTags = new string[] { "State0Circle", "NegativeState0Circle", "State1Circle", "NegativeState1Circle", "State0Square", "NegativeState0Square", "State1Square", "NegativeState1Square" };
 
     private void OnEnable()
     {
