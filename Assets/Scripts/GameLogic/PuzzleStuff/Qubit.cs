@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Numerics;
 using System;
-using UnityEditor.Tilemaps;
 
 namespace QubitType
 {
