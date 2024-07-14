@@ -118,7 +118,7 @@ public class OutputHolderScript : MonoBehaviour
     }
     private void UpdateText(int index, int count)
     {
-        Debug.Log($"Updating index:{index} count:{count} ");
+        //Debug.Log($"Updating index:{index} count:{count} ");
         if (index >= 0 && index < buttonTexts.Count)
         {
             buttonTexts[index].text = $"{count}";
