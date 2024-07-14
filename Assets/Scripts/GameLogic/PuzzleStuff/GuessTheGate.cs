@@ -5,11 +5,21 @@ using UnityEngine;
 public class GuessTheGate : MonoBehaviour
 {
     int guessCount = 0;
-    [SerializeField] private List<CircuitManager> guessTheGateManagers;
+    [SerializeField] private List<GatePuzzle> GatePuzzles;
     [SerializeField] private GameObject WinScreen;
+    private List<List<CircuitManager>> guessTheGateManagers = new List<List<CircuitManager>>();
     // [SerializeField] private List<GameObject> CheckImages;
     // [SerializeField] private List<GameObject> XImages;
+
     // Start is called before the first frame update
+    void Start()
+    {
+        // Initialize guessTheGateManagers
+        for (int i = 0; i < GatePuzzles.Count; i++)
+        {
+            guessTheGateManagers.Add(GatePuzzles[i].GetCircuitManagers());
+        }
+    }
 
     public void CheckPuzzle()
     {
@@ -31,24 +41,38 @@ public class GuessTheGate : MonoBehaviour
     private bool CheckGatePuzzles()
     {
         bool isSolved = true;
-        for (int i = 0; i < guessTheGateManagers.Count; i++)
+        for (int i = 0; i < GatePuzzles.Count; i++)
         {
-            if (!guessTheGateManagers[i].HasGate())
+            Debug.Log("Checking gate puzzle " + i);
+            List<bool> correctGuesses = new List<bool>();
+
+            for (int j = 0; j < guessTheGateManagers[i].Count; j++)
             {
-                Debug.Log("No Gate in Circuit");
-                isSolved = false;
-                // XImages[i].SetActive(true);
-                // CheckImages[i].SetActive(false);
+                correctGuesses.Add(false);
+                if (!guessTheGateManagers[i][j].HasGate())
+                {
+                    Debug.Log("No Gate in Circuit");
+                    isSolved = false;
+                    // XImages[i].SetActive(true);
+                    // CheckImages[i].SetActive(false);
+                }
+                else if (!guessTheGateManagers[i][j].IsWin())
+                {
+                    Debug.Log("Puzzle Not Solved");
+                    // XImages[i].SetActive(true);
+                    // CheckImages[i].SetActive(false);
+                    isSolved = false;
+                }
+                else if (guessTheGateManagers[i][j].IsWin())
+                {
+                    correctGuesses[j] = true;
+                    // CheckImages[i].SetActive(true);
+                    // XImages[i].SetActive(false);
+                }
             }
-            else if (!guessTheGateManagers[i].IsWin())
+            if (!correctGuesses.Contains(false))
             {
-                Debug.Log("Puzzle Not Solved");
-                // XImages[i].SetActive(true);
-                // CheckImages[i].SetActive(false);
-                isSolved = false;
-            }
-            else if (guessTheGateManagers[i].IsWin())
-            {
+                Debug.Log("Puzzle Solved");
                 // CheckImages[i].SetActive(true);
                 // XImages[i].SetActive(false);
             }
