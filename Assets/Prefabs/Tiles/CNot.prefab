@@ -134,8 +134,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0639c926f20bc6b4a85b9c2893764f4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SnapPosition: {fileID: 0}
   disableSnap: 0
+  canGrab: 1
 --- !u!61 &375423314463990796
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -193,9 +193,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bc940c1321d911478e92de95cd1aa72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  header: Z Gate
-  content: flips phase if state is one
-  headerColor: {r: 0.034872293, g: 1, b: 0, a: 1}
+  header: CNOT
+  content: flips the state of the target qubit if the control qubit is in the state
+    |1>
+  headerColor: {r: 0, g: 0.18136334, b: 1, a: 1}
   contentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!50 &2314360428507421791
 Rigidbody2D:
