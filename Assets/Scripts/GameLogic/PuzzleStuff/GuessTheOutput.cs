@@ -70,8 +70,6 @@ public class GuessTheOutput : MonoBehaviour
                     string guessTag = guessObject.tag;
                     string correctOutput = CorrectOutputs[i][j].ToString();
                     Debug.Log("Guess: " + guessTag + " Correct: " + correctOutput);
-                    Debug.Log("Correct output contains guess: " + guessTag.Contains(correctOutput));
-                    Debug.Log("Guess contains Circle: " + guessTag.Contains("Circle"));
                     
                     if (j == 0 && guessTag.Contains(correctOutput) && guessTag.Contains("Circle"))
                     {
