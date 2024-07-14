@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,7 +39,7 @@ public class OutputDestroyer : MonoBehaviour
 
     private void CheckAndDestroyGate(Collider2D other)
     {
-        if (other.CompareTag("Zero") || other.CompareTag("One") || other.CompareTag("NegOne") || other.CompareTag("PosSuperPosition") || other.CompareTag("NegSuperPosition"))
+        if (Array.Exists(gateTags, tag => other.CompareTag(tag)))
         {
             TimeToLive ttl = other.GetComponent<TimeToLive>();
             if (ttl != null && !ttl.IsExpired())
