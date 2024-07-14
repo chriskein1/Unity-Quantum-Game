@@ -49,6 +49,7 @@ public class GuessTheGate : MonoBehaviour
             for (int j = 0; j < guessTheGateManagers[i].Count; j++)
             {
                 correctGuesses.Add(false);
+                Debug.Log("Checking puzzle " + i + j);
                 if (!guessTheGateManagers[i][j].HasGate())
                 {
                     Debug.Log("No Gate in Circuit");
