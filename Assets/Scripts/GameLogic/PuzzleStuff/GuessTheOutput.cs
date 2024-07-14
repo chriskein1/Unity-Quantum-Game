@@ -44,6 +44,7 @@ public class GuessTheOutput : MonoBehaviour
     {
         bool isSolved = true;
         Debug.Log("Puzzles: " + OutputPuzzles.Count);
+        Debug.Log("Guesses: " + OutputGuesses.Count);
         // Compare tag of output guess with correct output enum to string
         for (int i = 0; i < OutputPuzzles.Count; i++)
         {
