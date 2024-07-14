@@ -7,20 +7,21 @@ public class GateHolderScript : MonoBehaviour
     [SerializeField] private List<GameObject> Gates = new List<GameObject>();
      private Camera mainCamera; // Reference to the main camera
     [SerializeField] private int amountOfXGates;
-    [SerializeField] private int amountOfYGates;
+    //[SerializeField] private int amountOfYGates;
     [SerializeField] private int amountOfZGates;
     [SerializeField] private int amountOfHGates;
     [SerializeField] private List<HolderButtonLogic> buttons = new List<HolderButtonLogic>();
-
+    private List<TMP_Text> buttonTexts = new List<TMP_Text>();
     private Dictionary<string, int> gateCounts = new Dictionary<string, int>();
     private GameObject currentDraggedGate;
 
     private void Awake()
     {
         gateCounts["XGate"] = amountOfXGates;
-        gateCounts["YGate"] = amountOfYGates;
+        //gateCounts["YGate"] = amountOfYGates;
         gateCounts["ZGate"] = amountOfZGates;
         gateCounts["HGate"] = amountOfHGates;
+        GetButtonTexts();
         UpdateGateCountTexts();
         mainCamera = FindObjectOfType<Camera>();
     }
@@ -69,24 +70,38 @@ public class GateHolderScript : MonoBehaviour
 
     private void UpdateGateCountTexts()
     {
-        UpdateText("XGateText", gateCounts["XGate"]);
-        UpdateText("YGateText", gateCounts["YGate"]);
-        UpdateText("ZGateText", gateCounts["ZGate"]);
-        UpdateText("HGateText", gateCounts["HGate"]);
+        UpdateText(0, gateCounts["XGate"]);
+        //UpdateText("YGateText", gateCounts["YGate"]);
+        UpdateText(1, gateCounts["ZGate"]);
+        UpdateText(2, gateCounts["HGate"]);
         foreach (var button in buttons)
             button.UpdateButtonAppearance();
     }
-
-    private void UpdateText(string tag, int count)
+    private void GetButtonTexts()
     {
-        GameObject[] textObjects = GameObject.FindGameObjectsWithTag(tag);
-        foreach (GameObject textObject in textObjects)
+        foreach (var button in buttons)
         {
-            TMP_Text tmpText = textObject.GetComponent<TMP_Text>();
+            TMP_Text tmpText = button.GetComponentInChildren<TMP_Text>();
             if (tmpText != null)
             {
-                tmpText.text = $"{count}";
+                buttonTexts.Add(tmpText);
             }
+            else
+            {
+                Debug.LogError($"TMP_Text component not found on button {button.name} or its children.");
+            }
+        }
+    }
+    private void UpdateText(int index, int count)
+    {
+        //Debug.Log($"Updating index:{index} count:{count} ");
+        if (index >= 0 && index < buttonTexts.Count)
+        {
+            buttonTexts[index].text = $"{count}";
+        }
+        else
+        {
+            Debug.LogError($"Text component for index {index} not found in  button texts.");
         }
     }
 

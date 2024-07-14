@@ -5,7 +5,7 @@ using UnityEngine;
 public class GateDestroyer : MonoBehaviour
 {
     [SerializeField] private GateHolderScript gateHolder;
-    private string[] gateTags = new string[] { "XGate", "YGate", "ZGate", "HGate" };
+    private string[] gateTags = new string[] { "XGate", "ZGate", "HGate" };
 
     private void OnEnable()
     {
@@ -38,7 +38,7 @@ public class GateDestroyer : MonoBehaviour
 
     private void CheckAndDestroyGate(Collider2D other)
     {
-        if (other.CompareTag("XGate") || other.CompareTag("YGate") || other.CompareTag("ZGate") || other.CompareTag("HGate"))
+        if (other.CompareTag("XGate") || other.CompareTag("ZGate") || other.CompareTag("HGate"))
         {
             TimeToLive ttl = other.GetComponent<TimeToLive>();
             if (ttl != null && !ttl.IsExpired())
