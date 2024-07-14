@@ -28,6 +28,7 @@ public class OutputState : MonoBehaviour
     {
         qubit = newState;
         UpdateVisualRepresentation();
+        Debug.Log("Final state is " + newState);
     }
 
     private void UpdateVisualRepresentation()
@@ -50,7 +51,7 @@ public class OutputState : MonoBehaviour
                 ShowBasisState("i|1>");
                 break;
             case SingleQubitStateOptions.NegativeState0:
-                ShowBasisState("-|0>"); // Added handling for NegativeState0
+                ShowBasisState("-|0>"); 
                 break;
             case SingleQubitStateOptions.NegativeState1:
                 ShowBasisState("-|1>");

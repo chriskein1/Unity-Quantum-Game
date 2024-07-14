@@ -40,6 +40,8 @@ public class QubitOperations
                 return new Qubit(new Complex(0, 0), new Complex(0, 1));
             case SingleQubitStateOptions.NegativeState1:
                 return new Qubit(new Complex(0, 0), new Complex(-1, 0));
+            case SingleQubitStateOptions.NegativeState0:
+                return new Qubit(new Complex(-1, 0), new Complex(0, 0));
             case SingleQubitStateOptions.NegativeImaginary1:
                 return new Qubit(new Complex(0, 0), new Complex(0, -1));
             case SingleQubitStateOptions.NegativeImaginary0:
@@ -79,10 +81,15 @@ public class QubitOperations
         {
             return SingleQubitStateOptions.Imaginary1;
         }
+        if (Math.Abs(qubit.Alpha.Real + 1) < epsilon && Math.Abs(qubit.Beta.Real) < epsilon)
+        {
+            return SingleQubitStateOptions.NegativeState0;
+        }
         if (Math.Abs(qubit.Alpha.Real + 1) < epsilon || Math.Abs(qubit.Beta.Real + 1) < epsilon)
         {
             return SingleQubitStateOptions.NegativeState1;
         }
+        
         if (Math.Abs(qubit.Alpha.Real) < epsilon && Math.Abs(qubit.Beta.Imaginary + 1) < epsilon)
         {
             return SingleQubitStateOptions.NegativeImaginary1;
@@ -98,6 +105,10 @@ public class QubitOperations
         if ((Math.Abs(qubit.Alpha.Imaginary + 1 / Math.Sqrt(2)) < epsilon || Math.Abs(qubit.Beta.Imaginary + 1 / Math.Sqrt(2)) < epsilon))
         {
             return SingleQubitStateOptions.ImaginarySuperpositionMinus;
+        }
+        if (Math.Abs(qubit.Alpha.Real + 1 / Math.Sqrt(2)) < epsilon && Math.Abs(qubit.Beta.Real - 1 / Math.Sqrt(2)) < epsilon)
+        {
+            return SingleQubitStateOptions.SuperpositionMinus;
         }
         if (qubit.IsInSuperposition())
         {

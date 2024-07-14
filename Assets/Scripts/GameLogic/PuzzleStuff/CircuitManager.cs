@@ -141,7 +141,7 @@ public class CircuitManager : MonoBehaviour
                     qubitWireControllers[row].SetOutput(finalState);
                 }
 
-                EvaluateMultipleTimes(100);
+                //EvaluateMultipleTimes(100);
             }
         }
 
@@ -170,8 +170,8 @@ public class CircuitManager : MonoBehaviour
             win = EvaluateWin(new List<Qubit> { finalStateQubit });
             if (visualOutput.Count > 0 && visualOutput[0] != null)
                 visualOutput[0].SetQubit(finalStateQubit, 0);
-            Debug.Log("Setting output 0");
-            Debug.Log("Final state is " + finalStateQubit);
+            //Debug.Log("Setting output 0");
+            //Debug.Log("Final state is " + finalStateQubit);
         }
 
         if (win)
