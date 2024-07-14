@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PuzzleManager : MonoBehaviour
+public class GuessTheGate : MonoBehaviour
 {
     int guessCount = 0;
     [SerializeField] private List<CircuitManager> guessTheGateManagers;
-    [SerializeField] private List<CircuitManager> guessTheOutputManagers;
-    [SerializeField] private List<Snap> guessOutputSnap;
     [SerializeField] private GameObject WinScreen;
     // [SerializeField] private List<GameObject> CheckImages;
     // [SerializeField] private List<GameObject> XImages;

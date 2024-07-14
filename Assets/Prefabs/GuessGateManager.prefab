@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 8315092317220450397}
   - component: {fileID: 2394688505092755231}
   m_Layer: 0
-  m_Name: PuzzleManager
+  m_Name: GuessGateManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,12 +150,6 @@ MonoBehaviour:
   guessTheGateManagers:
   - {fileID: 8564724658274193681}
   - {fileID: 793406183844262859}
-  guessTheOutputManagers:
-  - {fileID: 7310710037314685334}
-  - {fileID: 4318229313337889931}
-  guessOutputSnap:
-  - {fileID: 0}
-  - {fileID: 0}
   WinScreen: {fileID: 0}
 --- !u!1 &642711736293761982
 GameObject:
@@ -1529,17 +1523,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3449306098712362444, guid: b181ad24bafbcbe48a0e45a91e7b4d5b, type: 3}
   m_PrefabInstance: {fileID: 4010392350313863765}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7310710037314685334 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5968143152884782019, guid: b181ad24bafbcbe48a0e45a91e7b4d5b, type: 3}
-  m_PrefabInstance: {fileID: 4010392350313863765}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61f800ee3385dc74bbda6f05dccef041, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6649127654270493241
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1870,17 +1853,6 @@ PrefabInstance:
       addedObject: {fileID: 4421242227917241209}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b181ad24bafbcbe48a0e45a91e7b4d5b, type: 3}
---- !u!114 &4318229313337889931 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5968143152884782019, guid: b181ad24bafbcbe48a0e45a91e7b4d5b, type: 3}
-  m_PrefabInstance: {fileID: 7583626631308085064}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61f800ee3385dc74bbda6f05dccef041, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &5107101368462162564 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3449306098712362444, guid: b181ad24bafbcbe48a0e45a91e7b4d5b, type: 3}

@@ -18,6 +18,7 @@ public class CircuitManager : MonoBehaviour
     public List<VisualQubit> visualOutput;
     float yDistance;
     bool win = false;
+    private List<Qubit> finalStates = new List<Qubit>();
 
     private void Start()
     {
@@ -141,7 +142,7 @@ public class CircuitManager : MonoBehaviour
                     qubitWireControllers[row].SetOutput(finalState);
                 }
 
-                //EvaluateMultipleTimes(100);
+                // EvaluateMultipleTimes(100);
             }
         }
 
@@ -150,28 +151,35 @@ public class CircuitManager : MonoBehaviour
         // Update the visual outputs and evaluate the win condition
         if (qubitWireControllers.Count >= 2)
         {
-            Qubit finalStateQubit1 = snapPointStates[0][numColumns - 1];
-            Qubit finalStateQubit2 = snapPointStates[1][numColumns - 1];
+            // Qubit finalStateQubit1 = snapPointStates[0][numColumns - 1];
+            // Qubit finalStateQubit2 = snapPointStates[1][numColumns - 1];
+            finalStates.Clear();
+            for (int i = 0; i < qubitWireControllers.Count; i++)
+            {
+                finalStates.Add(snapPointStates[i][numColumns - 1]);
+            }
             //UpdateBarChart(finalStateQubit1, finalStateQubit2);
-            win = EvaluateWin(new List<Qubit> { finalStateQubit1, finalStateQubit2 });
+            win = EvaluateWin();
             if (visualOutput.Count > 0 && visualOutput[0] != null)
-                visualOutput[0].SetQubit(finalStateQubit1, 0);
+                visualOutput[0].SetQubit(finalStates[0], 0);
             if (visualOutput.Count > 1 && visualOutput[1] != null)
-                visualOutput[1].SetQubit(finalStateQubit2, 1);
+                visualOutput[1].SetQubit(finalStates[1], 1);
             Debug.Log("Setting output");
-            Debug.Log("Final state is " + finalStateQubit1 + " and " + finalStateQubit2);
+            Debug.Log("Final state is " + finalStates[0] + " and " + finalStates[1]);
         }
         else if (qubitWireControllers.Count == 1)
         {
-            Qubit finalStateQubit = snapPointStates[0][numColumns - 1];
+            // Qubit finalStateQubit = snapPointStates[0][numColumns - 1];
+            finalStates.Clear();
+            finalStates.Add(snapPointStates[0][numColumns - 1]);
             
 
             //UpdateBarChartSingle(finalStateQubit);
-            win = EvaluateWin(new List<Qubit> { finalStateQubit });
+            win = EvaluateWin();
             if (visualOutput.Count > 0 && visualOutput[0] != null)
-                visualOutput[0].SetQubit(finalStateQubit, 0);
-            //Debug.Log("Setting output 0");
-            //Debug.Log("Final state is " + finalStateQubit);
+                visualOutput[0].SetQubit(finalStates[0], 0);
+            Debug.Log("Setting output 0");
+            Debug.Log("Final state is " + finalStates[0]);
         }
 
         if (win)
@@ -322,7 +330,7 @@ public class CircuitManager : MonoBehaviour
     //}
 
     // Determine if the win condition is met for the qubits
-    public bool EvaluateWin(List<Qubit> finalStates)
+    public bool EvaluateWin()
     {
         if (winState.Count == 0)
         {
@@ -357,72 +365,8 @@ public class CircuitManager : MonoBehaviour
         }
         else if (winStateQ.Count == 2)
         {
-            // Imaginary and negative values can be on either qubit, so check both possibilities
-            bool imaginaryWin = false;
-            bool imaginaryFinal = false;
-            for (int i = 0; i < 2; i++)
-            {
-                Qubit q = winStateQ[i];
-                Qubit qFinal = finalStates[i];
-                if (q.Alpha.Imaginary != 0)
-                {
-                    imaginaryWin = !imaginaryWin;
-                } 
-                if (q.Beta.Imaginary != 0)
-                {
-                    imaginaryWin = !imaginaryWin;
-                }
-                if (qFinal.Alpha.Imaginary != 0)
-                {
-                    imaginaryFinal = !imaginaryFinal;
-                }
-                if (qFinal.Beta.Imaginary != 0)
-                {
-                    imaginaryFinal = !imaginaryFinal;
-                }
-            }
-            bool negativeWin = false;
-            bool negativeFinal = false;
-            for (int i = 0; i < 2; i++)
-            {
-                Qubit q = winStateQ[i];
-                Qubit finalQ = finalStates[i];
-                if (q.Alpha.Real < 0 || q.Alpha.Imaginary < 0)
-                {
-                    negativeWin = !negativeWin;
-                } 
-                if (q.Beta.Real < 0 || q.Beta.Imaginary < 0)
-                {
-                    negativeWin = !negativeWin;
-                }
-                if (finalQ.Alpha.Real < 0 || finalQ.Alpha.Imaginary < 0)
-                {
-                    negativeFinal = !negativeFinal;
-                }
-                if (finalQ.Beta.Real < 0 || finalQ.Beta.Imaginary < 0)
-                {
-                    negativeFinal = !negativeFinal;
-                }
-            }
-
-            // If both win states or final states are imaginary, flip negative values
-            // i * i = -1
-            if ((winStateQ[0].Alpha.Imaginary != 0 || winStateQ[0].Beta.Imaginary != 0)
-                && (winStateQ[1].Alpha.Imaginary != 0 || winStateQ[1].Beta.Imaginary != 0))
-                {
-                    negativeWin = !negativeWin;
-                }
-            
-            if ((finalStates[0].Alpha.Imaginary != 0 || finalStates[0].Beta.Imaginary != 0)
-                && (finalStates[1].Alpha.Imaginary != 0 || finalStates[1].Beta.Imaginary != 0))
-                {
-                    negativeFinal = !negativeFinal;
-                }
-
-            // If the real parts are equal and the signs and imaginary parts are equal, the qubits are equal
-            if (!imaginaryWin && !imaginaryFinal)
-            return (CompareReal(finalStates[0], winStateQ[0]) && CompareReal(finalStates[1], winStateQ[1]) &&
-                   imaginaryWin == imaginaryFinal && negativeWin == negativeFinal);
+            // Check if they are approximately equal
+            return finalStates[0].IsApproximatelyEqual(winStateQ[0]) && finalStates[1].IsApproximatelyEqual(winStateQ[1]);
         }
         return false;
     }
@@ -589,5 +533,10 @@ public class CircuitManager : MonoBehaviour
     public bool IsWin()
     {
         return win;
+    }
+
+    public List<Qubit> GetFinalStates()
+    {
+        return finalStates;
     }
 }
