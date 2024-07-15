@@ -6,7 +6,25 @@ using UnityEngine;
 public class OutputDestroyer : MonoBehaviour
 {
     [SerializeField] private OutputHolderScript gateHolder;
-    private string[] gateTags = new string[] { "State0Circle", "NegativeState0Circle", "State1Circle", "NegativeState1Circle", "State0Square", "NegativeState0Square", "State1Square", "NegativeState1Square" };
+    [SerializeField] private List<GameObject> prefabsToDestroy = new List<GameObject>();
+
+    private List<string> gateTags = new List<string>();
+
+    private void Awake()
+    {
+        // Populate gateTags with tags from the prefabs
+        foreach (var prefab in prefabsToDestroy)
+        {
+            if (prefab != null)
+            {
+                string tag = prefab.tag;
+                if (!gateTags.Contains(tag))
+                {
+                    gateTags.Add(tag);
+                }
+            }
+        }
+    }
 
     private void OnEnable()
     {
@@ -39,7 +57,7 @@ public class OutputDestroyer : MonoBehaviour
 
     private void CheckAndDestroyGate(Collider2D other)
     {
-        if (Array.Exists(gateTags, tag => other.CompareTag(tag)))
+        if (gateTags.Contains(other.tag))
         {
             TimeToLive ttl = other.GetComponent<TimeToLive>();
             if (ttl != null && !ttl.IsExpired())

@@ -10,8 +10,8 @@ public class GuessTheOutput : MonoBehaviour
     [SerializeField] private GameObject WinScreen;
     private List<List<Snap>> OutputGuesses = new List<List<Snap>>();
     private List<List<SingleQubitStateOptions>> CorrectOutputs = new List<List<SingleQubitStateOptions>>();
-    // [SerializeField] private List<GameObject> CheckImages;
-    // [SerializeField] private List<GameObject> XImages;
+     [SerializeField] private List<GameObject> CheckImages;
+     [SerializeField] private List<GameObject> XImages;
     
     void Start()
     {
@@ -85,15 +85,15 @@ public class GuessTheOutput : MonoBehaviour
                     {
                         Debug.Log("Incorrect somewhere...");
                         isSolved = false;
-                        // CheckImages[i].SetActive(false);
-                        // XImages[i].SetActive(true);
+                         CheckImages[i].SetActive(false);
+                         XImages[i].SetActive(true);
                     }
                 }
                 if (!correctGuesses.Contains(false))
                 {
                     Debug.Log("Correct output for qubits!");
-                    // CheckImages[i].SetActive(true);
-                    // XImages[i].SetActive(false);
+                     CheckImages[i].SetActive(true);
+                     XImages[i].SetActive(false);
                 }
             }
         }

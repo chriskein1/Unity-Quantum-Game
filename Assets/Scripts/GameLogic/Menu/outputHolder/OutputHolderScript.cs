@@ -8,14 +8,8 @@ public class OutputHolderScript : MonoBehaviour
 {
     [SerializeField] private List<GameObject> Outputs = new List<GameObject>();
     private Camera mainCamera; // Reference to the main camera
-    [SerializeField] private int amountOfZeroCircles;
-    [SerializeField] private int amountOfNegZeroCircles;
-    [SerializeField] private int amountOfOneCircles;
-    [SerializeField] private int amountOfNegOneCircles;
-    [SerializeField] private int amountOfZeroSquares;
-    [SerializeField] private int amountOfNegZeroSquares;
-    [SerializeField] private int amountOfOneSquares;
-    [SerializeField] private int amountOfNegOneSquares;
+    [SerializeField] private int amountOfQubits;
+  
     [SerializeField] private List<OutputbuttonLogic> buttons = new List<OutputbuttonLogic>();
 
 
@@ -25,14 +19,14 @@ public class OutputHolderScript : MonoBehaviour
 
     private void Awake()
     {
-        gateCounts["State0Circle"] = amountOfZeroCircles;
-        gateCounts["NegativeState0Circle"] = amountOfNegZeroCircles;
-        gateCounts["State1Circle"] = amountOfOneCircles;
-        gateCounts["NegativeState1Circle"] = amountOfNegOneCircles;
-        gateCounts["State0Square"] = amountOfZeroSquares;
-        gateCounts["NegativeState0Square"] = amountOfNegZeroSquares;
-        gateCounts["State1Square"] = amountOfOneSquares;
-        gateCounts["NegativeState1Square"] = amountOfNegOneSquares;
+        gateCounts["State0Circle"] = amountOfQubits;
+        gateCounts["NegativeState0Circle"] = amountOfQubits;
+        gateCounts["State1Circle"] = amountOfQubits;
+        gateCounts["NegativeState1Circle"] = amountOfQubits;
+        gateCounts["State0Square"] = amountOfQubits;
+        gateCounts["NegativeState0Square"] = amountOfQubits;
+        gateCounts["State1Square"] = amountOfQubits;
+        gateCounts["NegativeState1Square"] = amountOfQubits;
         mainCamera = FindObjectOfType<Camera>();
         GetButtonTexts();
         UpdateGateCountTexts();
