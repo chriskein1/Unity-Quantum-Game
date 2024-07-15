@@ -5,11 +5,9 @@ using UnityEngine;
 public class GateHolderScript : MonoBehaviour
 {
     [SerializeField] private List<GameObject> Gates = new List<GameObject>();
-     private Camera mainCamera; // Reference to the main camera
-    [SerializeField] private int amountOfXGates;
-    //[SerializeField] private int amountOfYGates;
-    [SerializeField] private int amountOfZGates;
-    [SerializeField] private int amountOfHGates;
+     private Camera mainCamera; 
+    [SerializeField] private int amountOfGates;
+ 
     [SerializeField] private List<HolderButtonLogic> buttons = new List<HolderButtonLogic>();
     private List<TMP_Text> buttonTexts = new List<TMP_Text>();
     private Dictionary<string, int> gateCounts = new Dictionary<string, int>();
@@ -17,15 +15,22 @@ public class GateHolderScript : MonoBehaviour
 
     private void Awake()
     {
-        gateCounts["XGate"] = amountOfXGates;
-        //gateCounts["YGate"] = amountOfYGates;
-        gateCounts["ZGate"] = amountOfZGates;
-        gateCounts["HGate"] = amountOfHGates;
+        InitializeGateCounts();
         GetButtonTexts();
         UpdateGateCountTexts();
         mainCamera = FindObjectOfType<Camera>();
     }
-
+    private void InitializeGateCounts()
+    {
+        foreach (GameObject gate in Gates)
+        {
+            string gateTag = gate.tag;
+            if (!gateCounts.ContainsKey(gateTag))
+            {
+                gateCounts[gateTag] = amountOfGates;
+            }
+        }
+    }
     public void SpawnAndDragGate(string gateTag)
     {
         if (gateCounts[gateTag] > 0)
@@ -70,12 +75,30 @@ public class GateHolderScript : MonoBehaviour
 
     private void UpdateGateCountTexts()
     {
-        UpdateText(0, gateCounts["XGate"]);
-        //UpdateText("YGateText", gateCounts["YGate"]);
-        UpdateText(1, gateCounts["ZGate"]);
-        UpdateText(2, gateCounts["HGate"]);
+        for (int i = 0; i < buttons.Count; i++)
+        {
+            if (i < buttonTexts.Count)
+            {
+                string gateTag = Gates[i].tag;
+                if (gateCounts.ContainsKey(gateTag))
+                {
+                    buttonTexts[i].text = $"{gateCounts[gateTag]}";
+                }
+                else
+                {
+                    Debug.LogError($"Gate tag {gateTag} not found in gate counts.");
+                }
+            }
+            else
+            {
+                Debug.LogError($"Text component for index {i} not found in button texts.");
+            }
+        }
+
         foreach (var button in buttons)
+        {
             button.UpdateButtonAppearance();
+        }
     }
     private void GetButtonTexts()
     {
@@ -92,18 +115,8 @@ public class GateHolderScript : MonoBehaviour
             }
         }
     }
-    private void UpdateText(int index, int count)
-    {
-        //Debug.Log($"Updating index:{index} count:{count} ");
-        if (index >= 0 && index < buttonTexts.Count)
-        {
-            buttonTexts[index].text = $"{count}";
-        }
-        else
-        {
-            Debug.LogError($"Text component for index {index} not found in  button texts.");
-        }
-    }
+    
+ 
 
     private void GrabGateSound()
     {

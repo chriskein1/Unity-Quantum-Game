@@ -15,7 +15,7 @@ public class OutputState : MonoBehaviour
     [SerializeField] private TextMeshPro numerator;
 
     private QubitOperations qubitOperations = new QubitOperations();
-    private Qubit qubit;
+    private Qubit qubit = new Qubit(new Complex(1, 0), new Complex(0, 0));
 
     void Start()
     {
@@ -35,6 +35,8 @@ public class OutputState : MonoBehaviour
     {
         // Determine the current state as an enum
         SingleQubitStateOptions currentState = qubitOperations.ConvertToStateOption(qubit);
+        Debug.Log($"current state {currentState}");
+        Debug.Log($"---------{qubit}");
         // Update the visual representation based on the current state
         switch (currentState)
         {
@@ -64,14 +66,18 @@ public class OutputState : MonoBehaviour
                 break;
             case SingleQubitStateOptions.SuperpositionPlus:
                 ShowSuperpositionState("+", "1");
+                Debug.Log("1---------");
                 break;
             case SingleQubitStateOptions.SuperpositionMinus:
+                Debug.Log("2---------");
                 ShowSuperpositionState("-", "1");
                 break;
             case SingleQubitStateOptions.ImaginarySuperpositionPlus:
+                Debug.Log("3---------");
                 ShowSuperpositionState("+", "i");
                 break;
             case SingleQubitStateOptions.ImaginarySuperpositionMinus:
+                Debug.Log("4---------");
                 ShowSuperpositionState("-", "i");
                 break;
             default:

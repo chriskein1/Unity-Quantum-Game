@@ -5,7 +5,25 @@ using UnityEngine;
 public class GateDestroyer : MonoBehaviour
 {
     [SerializeField] private GateHolderScript gateHolder;
-    private string[] gateTags = new string[] { "XGate", "ZGate", "HGate" };
+    [SerializeField] private List<GameObject> prefabsToDestroy = new List<GameObject>();
+
+    private List<string> gateTags = new List<string>();
+
+    private void Awake()
+    {
+        // Populate gateTags with tags from the prefabs
+        foreach (var prefab in prefabsToDestroy)
+        {
+            if (prefab != null)
+            {
+                string tag = prefab.tag;
+                if (!gateTags.Contains(tag))
+                {
+                    gateTags.Add(tag);
+                }
+            }
+        }
+    }
 
     private void OnEnable()
     {
@@ -38,7 +56,7 @@ public class GateDestroyer : MonoBehaviour
 
     private void CheckAndDestroyGate(Collider2D other)
     {
-        if (other.CompareTag("XGate") || other.CompareTag("ZGate") || other.CompareTag("HGate"))
+        if (gateTags.Contains(other.tag))
         {
             TimeToLive ttl = other.GetComponent<TimeToLive>();
             if (ttl != null && !ttl.IsExpired())

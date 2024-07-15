@@ -151,14 +151,15 @@ public class CircuitManager : MonoBehaviour
         // Update the visual outputs and evaluate the win condition
         if (qubitWireControllers.Count >= 2)
         {
-            // Qubit finalStateQubit1 = snapPointStates[0][numColumns - 1];
-            // Qubit finalStateQubit2 = snapPointStates[1][numColumns - 1];
+             Qubit finalStateQubit1 = snapPointStates[0][numColumns - 1];
+             Qubit finalStateQubit2 = snapPointStates[1][numColumns - 1];
             finalStates.Clear();
             for (int i = 0; i < qubitWireControllers.Count; i++)
             {
                 finalStates.Add(snapPointStates[i][numColumns - 1]);
             }
-            //UpdateBarChart(finalStateQubit1, finalStateQubit2);
+            if (barChartManager != null)
+                UpdateBarChart(finalStateQubit1, finalStateQubit2);
             win = EvaluateWin();
             if (visualOutput.Count > 0 && visualOutput[0] != null)
                 visualOutput[0].SetQubit(finalStates[0], 0);
@@ -169,12 +170,12 @@ public class CircuitManager : MonoBehaviour
         }
         else if (qubitWireControllers.Count == 1)
         {
-            // Qubit finalStateQubit = snapPointStates[0][numColumns - 1];
+             Qubit finalStateQubit = snapPointStates[0][numColumns - 1];
             finalStates.Clear();
             finalStates.Add(snapPointStates[0][numColumns - 1]);
-            
 
-            //UpdateBarChartSingle(finalStateQubit);
+            if (barChartManager != null)
+                UpdateBarChartSingle(finalStateQubit);
             win = EvaluateWin();
             if (visualOutput.Count > 0 && visualOutput[0] != null)
                 visualOutput[0].SetQubit(finalStates[0], 0);
@@ -304,30 +305,31 @@ public class CircuitManager : MonoBehaviour
         }
     }
 
-    //private void UpdateBarChart(Qubit finalStateQubit1, Qubit finalStateQubit2)
-    //{
-    //    // Calculate probabilities for the states |00⟩, |01⟩, |10⟩, and |11⟩
-    //    float prob00 = MagnitudeSquared(finalStateQubit1.Alpha * finalStateQubit2.Alpha);
-    //    float prob01 = MagnitudeSquared(finalStateQubit1.Alpha * finalStateQubit2.Beta);
-    //    float prob10 = MagnitudeSquared(finalStateQubit1.Beta * finalStateQubit2.Alpha);
-    //    float prob11 = MagnitudeSquared(finalStateQubit1.Beta * finalStateQubit2.Beta);
+    private void UpdateBarChart(Qubit finalStateQubit1, Qubit finalStateQubit2)
+    {
+        // Calculate probabilities for the states |00⟩, |01⟩, |10⟩, and |11⟩
+        float prob00 = MagnitudeSquared(finalStateQubit1.Alpha * finalStateQubit2.Alpha);
+        float prob01 = MagnitudeSquared(finalStateQubit1.Alpha * finalStateQubit2.Beta);
+        float prob10 = MagnitudeSquared(finalStateQubit1.Beta * finalStateQubit2.Alpha);
+        float prob11 = MagnitudeSquared(finalStateQubit1.Beta * finalStateQubit2.Beta);
 
-    //    barChartManager.UpdateBarChart(prob00, prob01, prob10, prob11);
-    //}
+        barChartManager.UpdateBarChart(prob00, prob01, prob10, prob11);
+    }
 
-    //private float MagnitudeSquared(Complex c)
-    //{
-    //    return (float)(c.Real * c.Real + c.Imaginary * c.Imaginary);
-    //}
-    //private void UpdateBarChartSingle(Qubit finalStateQubit)
-    //{
-    //    // Calculate probabilities for the states |0> and |1>
-    //    float prob0 = MagnitudeSquared(finalStateQubit.Alpha);
-    //    float prob1 = MagnitudeSquared(finalStateQubit.Beta);
+    private float MagnitudeSquared(Complex c)
+    {
+        return (float)(c.Real * c.Real + c.Imaginary * c.Imaginary);
+    }
+    private void UpdateBarChartSingle(Qubit finalStateQubit)
+    {
+        // Calculate probabilities for the states |0> and |1>
+        float prob0 = MagnitudeSquared(finalStateQubit.Alpha);
+        float prob1 = MagnitudeSquared(finalStateQubit.Beta);
 
-    //    // Update the bar chart using the same method but with only two bars
-    //    barChartManager.UpdateBarChart(prob0, prob1);
-    //}
+        // Update the bar chart using the same method but with only two bars
+        if(barChartManager != null)
+        barChartManager.UpdateBarChart(prob0, prob1);
+    }
 
     // Determine if the win condition is met for the qubits
     public bool EvaluateWin()
@@ -499,7 +501,7 @@ public class CircuitManager : MonoBehaviour
         // Update the bar chart
         if (numRows >= 2)
         {
-            // barChartManager.UpdateBarChart(stateProbabilities["|00⟩"], stateProbabilities["|01⟩"], stateProbabilities["|10⟩"], stateProbabilities["|11⟩"]);
+             //barChartManager.UpdateBarChart(stateProbabilities["|00⟩"], stateProbabilities["|01⟩"], stateProbabilities["|10⟩"], stateProbabilities["|11⟩"]);
         }
         else if (numRows == 1)
         {

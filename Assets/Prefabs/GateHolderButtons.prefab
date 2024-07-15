@@ -278,9 +278,7 @@ MonoBehaviour:
   - {fileID: 4395250297515324253, guid: b3fa34b4d12e9c247a961743cedb832d, type: 3}
   - {fileID: 4395250297515324253, guid: 04e6fd98a934577409473e925b7530a0, type: 3}
   - {fileID: 4395250297515324253, guid: 285720e6c4a14074a8aa1f64231c67a7, type: 3}
-  amountOfXGates: 5
-  amountOfZGates: 5
-  amountOfHGates: 5
+  amountOfGates: 4
   buttons:
   - {fileID: 6306474644533802469}
   - {fileID: 4536333228966726801}
@@ -2081,6 +2079,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gateHolder: {fileID: 7996754193830091821}
+  prefabsToDestroy:
+  - {fileID: 4395250297515324253, guid: b3fa34b4d12e9c247a961743cedb832d, type: 3}
+  - {fileID: 4395250297515324253, guid: 04e6fd98a934577409473e925b7530a0, type: 3}
+  - {fileID: 4395250297515324253, guid: 285720e6c4a14074a8aa1f64231c67a7, type: 3}
+  - {fileID: 2264032378505327512, guid: c4a679c9d6c7ac1458ea6af0736004a1, type: 3}
 --- !u!61 &8277605304507583738
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -71,12 +71,12 @@ public class GuessTheOutput : MonoBehaviour
                     string correctOutput = CorrectOutputs[i][j].ToString();
                     Debug.Log("Guess: " + guessTag + " Correct: " + correctOutput);
                     
-                    if (j == 0 && guessTag.Contains(correctOutput) && guessTag.Contains("Circle"))
+                    if (j == 0 && guessTag == correctOutput + "Circle")
                     {
                         Debug.Log("Correct for q0!");
                         correctGuesses[0] = true;
                     }
-                    else if (j == 1 && guessTag.Contains(correctOutput) && guessTag.Contains("Square"))
+                    else if (j == 1 && guessTag == correctOutput + "Square")
                     {
                         Debug.Log("Correct for q1!");
                         correctGuesses[1] = true;

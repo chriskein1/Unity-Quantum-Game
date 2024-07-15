@@ -64,9 +64,10 @@ public class QubitOperations
     public SingleQubitStateOptions ConvertToStateOption(Qubit qubit)
     {
         double epsilon = 0.0001; // Small threshold for floating-point comparison
-
+        
         if (Math.Abs(qubit.Alpha.Real - 1) < epsilon && Math.Abs(qubit.Beta.Real) < epsilon)
         {
+            
             return SingleQubitStateOptions.State0;
         }
         if (Math.Abs(qubit.Alpha.Real) < epsilon && Math.Abs(qubit.Beta.Real - 1) < epsilon)
@@ -100,6 +101,7 @@ public class QubitOperations
         }
         if (Math.Abs(qubit.Alpha.Imaginary - 1 / Math.Sqrt(2)) < epsilon && Math.Abs(qubit.Beta.Imaginary - 1 / Math.Sqrt(2)) < epsilon)
         {
+            
             return SingleQubitStateOptions.ImaginarySuperpositionPlus;
         }
         if ((Math.Abs(qubit.Alpha.Imaginary + 1 / Math.Sqrt(2)) < epsilon || Math.Abs(qubit.Beta.Imaginary + 1 / Math.Sqrt(2)) < epsilon))
@@ -112,6 +114,7 @@ public class QubitOperations
         }
         if (qubit.IsInSuperposition())
         {
+            
             return qubit.Beta.Real < 0 ? SingleQubitStateOptions.SuperpositionMinus : SingleQubitStateOptions.SuperpositionPlus;
         }
 
