@@ -8,8 +8,8 @@ public class GuessTheGate : MonoBehaviour
     [SerializeField] private List<GatePuzzle> GatePuzzles;
     [SerializeField] private GameObject WinScreen;
     private List<List<CircuitManager>> guessTheGateManagers = new List<List<CircuitManager>>();
-     [SerializeField] private List<GameObject> CheckImages;
-     [SerializeField] private List<GameObject> XImages;
+    [SerializeField] private List<GameObject> CheckImages;
+    [SerializeField] private List<GameObject> XImages;
 
     // Start is called before the first frame update
     void Start()
@@ -54,28 +54,28 @@ public class GuessTheGate : MonoBehaviour
                 {
                     Debug.Log("No Gate in Circuit");
                     isSolved = false;
-                     XImages[i].SetActive(true);
-                     CheckImages[i].SetActive(false);
+                    XImages[i].SetActive(true);
+                    CheckImages[i].SetActive(false);
                 }
                 else if (!guessTheGateManagers[i][j].IsWin())
                 {
                     Debug.Log("Puzzle Not Solved");
-                     XImages[i].SetActive(true);
-                     CheckImages[i].SetActive(false);
+                    XImages[i].SetActive(true);
+                    CheckImages[i].SetActive(false);
                     isSolved = false;
                 }
                 else if (guessTheGateManagers[i][j].IsWin())
                 {
                     correctGuesses[j] = true;
-                     CheckImages[i].SetActive(true);
-                     XImages[i].SetActive(false);
+                    CheckImages[i].SetActive(true);
+                    XImages[i].SetActive(false);
                 }
             }
             if (!correctGuesses.Contains(false))
             {
                 Debug.Log("Puzzle Solved");
-                 CheckImages[i].SetActive(true);
-                 XImages[i].SetActive(false);
+                CheckImages[i].SetActive(true);
+                XImages[i].SetActive(false);
             }
         }
         return isSolved;

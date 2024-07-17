@@ -515,21 +515,23 @@ public class CircuitManager : MonoBehaviour
         }
     }
     
-    // Return if any wire has a gate on it anywhere
+    // Return if any wire has a gate on it everywhere
     public bool HasGate()
     {
+        bool hasGate = true;
         for (int i = 0; i < qubitWireControllers.Count; i++)
         { 
-            for (int j = 0; j < snapPointLists[i].Count; j++)
+            // Skip snap point 1 because it is the input
+            for (int j = 1; j < snapPointLists[i].Count; j++)
             {
                 GameObject gateObject = snapPointLists[i][j].GetComponent<Snap>().GetGateObject();
-                if (gateObject != null)
+                if (gateObject == null)
                 {
-                    return true;
+                    hasGate = false;
                 }
             }
         }
-        return false;
+        return hasGate;
     }
 
     public bool IsWin()
