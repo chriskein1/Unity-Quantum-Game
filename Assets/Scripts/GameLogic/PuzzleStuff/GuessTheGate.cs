@@ -37,7 +37,7 @@ public class GuessTheGate : MonoBehaviour
             }
         }
     }
-
+ 
     private bool CheckGatePuzzles()
     {
         bool isSolved = true;
