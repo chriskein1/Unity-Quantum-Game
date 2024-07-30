@@ -20,7 +20,7 @@ public class OutputState : MonoBehaviour
     void Start()
     {
         // Initialize the visual representation based on the initial qubit state
-        //UpdateVisualRepresentation();
+        UpdateVisualRepresentation();
     }
 
     // Function to set the state and its sign
