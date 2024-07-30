@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using QubitType;
+using UnityEngine.AI;
 
 public class Snap : MonoBehaviour
 {
@@ -54,7 +55,8 @@ public class Snap : MonoBehaviour
     //}
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (gate == collision.gameObject)
+        Debug.Log($"EXITTTTTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGG {gameObject.activeSelf} {gate.activeSelf}");
+        if (gate == collision.gameObject && gameObject.activeSelf)
         {
                 ClickOffSound();
             
@@ -153,5 +155,23 @@ public class Snap : MonoBehaviour
             Debug.LogError("AudioManager instance not found!");
         }
     }
-    
+
+    private void OnDisable()
+    {      
+        if (gate != null) 
+        {
+           
+            gate.SetActive(false);
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (gate != null)
+        {
+            gate.SetActive(true);
+        }
+
+    }
+
 }
