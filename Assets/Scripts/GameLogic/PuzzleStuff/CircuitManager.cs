@@ -543,4 +543,9 @@ public class CircuitManager : MonoBehaviour
     {
         return finalStates;
     }
+
+    public List<List<GameObject>> GetSnapPoints()
+    {
+        return snapPointLists;
+    }
 }
