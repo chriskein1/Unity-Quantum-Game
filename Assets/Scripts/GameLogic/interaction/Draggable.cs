@@ -127,6 +127,15 @@ public class Drag : MonoBehaviour
         transform.rotation = originalRotation;
     }
 
+    public void Unsnap()
+    {
+        snapped = false;
+        if (hasRigidbody)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+        }
+        transform.rotation = originalRotation;
+    }
     public void StartDraggingFromSpawn(Vector3 spawnPosition)
     {
         dragging = true;
