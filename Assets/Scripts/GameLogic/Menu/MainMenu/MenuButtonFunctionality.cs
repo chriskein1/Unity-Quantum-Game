@@ -37,7 +37,6 @@ public class MenuButtonFunctionality : MonoBehaviour
         ClickSound();
         Debug.Log("Going to NextLevel");
         transition.SetTrigger("Start"); //calls trigger for the animation
-        Debug.Log("Past Trigger");
         yield return new WaitForSeconds(transitionTime);  //this waits transitionTime amount of seconds 
         SceneManager.LoadScene(levelIndex); //loads selected scene 
 

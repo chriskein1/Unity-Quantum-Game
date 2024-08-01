@@ -7,12 +7,15 @@ public class PuzzleButtonLogic : MonoBehaviour
 {
     [SerializeField] private GameObject[] puzzles;
     [SerializeField] private GameObject[] puzzleTexts;
+    [SerializeField] private Button nextButton;
+    [SerializeField] private Button backButton;
     private int currentPuzzleIndex = 0;
 
     private void Start()
     {
         MoveAllPuzzlesOffScreen();
         MovePuzzleOnScreen(currentPuzzleIndex);
+        UpdateButtonStates();
     }
 
     public void NextPuzzle()
@@ -22,6 +25,7 @@ public class PuzzleButtonLogic : MonoBehaviour
             MovePuzzleOffScreen(currentPuzzleIndex);
             currentPuzzleIndex++;
             MovePuzzleOnScreen(currentPuzzleIndex);
+            UpdateButtonStates();
         }
     }
 
@@ -32,6 +36,7 @@ public class PuzzleButtonLogic : MonoBehaviour
             MovePuzzleOffScreen(currentPuzzleIndex);
             currentPuzzleIndex--;
             MovePuzzleOnScreen(currentPuzzleIndex);
+            UpdateButtonStates();
         }
     }
 
@@ -92,6 +97,27 @@ public class PuzzleButtonLogic : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    private void UpdateButtonStates()
+    {
+        if (currentPuzzleIndex == 0)
+        {
+            backButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            backButton.gameObject.SetActive(true);
+        }
+
+        if (currentPuzzleIndex == puzzles.Length - 1)
+        {
+            nextButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            nextButton.gameObject.SetActive(true);
         }
     }
 }

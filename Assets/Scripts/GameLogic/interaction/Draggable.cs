@@ -14,6 +14,10 @@ public class Drag : MonoBehaviour
     private Quaternion originalRotation;
     private bool snapped = false;
     private Rigidbody2D rb;
+
+    // Static flag to ensure only one object can be dragged at a time
+    private static bool isDraggingAnyObject = false;
+
     private void Start()
     {
         // Record the size of the sprite so we can limit it to the screen if necessary.
@@ -32,7 +36,6 @@ public class Drag : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                
                 Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) + offset;
                 // Find the screen bounds in world coordinates.
                 Vector3 topRight = Camera.main.ViewportToWorldPoint(Vector3.one);
@@ -47,13 +50,15 @@ public class Drag : MonoBehaviour
             else
             {
                 dragging = false;
+                isDraggingAnyObject = false;
+                
             }
         }
     }
 
     private void OnMouseDown()
     {
-        if (!canGrab)
+        if (!canGrab || isDraggingAnyObject)
         {
             return;
         }
@@ -68,11 +73,12 @@ public class Drag : MonoBehaviour
             snapped = false;
             // Reset the object's rotation to the original rotation.
             transform.rotation = originalRotation;
-               // Calculate the offset based on the current position.
-                offset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-          
+            // Calculate the offset based on the current position.
+            offset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             dragging = true;
+            isDraggingAnyObject = true;
+            
         }
     }
 
@@ -101,6 +107,7 @@ public class Drag : MonoBehaviour
     {
         // Stop dragging.
         dragging = false;
+        isDraggingAnyObject = false;
         
     }
 
@@ -108,7 +115,6 @@ public class Drag : MonoBehaviour
     {
         return dragging;
     }
-
     public bool IsSnapped()
     {
         return snapped;
@@ -118,6 +124,7 @@ public class Drag : MonoBehaviour
     {
         return !disableSnap;
     }
+
     public void Snapping()
     {
         snapped = true;
@@ -136,10 +143,19 @@ public class Drag : MonoBehaviour
         }
         transform.rotation = originalRotation;
     }
+
     public void StartDraggingFromSpawn(Vector3 spawnPosition)
     {
         dragging = true;
         offset = spawnPosition - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        isDraggingAnyObject = true;
+        
+
     }
- 
+
+    private void OnDestroy()
+    {
+        isDraggingAnyObject = false;
+        
+    }
 }
