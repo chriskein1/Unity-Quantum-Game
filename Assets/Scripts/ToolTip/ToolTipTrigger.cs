@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 /// <summary>
 /// ToolTipTrigger is responsible for showing and hiding the tooltip when the mouse hovers over the associated GameObject.
 /// It delays the tooltip display by 0.5 seconds and ensures the tooltip doesn't appear if the mouse button is held down.
 /// </summary>
-public class ToolTipTrigger : MonoBehaviour
+public class ToolTipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Text:")]
     [Multiline()]
@@ -53,5 +55,18 @@ public class ToolTipTrigger : MonoBehaviour
         {
             Invoke("ShowToolTip", 0.5f); // Reinvoke the tooltip display with a delay when the mouse button is released
         }
+    }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        isHovering = true;
+        Invoke("ShowToolTip", 0.5f); // Delay tooltip display by 0.5 seconds
+    }
+
+    // This method is called when the pointer exits the object
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        isHovering = false;
+        CancelInvoke("ShowToolTip"); // Cancel the delayed call if the mouse exits before the tooltip is shown
+        ToolTipSystem.Hide();
     }
 }

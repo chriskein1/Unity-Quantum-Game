@@ -165,8 +165,8 @@ public class CircuitManager : MonoBehaviour
                 visualOutput[0].SetQubit(finalStates[0], 0);
             if (visualOutput.Count > 1 && visualOutput[1] != null)
                 visualOutput[1].SetQubit(finalStates[1], 1);
-            Debug.Log("Setting output");
-            Debug.Log("Final state is " + finalStates[0] + " and " + finalStates[1]);
+            //Debug.Log("Setting output");
+            //Debug.Log("Final state is " + finalStates[0] + " and " + finalStates[1]);
         }
         else if (qubitWireControllers.Count == 1)
         {
@@ -179,8 +179,8 @@ public class CircuitManager : MonoBehaviour
             win = EvaluateWin();
             if (visualOutput.Count > 0 && visualOutput[0] != null)
                 visualOutput[0].SetQubit(finalStates[0], 0);
-            Debug.Log("Setting output 0");
-            Debug.Log("Final state is " + finalStates[0]);
+            //Debug.Log("Setting output 0");
+            //Debug.Log("Final state is " + finalStates[0]);
         }
 
         if (win)
@@ -542,5 +542,10 @@ public class CircuitManager : MonoBehaviour
     public List<Qubit> GetFinalStates()
     {
         return finalStates;
+    }
+
+    public List<List<GameObject>> GetSnapPoints()
+    {
+        return snapPointLists;
     }
 }

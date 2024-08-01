@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 418328177451901636}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 108.00558, y: 108.00558, z: 108.00558}
+  m_LocalPosition: {x: 1.5, y: 0, z: 0}
+  m_LocalScale: {x: 90.90505, y: 78.30512, z: 108.00558}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2842124228256850181}
@@ -210,10 +210,10 @@ RectTransform:
   - {fileID: 694548258003938917}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1123.5, y: -632}
+  m_SizeDelta: {x: 2247, y: 1264}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4514174024690451460
 Canvas:
@@ -314,6 +314,7 @@ GameObject:
   - component: {fileID: 5528625993315941648}
   - component: {fileID: 1521943077025633033}
   - component: {fileID: 4270025469627513103}
+  - component: {fileID: 4045276997827199493}
   m_Layer: 5
   m_Name: HButton
   m_TagString: Untagged
@@ -330,8 +331,8 @@ RectTransform:
   m_GameObject: {fileID: 3382534476528997691}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3224981910705633184}
   - {fileID: 1200549077179560675}
@@ -438,6 +439,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gateHolderScript: {fileID: 7996754193830091821}
   gateType: HGate
+--- !u!114 &4045276997827199493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3382534476528997691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bc940c1321d911478e92de95cd1aa72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: H Gate
+  content: 'puts qubit into superposition '
+  headerColor: {r: 0.084905505, g: 0.22539854, b: 1, a: 1}
+  contentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &4879219122911574591
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,7 +619,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 108.00558, y: 108.00558, z: 108.00558}
+  m_LocalScale: {x: 90.90505, y: 75.60498, z: 108.00558}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7944184341722799693}
@@ -760,6 +777,7 @@ GameObject:
   - component: {fileID: 2811007065656557307}
   - component: {fileID: 8099152067154531663}
   - component: {fileID: 7641931955957810876}
+  - component: {fileID: 2557319142186899054}
   m_Layer: 5
   m_Name: ZButton
   m_TagString: Untagged
@@ -776,8 +794,8 @@ RectTransform:
   m_GameObject: {fileID: 5518495443019085174}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 9212259856914680678}
   - {fileID: 4257499461070803635}
@@ -908,6 +926,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gateHolderScript: {fileID: 7996754193830091821}
   gateType: ZGate
+--- !u!114 &2557319142186899054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5518495443019085174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bc940c1321d911478e92de95cd1aa72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: Z Gate
+  content: ' flips the state of the qubit if its state is |1>'
+  headerColor: {r: 0, g: 1, b: 0.13047147, a: 1}
+  contentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &5735133593325718157
 GameObject:
   m_ObjectHideFlags: 0
@@ -1055,6 +1089,7 @@ GameObject:
   - component: {fileID: 3060393531942844743}
   - component: {fileID: 2242675842079432638}
   - component: {fileID: 4536333228966726801}
+  - component: {fileID: 7919096307687165552}
   m_Layer: 5
   m_Name: YButton
   m_TagString: Untagged
@@ -1071,8 +1106,8 @@ RectTransform:
   m_GameObject: {fileID: 5953778339964350455}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6708365714769678437}
   - {fileID: 1139444131040609516}
@@ -1203,6 +1238,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gateHolderScript: {fileID: 7996754193830091821}
   gateType: YGate
+--- !u!114 &7919096307687165552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5953778339964350455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bc940c1321d911478e92de95cd1aa72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: Y Gate
+  content: flips the phase and state of qubit
+  headerColor: {r: 0, g: 0, b: 0, a: 0}
+  contentColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &7209876509004677164
 GameObject:
   m_ObjectHideFlags: 0
@@ -1485,6 +1536,7 @@ GameObject:
   - component: {fileID: 1443349013872130490}
   - component: {fileID: 7192705058966508876}
   - component: {fileID: 6306474644533802469}
+  - component: {fileID: 6093897491391024248}
   m_Layer: 5
   m_Name: XButton
   m_TagString: Untagged
@@ -1501,8 +1553,8 @@ RectTransform:
   m_GameObject: {fileID: 8406212024071287208}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1540091562202140814}
   - {fileID: 2110168440966176690}
@@ -1654,6 +1706,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gateHolderScript: {fileID: 7996754193830091821}
   gateType: XGate
+--- !u!114 &6093897491391024248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8406212024071287208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bc940c1321d911478e92de95cd1aa72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: X Gate
+  content: flips the state of the qubit
+  headerColor: {r: 1, g: 0, b: 0, a: 1}
+  contentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &8592794482885193008
 GameObject:
   m_ObjectHideFlags: 0
@@ -1694,10 +1762,10 @@ RectTransform:
   - {fileID: 6308280386088692245}
   m_Father: {fileID: 1130941868571285848}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -886, y: 595}
-  m_SizeDelta: {x: 560.7777, y: 114.75}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 297.62653, y: -60}
+  m_SizeDelta: {x: 595.2531, y: 114.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9182252572738699168
 CanvasRenderer:
@@ -1833,7 +1901,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 108.00558, y: 108.00558, z: 108.00558}
+  m_LocalScale: {x: 89.10568, y: 72.90485, z: 108.00558}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 649218807165749251}
@@ -1948,7 +2016,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   header: Z Gate
-  content: ' flips the state of the qubit'
+  content: ' flips the state of the qubit if its state is |1>'
   headerColor: {r: 0.034872293, g: 1, b: 0, a: 1}
   contentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!50 &638435911789171653
@@ -2008,8 +2076,8 @@ Transform:
   m_GameObject: {fileID: 8853653768082108466}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 310.39996, y: 33.05249, z: -8677.059}
-  m_LocalScale: {x: 55.10895, y: 50.172676, z: 96.41175}
+  m_LocalPosition: {x: 619.4, y: 5.3, z: -8677.059}
+  m_LocalScale: {x: 560.55096, y: 108.148186, z: 96.41175}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 694548258003938917}
@@ -2055,7 +2123,7 @@ SpriteRenderer:
   m_SortingLayerID: -841996231
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 17552fc160c9857499aa42f6ae6afc52, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2063,7 +2131,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &985438426544347493
@@ -2203,7 +2271,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 108.00558, y: 108.00558, z: 108.00558}
+  m_LocalScale: {x: 70.56482, y: 70.56482, z: 70.56482}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3693229740624020663}

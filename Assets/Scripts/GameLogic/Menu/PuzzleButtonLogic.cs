@@ -7,25 +7,25 @@ public class PuzzleButtonLogic : MonoBehaviour
 {
     [SerializeField] private GameObject[] puzzles;
     [SerializeField] private GameObject[] puzzleTexts;
+    [SerializeField] private Button nextButton;
+    [SerializeField] private Button backButton;
     private int currentPuzzleIndex = 0;
-
-    private Dictionary<int, List<GameObject>> puzzleGates;
 
     private void Start()
     {
-        puzzleGates = new Dictionary<int, List<GameObject>>();
-        UpdatePuzzleVisibility();
+        MoveAllPuzzlesOffScreen();
+        MovePuzzleOnScreen(currentPuzzleIndex);
+        UpdateButtonStates();
     }
 
     public void NextPuzzle()
     {
         if (currentPuzzleIndex < puzzles.Length - 1)
         {
-            UpdatePuzzleVisibility();
-            SaveCurrentPuzzleGates();
+            MovePuzzleOffScreen(currentPuzzleIndex);
             currentPuzzleIndex++;
-            UpdatePuzzleVisibility();
-            RestoreCurrentPuzzleGates();
+            MovePuzzleOnScreen(currentPuzzleIndex);
+            UpdateButtonStates();
         }
     }
 
@@ -33,65 +33,91 @@ public class PuzzleButtonLogic : MonoBehaviour
     {
         if (currentPuzzleIndex > 0)
         {
-            UpdatePuzzleVisibility();
-            SaveCurrentPuzzleGates();
+            MovePuzzleOffScreen(currentPuzzleIndex);
             currentPuzzleIndex--;
-            RestoreCurrentPuzzleGates();
-            UpdatePuzzleVisibility();
+            MovePuzzleOnScreen(currentPuzzleIndex);
+            UpdateButtonStates();
         }
     }
 
-    private void UpdatePuzzleVisibility()
+    private void MoveAllPuzzlesOffScreen()
     {
         for (int i = 0; i < puzzles.Length; i++)
         {
-            bool isActive = (i == currentPuzzleIndex);
-            puzzles[i].SetActive(isActive);
-            puzzleTexts[i].SetActive(isActive);
+            MovePuzzleOffScreen(i);
         }
     }
 
-    private void SaveCurrentPuzzleGates()
+    private void MovePuzzleOffScreen(int index)
     {
-        List<GameObject> gates = new List<GameObject>();
+        // Move the puzzle first
+        puzzles[index].transform.position += new Vector3(0, (index + 1) * 50, 0);
+        puzzleTexts[index].transform.position += new Vector3(0, (index + 1) * 50, 0);
 
-        foreach (string tag in new string[] { "XGate", "YGate", "ZGate", "HGate", "State0Circle", "State0Square", "State1Circle", "State1Square", "NegativeState1Circle", "NegativeState1Square", "NegativeState0Circle", "NegativeState0Square" })
+        CircuitManager circuitManager = puzzles[index].GetComponentInChildren<CircuitManager>();
+
+        if (circuitManager != null)
         {
-            GameObject[] taggedGates = GameObject.FindGameObjectsWithTag(tag);
-            foreach (GameObject gate in taggedGates)
+            foreach (var snapPoints in circuitManager.GetSnapPoints())
             {
-                if (gate.activeSelf)
+                foreach (var snapPoint in snapPoints)
                 {
-                    gates.Add(gate);
-                    gate.SetActive(false);
+                    Snap snapComponent = snapPoint.GetComponent<Snap>();
+                    if (snapComponent != null && snapComponent.GetGateOnSnapPoint() != null)
+                    {
+                        GameObject gate = snapComponent.GetGateOnSnapPoint();
+                        // Move the gate after the puzzle has been moved
+                        gate.transform.position += new Vector3(0, (index + 1) * 50, 0);
+                    }
                 }
             }
         }
+    }
 
-        if (puzzleGates.ContainsKey(currentPuzzleIndex))
+    private void MovePuzzleOnScreen(int index)
+    {
+        // Move the puzzle first
+        puzzles[index].transform.position -= new Vector3(0, (index + 1) * 50, 0);
+        puzzleTexts[index].transform.position -= new Vector3(0, (index + 1) * 50, 0);
+
+        CircuitManager circuitManager = puzzles[index].GetComponentInChildren<CircuitManager>();
+        if (circuitManager != null)
         {
-            puzzleGates[currentPuzzleIndex] = gates;
+            foreach (var snapPoints in circuitManager.GetSnapPoints())
+            {
+                foreach (var snapPoint in snapPoints)
+                {
+                    Snap snapComponent = snapPoint.GetComponent<Snap>();
+                    if (snapComponent != null && snapComponent.GetGateOnSnapPoint() != null)
+                    {
+                        GameObject gate = snapComponent.GetGateOnSnapPoint();
+                        Debug.Log($"-----------------------------------------------{gate.name}");
+                        // Move the gate after the puzzle has been moved
+                        gate.transform.position -= new Vector3(0, (index + 1) * 50, 0);
+                    }
+                }
+            }
+        }
+    }
+
+    private void UpdateButtonStates()
+    {
+        if (currentPuzzleIndex == 0)
+        {
+            backButton.gameObject.SetActive(false);
         }
         else
         {
-            puzzleGates.Add(currentPuzzleIndex, gates);
+            backButton.gameObject.SetActive(true);
         }
-    }
 
-    private void RestoreCurrentPuzzleGates()
-    {
-        if (puzzleGates.ContainsKey(currentPuzzleIndex))
+        if (currentPuzzleIndex == puzzles.Length - 1)
         {
-            List<GameObject> gates = puzzleGates[currentPuzzleIndex];
-            foreach (GameObject gate in gates)
-            {
-                gate.SetActive(true);
-                Drag dragcomp = gate.GetComponent<Drag>();
-                if (dragcomp != null)
-                {
-                    dragcomp.Unsnap();
-                }
-            }
+            nextButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            nextButton.gameObject.SetActive(true);
         }
     }
 }

@@ -55,8 +55,8 @@ public class Snap : MonoBehaviour
     //}
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log($"EXITTTTTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGG {gameObject.activeSelf} {gate.activeSelf}");
-        if (gate == collision.gameObject && gameObject.activeSelf)
+        
+        if (gate == collision.gameObject)
         {
                 ClickOffSound();
             
@@ -156,22 +156,9 @@ public class Snap : MonoBehaviour
         }
     }
 
-    private void OnDisable()
-    {      
-        if (gate != null) 
-        {
-           
-            gate.SetActive(false);
-        }
-    }
 
-    private void OnEnable()
+    public GameObject GetGateOnSnapPoint()
     {
-        if (gate != null)
-        {
-            gate.SetActive(true);
-        }
-
+        return gate;
     }
-
 }
