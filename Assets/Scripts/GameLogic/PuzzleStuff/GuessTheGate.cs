@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GuessTheGate : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class GuessTheGate : MonoBehaviour
     private List<List<CircuitManager>> guessTheGateManagers = new List<List<CircuitManager>>();
     [SerializeField] private List<GameObject> CheckImages;
     [SerializeField] private List<GameObject> XImages;
+    [SerializeField] private TextMeshProUGUI ScoreText;
     bool[] prevSolvedPuzzles;
 
     // Start is called before the first frame update
@@ -115,6 +117,8 @@ public class GuessTheGate : MonoBehaviour
                 }
             }
         }
+        if (ScoreText != null)
+            updateScore();
         return isSolved;
     }
 
@@ -129,5 +133,11 @@ public class GuessTheGate : MonoBehaviour
             }
         }
         return count;
+    }
+
+    public void updateScore()
+    {
+        int count = getScore();
+        ScoreText.text = $"Score: {count} out of {correct.Length}";
     }
 }
