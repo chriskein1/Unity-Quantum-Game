@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+using UnityEngine.UI;
 public class GuessTheGate : MonoBehaviour
 {
     int?[] correct;
     [SerializeField] private List<GatePuzzle> GatePuzzles;
-    [SerializeField] private GameObject WinScreen;
+    [SerializeField] private Button NextLevelButton;
     private List<List<CircuitManager>> guessTheGateManagers = new List<List<CircuitManager>>();
     [SerializeField] private List<GameObject> CheckImages;
     [SerializeField] private List<GameObject> XImages;
     [SerializeField] private TextMeshProUGUI ScoreText;
+    private TextMeshProUGUI buttonText = null;
+    private Image buttonImage= null;
     bool[] prevSolvedPuzzles;
 
     // Start is called before the first frame update
@@ -42,14 +44,38 @@ public class GuessTheGate : MonoBehaviour
         if (fillInGates)
         {
             Debug.Log("Puzzle Solved!!!!");
-            if (WinScreen != null)
+            if (NextLevelButton != null)
             {
                 int count = getScore();
                 Debug.Log($"Score: {count} out of {correct.Length}");
                 // stop time
                 Time.timeScale = 0;
                 Debug.Log("Win Screen Active");
-                WinScreen.SetActive(true);
+
+                // Change button text color to black
+                if(buttonText == null)
+                buttonText = NextLevelButton.GetComponentInChildren<TextMeshProUGUI>();
+
+
+                if (buttonText != null)
+                {
+                    buttonText.color = Color.black;
+                }
+
+                // Change button background color to yellow
+                ColorBlock cb = NextLevelButton.colors;
+                cb.normalColor = new Color(Color.yellow.r, Color.yellow.g, Color.yellow.b, cb.normalColor.a);
+                cb.highlightedColor = new Color(Color.yellow.r, Color.yellow.g, Color.yellow.b, cb.highlightedColor.a);
+                cb.pressedColor = new Color(Color.yellow.r, Color.yellow.g, Color.yellow.b, cb.pressedColor.a);
+                cb.selectedColor = new Color(Color.yellow.r, Color.yellow.g, Color.yellow.b, cb.selectedColor.a);
+                NextLevelButton.colors = cb;
+
+                // Change button image color to white
+                 buttonImage = NextLevelButton.GetComponent<Image>();
+                if (buttonImage != null)
+                {
+                    buttonImage.color = Color.white;
+                }
             }
         }
     }

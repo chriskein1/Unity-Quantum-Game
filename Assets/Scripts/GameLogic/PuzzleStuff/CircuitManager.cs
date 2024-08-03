@@ -75,7 +75,7 @@ public class CircuitManager : MonoBehaviour
 
         int numColumns = snapPointLists[0].Count;
 
-        // Evaluate each column from left to right
+        // Evaluate each column from left to righ
         for (int col = 0; col < numColumns; col++)
         {
             for (int row = 0; row < qubitWireControllers.Count; row++)
@@ -403,13 +403,13 @@ public class CircuitManager : MonoBehaviour
         for (int eval = 0; eval < numberOfEvaluations; eval++)
         {
             // Reset the states before each evaluation
-            for (int row = 0; row < numRows; row++)
-            {
-                for (int col = 0; col < numColumns; col++)
-                {
-                    snapPointStates[row][col] = new Qubit();
-                }
-            }
+            //for (int row = 0; row < numRows; row++)
+            //{
+            //    for (int col = 0; col < numColumns; col++)
+            //    {
+            //        snapPointStates[row][col] = new Qubit();
+            //    }
+            //}
 
             for (int col = 0; col < numColumns; col++)
             {
