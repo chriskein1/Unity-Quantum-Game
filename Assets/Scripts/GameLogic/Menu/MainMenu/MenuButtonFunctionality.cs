@@ -29,6 +29,12 @@ public class MenuButtonFunctionality : MonoBehaviour
         Time.timeScale = 1.0f;
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1)); //loads next scene in according to build index
     }
+
+    public void LoadPreviousLevel()
+    {
+        Time.timeScale = 1.0f;
+        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex - 1)); //loads next scene in according to build index
+    }
     /// <summary>
     /// Coroutine to handle the transition animation and scene loading.
     /// </summary>
