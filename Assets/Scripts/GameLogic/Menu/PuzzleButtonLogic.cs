@@ -22,10 +22,12 @@ public class PuzzleButtonLogic : MonoBehaviour
     {
         if (currentPuzzleIndex < puzzles.Length - 1)
         {
+            ClickSound();
             MovePuzzleOffScreen(currentPuzzleIndex);
             currentPuzzleIndex++;
             MovePuzzleOnScreen(currentPuzzleIndex);
             UpdateButtonStates();
+            
         }
     }
 
@@ -33,6 +35,7 @@ public class PuzzleButtonLogic : MonoBehaviour
     {
         if (currentPuzzleIndex > 0)
         {
+            ClickSound();
             MovePuzzleOffScreen(currentPuzzleIndex);
             currentPuzzleIndex--;
             MovePuzzleOnScreen(currentPuzzleIndex);
@@ -118,6 +121,18 @@ public class PuzzleButtonLogic : MonoBehaviour
         else
         {
             nextButton.gameObject.SetActive(true);
+        }
+    }
+
+    private void ClickSound()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("ButtonClick");
+        }
+        else
+        {
+            Debug.LogError("AudioManager instance not found!");
         }
     }
 }

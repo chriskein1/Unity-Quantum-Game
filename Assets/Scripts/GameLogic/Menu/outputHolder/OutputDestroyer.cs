@@ -78,37 +78,6 @@ public class OutputDestroyer : MonoBehaviour
             Destroy(objectToDestroy.gameObject);
         }
     }
-
-    private void OnMouseDown()
-    {
-        if (Time.timeScale > 0)
-        {
-            ClickSound();
-            DestroyAllGates();
-        }
-    }
-
-    private void DestroyAllGates()
-    {
-        foreach (string tag in gateTags)
-        {
-            GameObject[] gates = GameObject.FindGameObjectsWithTag(tag);
-            foreach (GameObject gate in gates)
-            {
-                // Check if the gate has a parent and if the parent has the same tag
-                if (gate.transform.parent == null || gate.transform.parent.tag != tag)
-                {
-                    TimeToLive ttl = gate.GetComponent<TimeToLive>();
-                    if (ttl == null || ttl.IsExpired())
-                    {
-                        gateHolder.AddGateBackToCount(gate.tag);
-                        Destroy(gate);
-                    }
-                }
-            }
-        }
-    }
-
     public void ClickSound()
     {
         if (AudioManager.instance != null)
