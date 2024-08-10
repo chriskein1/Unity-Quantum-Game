@@ -600,7 +600,6 @@ GameObject:
   - component: {fileID: 1139444131040609516}
   - component: {fileID: 744634231388766736}
   - component: {fileID: 7938161039425341797}
-  - component: {fileID: 2123724847983881026}
   - component: {fileID: 8228235942332477436}
   m_Layer: 0
   m_Name: YGateCollider
@@ -721,22 +720,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2123724847983881026
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5185799883883742186}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bc940c1321d911478e92de95cd1aa72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  header: Y Gate
-  content: flips the phase and state of qubit
-  headerColor: {r: 1, g: 0.88244104, b: 0, a: 1}
-  contentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!50 &8228235942332477436
 Rigidbody2D:
   serializedVersion: 4
@@ -1090,6 +1073,7 @@ GameObject:
   - component: {fileID: 2242675842079432638}
   - component: {fileID: 4536333228966726801}
   - component: {fileID: 7919096307687165552}
+  - component: {fileID: 3068567373789888612}
   m_Layer: 5
   m_Name: YButton
   m_TagString: Untagged
@@ -1254,6 +1238,22 @@ MonoBehaviour:
   content: flips the phase and state of qubit
   headerColor: {r: 0, g: 0, b: 0, a: 0}
   contentColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &3068567373789888612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5953778339964350455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bc940c1321d911478e92de95cd1aa72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: Y Gate
+  content: flips the phase and state of qubit
+  headerColor: {r: 1, g: 0.88244104, b: 0, a: 1}
+  contentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &7209876509004677164
 GameObject:
   m_ObjectHideFlags: 0

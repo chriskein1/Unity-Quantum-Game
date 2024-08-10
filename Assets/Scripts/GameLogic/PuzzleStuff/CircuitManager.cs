@@ -187,6 +187,7 @@ public class CircuitManager : MonoBehaviour
         {
             if (winScreen != null)
             {
+                Time.timeScale = 0;
                 winScreen.SetActive(true);
             }
             Debug.Log("YOU WIN!!!!!!");
@@ -334,6 +335,8 @@ public class CircuitManager : MonoBehaviour
     // Determine if the win condition is met for the qubits
     public bool EvaluateWin()
     {
+        Debug.Log("Evaluating win state...");
+
         if (winState.Count == 0)
         {
             Debug.LogError("Win state is not initialized.");
@@ -341,43 +344,73 @@ public class CircuitManager : MonoBehaviour
         }
         else if (finalStates.Count != winState.Count)
         {
-            Debug.LogError("Final states and win state do not match in length.");
-            return false;
-        }
-        // If either win qubit is "no state"
-        if (winState.Contains(SingleQubitStateOptions.NoState))
-        {
+            Debug.LogError($"Final states count ({finalStates.Count}) does not match win state count ({winState.Count}).");
             return false;
         }
 
-        if(qubitWireControllers.Count == 1)
-        {
-            return winState[0] == qubitOperations.ConvertToStateOption(finalStates[0]); 
-        }
-        List<Qubit> winStateQ = new List<Qubit>();
+        // Combine final states into a state vector
+        Complex[] finalStateVector = CombineStatesIntoVector(finalStates);
+
+        // Combine win states into a state vector
+        List<Qubit> winStateQubits = new List<Qubit>();
         foreach (SingleQubitStateOptions state in winState)
         {
-            winStateQ.Add(qubitOperations.ConvertToQubit(state));
+            winStateQubits.Add(qubitOperations.ConvertToQubit(state));
         }
+        Complex[] winStateVector = CombineStatesIntoVector(winStateQubits);
 
-        if (winStateQ.Count == 1)
-        {
-            // Check if they are approximately equal
-            return finalStates[0].IsApproximatelyEqual(winStateQ[0]);
-        }
-        else if (winStateQ.Count == 2)
-        {
-            // Check if they are approximately equal
-            return finalStates[0].IsApproximatelyEqual(winStateQ[0]) && finalStates[1].IsApproximatelyEqual(winStateQ[1]);
-        }
-        return false;
+        // Compare the final state vector with the win state vector
+        bool result = AreVectorsEqual(finalStateVector, winStateVector);
+        Debug.Log($"Final win condition result: {result}");
+        return result;
     }
 
-    private bool CompareReal(Qubit q1, Qubit q2, double tolerance = 1e-10)
+    private Complex[] CombineStatesIntoVector(List<Qubit> states)
     {
-        // Compare positive values for alpha and beta
-        return (Math.Abs(q1.Alpha.Real - q2.Alpha.Real) < tolerance && Math.Abs(q1.Beta.Real - q2.Beta.Real) < tolerance);
+        if (states.Count == 1)
+        {
+            // For a single qubit, the state vector is just the alpha and beta components
+            return new Complex[] { states[0].Alpha, states[0].Beta };
+        }
+        else if (states.Count == 2)
+        {
+            // For two qubits, the state vector is the tensor product of the two qubit states
+            return new Complex[]
+            {
+            states[0].Alpha * states[1].Alpha,  // |00⟩
+            states[0].Alpha * states[1].Beta,   // |01⟩
+            states[0].Beta * states[1].Alpha,   // |10⟩
+            states[0].Beta * states[1].Beta     // |11⟩
+            };
+        }
+        else
+        {
+            Debug.LogError("Unexpected number of qubits.");
+            return null;
+        }
     }
+
+    private bool AreVectorsEqual(Complex[] vector1, Complex[] vector2, double tolerance = 1e-10)
+    {
+        if (vector1 == null || vector2 == null || vector1.Length != vector2.Length)
+        {
+            Debug.LogError("Vectors are not of the same length or one is null.");
+            return false;
+        }
+
+        for (int i = 0; i < vector1.Length; i++)
+        {
+            if (Math.Abs(vector1[i].Real - vector2[i].Real) > tolerance ||
+                Math.Abs(vector1[i].Imaginary - vector2[i].Imaginary) > tolerance)
+            {
+                Debug.Log($"Vectors differ at index {i}: {vector1[i]} vs {vector2[i]}");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
 
     public void EvaluateMultipleTimes(int numberOfEvaluations)
